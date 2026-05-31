@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
+             xmlns:helpers="clr-namespace:TabulateAI.Helpers"
+             x:Class="TabulateAI.Views.HistoryPage"
+             x:DataType="vm:HistoryViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              BackgroundColor="{StaticResource UoNNavy}"
+              Padding="16,14,16,12"
+              ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                <Label Text="All Receipts" Style="{StaticResource PageTitleStyle}" />
+                <Label Text="{Binding Subtitle}" Style="{StaticResource PageSubtitleStyle}" />
+            </VerticalStackLayout>
+            <Label Grid.Column="1"
+                   Text="{x:Static helpers:IconGlyphs.Filter}"
+                   FontSize="20"
+                   TextColor="{StaticResource White60}"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowFiltersCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!-- Search bar -->
+        <Border Grid.Row="1"
+                BackgroundColor="{StaticResource CardWhite}"
+                Margin="14,10,14,0"
+                StrokeShape="RoundRectangle 12"
+                Stroke="{StaticResource BorderFaint}"
+                StrokeThickness="0.5"
+                Padding="12,9">
+            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                <Label Text="{x:Static helpers:IconGlyphs.Search}" FontSize="16" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                <Entry Text="{Binding SearchText}"
+                       Placeholder="Search store, amount, date..."
+                       Style="{StaticResource SearchEntryStyle}"
+                       HorizontalOptions="FillAndExpand" />
+            </HorizontalStackLayout>
+        </Border>
+
+        <!-- Filter chips -->
+        <ScrollView Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalScrollBarVisibility="Never"
+                    Padding="14,4,0,6">
+            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Filters}" Spacing="6">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border StrokeShape="RoundRectangle 20"
+                                Stroke="{StaticResource BorderFaint}"
+                                StrokeThickness="0.5"
+                                Padding="12,6"
+                                BackgroundColor="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectedFilter, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter={Binding .}}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectFilterCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="{Binding .}"
+                                   Style="{StaticResource ChipLabelStyle}"
+                                   TextColor="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectedFilter, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter={Binding .}}" />
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Empty state -->
+        <VerticalStackLayout Grid.Row="3"
+                             IsVisible="{Binding ShowEmptyState}"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Padding="32">
+            <Label Text="🧾📷" FontSize="48" TextColor="{StaticResource BorderFaint}" HorizontalOptions="Center" />
+            <Label Text="No receipts yet" FontSize="17" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" Margin="0,16,0,0" />
+            <Label Text="Tap the camera button below to scan your first receipt"
+                   FontSize="13" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" Margin="0,8,0,0" />
+            <Button Text="Scan Now" Command="{Binding ScanNowCommand}" Style="{StaticResource GoldButtonStyle}" WidthRequest="160" HeightRequest="46" Margin="0,20,0,0" />
+        </VerticalStackLayout>
+
+        <!-- Receipt list -->
+        <RefreshView Grid.Row="3"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}"
+                     IsVisible="{Binding ShowEmptyState, Converter={StaticResource InvertedBoolConverter}}"
+                     Margin="14,4,14,0">
+            <Border BackgroundColor="{StaticResource CardWhite}"
+                    StrokeShape="RoundRectangle 14"
+                    Stroke="{StaticResource BorderFaint}"
+                    StrokeThickness="0.5"
+                    Padding="0">
+                <CollectionView ItemsSource="{Binding GroupedReceipts}"
+                                IsGrouped="True"
+                                SelectionMode="None">
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="models:ReceiptGroup">
+                        <Label Text="{Binding MonthTitle}"
+                               FontSize="9"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextMuted}"
+                               CharacterSpacing="0.7"
+                               BackgroundColor="{StaticResource AppBackground}"
+                               Padding="14,6,14,3" />
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ReceiptDisplayItem">
+                        <VerticalStackLayout>
+                            <Grid Padding="14,10" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenReceiptCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+                                <Border WidthRequest="38" HeightRequest="38"
+                                        BackgroundColor="{Binding IconBackground}"
+                                        StrokeShape="RoundRectangle 10"
+                                        Stroke="Transparent"
+                                        VerticalOptions="Center">
+                                    <Label Text="{Binding Icon}" FontSize="16" TextColor="{Binding IconColor}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                                    <Label Text="{Binding Meta}" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2"
+                                       Text="{Binding AmountFormatted}"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource UoNNavy}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                            <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+        </RefreshView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,6 @@
+{
+  "Ai": {
+    "GeminiApiKey": "YOUR_GEMINI_KEY_FROM_aistudio.google.com",
+    "MistralApiKey": "YOUR_MISTRAL_KEY_FROM_console.mistral.ai"
+  }
+}

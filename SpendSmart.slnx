@@ -1,2 +1,4 @@
 <Solution>
+  <Project Path="SpendSmart.Api/SpendSmart.Api.csproj" />
+  <Project Path="SpendSmart/SpendSmart.csproj" />
 </Solution>

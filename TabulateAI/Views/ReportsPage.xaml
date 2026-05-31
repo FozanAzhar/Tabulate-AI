@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
+             x:Class="TabulateAI.Views.ReportsPage"
+             x:DataType="vm:ReportsViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <Grid BackgroundColor="{StaticResource UoNNavy}" Padding="16,14,16,12">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Expense Reports" Style="{StaticResource PageTitleStyle}" />
+                    <Label Text="Analyse &amp; export spending" Style="{StaticResource PageSubtitleStyle}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid Padding="14,8,14,0" ColumnDefinitions="*,*,*" ColumnSpacing="6">
+                <Border Grid.Column="0"
+                        BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=This Month}"
+                        StrokeShape="RoundRectangle 10"
+                        Stroke="{StaticResource BorderFaint}"
+                        StrokeThickness="0.5"
+                        Padding="0,8">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectPeriodCommand}" CommandParameter="This Month" />
+                    </Border.GestureRecognizers>
+                    <Label Text="This Month" Style="{StaticResource ChipLabelStyle}"
+                           TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=This Month}" />
+                </Border>
+                <Border Grid.Column="1"
+                        BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=Last Month}"
+                        StrokeShape="RoundRectangle 10"
+                        Stroke="{StaticResource BorderFaint}"
+                        StrokeThickness="0.5"
+                        Padding="0,8">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectPeriodCommand}" CommandParameter="Last Month" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Last Month" Style="{StaticResource ChipLabelStyle}"
+                           TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=Last Month}" />
+                </Border>
+                <Border Grid.Column="2"
+                        BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=Year}"
+                        StrokeShape="RoundRectangle 10"
+                        Stroke="{StaticResource BorderFaint}"
+                        StrokeThickness="0.5"
+                        Padding="0,8">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectPeriodCommand}" CommandParameter="Year" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Year" Style="{StaticResource ChipLabelStyle}"
+                           TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=Year}" />
+                </Border>
+            </Grid>
+
+            <Border BackgroundColor="{StaticResource UoNNavy}"
+                    Margin="14,8,14,0"
+                    StrokeShape="RoundRectangle 16"
+                    Stroke="Transparent"
+                    Padding="14">
+                <VerticalStackLayout Spacing="0">
+                    <Label Text="{Binding MonthLabel, StringFormat='{0} TOTAL'}"
+                           FontSize="11"
+                           TextColor="{StaticResource UoNBlueMid}"
+                           CharacterSpacing="0.5" />
+                    <Label Text="{Binding TotalFormatted}"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource White}"
+                           Margin="0,4,0,0" />
+                    <Label Text="{Binding SummaryMeta}"
+                           FontSize="10"
+                           TextColor="{StaticResource UoNBlueMid}" />
+
+                    <Grid Margin="0,10,0,0"
+                          ColumnDefinitions="4*,2.5*,2*,1.5*,1*"
+                          HeightRequest="8">
+                        <BoxView Grid.Column="0" Color="{StaticResource UoNGold}" />
+                        <BoxView Grid.Column="1" Color="{StaticResource Gold50}" />
+                        <BoxView Grid.Column="2" Color="{StaticResource BlueMid50}" />
+                        <BoxView Grid.Column="3" Color="{StaticResource BlueMid30}" />
+                        <BoxView Grid.Column="4" Color="{StaticResource White15}" />
+                    </Grid>
+
+                    <FlexLayout Margin="0,8,0,0" Wrap="Wrap" Direction="Row" JustifyContent="Start" AlignItems="Center">
+                        <HorizontalStackLayout Spacing="4" Margin="0,0,10,4">
+                            <BoxView WidthRequest="8" HeightRequest="8" Color="{StaticResource UoNGold}" CornerRadius="2" />
+                            <Label Text="Grocery" FontSize="9" TextColor="{StaticResource UoNBlueMid}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="4" Margin="0,0,10,4">
+                            <BoxView WidthRequest="8" HeightRequest="8" Color="{StaticResource Gold50}" CornerRadius="2" />
+                            <Label Text="Travel" FontSize="9" TextColor="{StaticResource UoNBlueMid}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="4" Margin="0,0,10,4">
+                            <BoxView WidthRequest="8" HeightRequest="8" Color="{StaticResource BlueMid50}" CornerRadius="2" />
+                            <Label Text="Health" FontSize="9" TextColor="{StaticResource UoNBlueMid}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="4" Margin="0,0,10,4">
+                            <BoxView WidthRequest="8" HeightRequest="8" Color="{StaticResource BlueMid30}" CornerRadius="2" />
+                            <Label Text="Office" FontSize="9" TextColor="{StaticResource UoNBlueMid}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="4" Margin="0,0,10,4">
+                            <BoxView WidthRequest="8" HeightRequest="8" Color="{StaticResource White15}" CornerRadius="2" />
+                            <Label Text="Other" FontSize="9" TextColor="{StaticResource UoNBlueMid}" />
+                        </HorizontalStackLayout>
+                    </FlexLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="BY CATEGORY"
+                   Style="{StaticResource SectionLabelStyle}" />
+
+            <VerticalStackLayout Margin="14,0,14,0" Spacing="8"
+                                 BindableLayout.ItemsSource="{Binding Categories}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:CategoryBreakdownItem">
+                        <VerticalStackLayout Spacing="3">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{Binding Category}" FontSize="11" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding AmountLabel}" FontSize="10" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                            </Grid>
+                            <ProgressBar Progress="{Binding BarWidth}"
+                                         ProgressColor="{Binding BarColor}"
+                                         BackgroundColor="{StaticResource BorderFaint}"
+                                         HeightRequest="6" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label Text="EXPORT REPORT"
+                   Style="{StaticResource SectionLabelStyle}" />
+
+            <Border BackgroundColor="{StaticResource CardWhite}"
+                    Margin="14,0,14,10"
+                    StrokeShape="RoundRectangle 14"
+                    Stroke="{StaticResource BorderFaint}"
+                    StrokeThickness="0.5"
+                    Padding="0">
+                <VerticalStackLayout>
+                    <Grid Padding="12,10" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                            <Label Text="CSV Spreadsheet" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                            <Label Text="For Excel / Google Sheets" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="Export" Command="{Binding ExportCsvCommand}"
+                                Style="{StaticResource CompactNavyButtonStyle}"
+                                IsEnabled="{Binding IsExporting, Converter={StaticResource InvertedBoolConverter}}" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                    <Grid Padding="12,10" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                            <Label Text="PDF Report" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                            <Label Text="Tax &amp; reimbursement ready" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="Export" Command="{Binding ExportPdfCommand}"
+                                Style="{StaticResource CompactNavyButtonStyle}" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                    <Grid Padding="12,10" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                            <Label Text="Email to myself" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                            <Label Text="c3493921@uon.edu.au" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="Send" Command="{Binding EmailReportCommand}"
+                                Style="{StaticResource CompactNavyButtonStyle}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

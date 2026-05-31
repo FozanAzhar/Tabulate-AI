@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
+             xmlns:helpers="clr-namespace:TabulateAI.Helpers"
+             x:Class="TabulateAI.Views.ReviewReceiptPage"
+             x:DataType="vm:ReviewReceiptViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Header -->
+            <Grid BackgroundColor="{StaticResource UoNNavy}"
+                  Padding="16,14,16,12"
+                  ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                    <Label Text="Receipt Detail" Style="{StaticResource PageTitleStyle}" />
+                    <Label Text="Review &amp; save" Style="{StaticResource PageSubtitleStyle}" />
+                </VerticalStackLayout>
+                <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                    <Border WidthRequest="30" HeightRequest="30"
+                            BackgroundColor="{StaticResource White10}"
+                            StrokeShape="RoundRectangle 8"
+                            Stroke="Transparent">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label Text="{x:Static helpers:IconGlyphs.Pencil}"
+                               FontSize="14"
+                               TextColor="{StaticResource White}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <Border WidthRequest="30" HeightRequest="30"
+                            BackgroundColor="{StaticResource White10}"
+                            StrokeShape="RoundRectangle 8"
+                            Stroke="Transparent">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShareCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label Text="{x:Static helpers:IconGlyphs.Share}"
+                               FontSize="14"
+                               TextColor="{StaticResource White}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <!-- Hero store card -->
+            <Border BackgroundColor="{StaticResource UoNNavy}"
+                    Margin="14,10,14,0"
+                    StrokeShape="RoundRectangle 16"
+                    Stroke="Transparent"
+                    Padding="14">
+                <Grid>
+                    <Border WidthRequest="80"
+                            HeightRequest="80"
+                            BackgroundColor="{StaticResource Gold20}"
+                            StrokeShape="RoundRectangle 40"
+                            Stroke="Transparent"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            Margin="0,-20,-10,0" />
+                    <VerticalStackLayout Spacing="0">
+                        <Label Text="{Binding Merchant}"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource White}" />
+                        <Label Text="{Binding Address}"
+                               FontSize="10"
+                               TextColor="{StaticResource UoNBlueMid}"
+                               Margin="0,4,0,0" />
+                        <FlexLayout Wrap="Wrap"
+                                    Direction="Row"
+                                    AlignItems="Center"
+                                    Margin="0,10,0,0">
+                            <Border BackgroundColor="{StaticResource Gold30}"
+                                    StrokeShape="RoundRectangle 20"
+                                    Stroke="Transparent"
+                                    Padding="10,4"
+                                    Margin="0,0,6,6">
+                                <Label Text="{Binding CategoryChip}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold3}" />
+                            </Border>
+                            <Border BackgroundColor="{StaticResource BlueMid20}"
+                                    StrokeShape="RoundRectangle 20"
+                                    Stroke="Transparent"
+                                    Padding="10,4"
+                                    Margin="0,0,6,6">
+                                <Label Text="{Binding DateChip, StringFormat='📅 {0}'}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNBlueMid}" />
+                            </Border>
+                            <Border BackgroundColor="{StaticResource BlueMid20}"
+                                    StrokeShape="RoundRectangle 20"
+                                    Stroke="Transparent"
+                                    Padding="10,4"
+                                    Margin="0,0,6,6">
+                                <Label Text="{Binding TimeChip, StringFormat='🕐 {0}'}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNBlueMid}" />
+                            </Border>
+                        </FlexLayout>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Line items -->
+            <Label Text="LINE ITEMS"
+                   Style="{StaticResource SectionLabelStyle}" />
+
+            <Border BackgroundColor="{StaticResource CardWhite}"
+                    Margin="14,0,14,0"
+                    StrokeShape="RoundRectangle 14"
+                    Stroke="{StaticResource BorderFaint}"
+                    StrokeThickness="0.5"
+                    Padding="0">
+                <VerticalStackLayout>
+                    <CollectionView ItemsSource="{Binding LineItems}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:LineItem">
+                                <VerticalStackLayout>
+                                    <Grid Padding="12,8" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <Label Text="{Binding Name}" FontSize="11" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding PriceFormatted}"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{Binding IsDiscount, Converter={StaticResource DiscountTextColorConverter}}"
+                                               VerticalOptions="Center"
+                                               HorizontalTextAlignment="End" />
+                                    </Grid>
+                                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Grid Padding="12,10"
+                          ColumnDefinitions="*,Auto"
+                          BackgroundColor="{StaticResource UoNBlueTint}">
+                        <Label Text="Total Paid" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource UoNNavy}" VerticalOptions="Center" />
+                        <Label Grid.Column="1"
+                               Text="{Binding TotalFormatted}"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource UoNNavy}"
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="End" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Payment info -->
+            <Label Text="PAYMENT INFO"
+                   Style="{StaticResource SectionLabelStyle}" />
+
+            <Border BackgroundColor="{StaticResource CardWhite}"
+                    Margin="14,0,14,0"
+                    StrokeShape="RoundRectangle 14"
+                    Stroke="{StaticResource BorderFaint}"
+                    StrokeThickness="0.5"
+                    Padding="0">
+                <VerticalStackLayout>
+                    <Grid Padding="12,10" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="Method" FontSize="11" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding PaymentMethod}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                    <Grid Padding="12,10" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="Uploaded to" FontSize="11" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding UploadDestination}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource UoNNavyLight}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Confidence banners -->
+            <Border IsVisible="{Binding ShowWarningBanner}"
+                    BackgroundColor="{StaticResource WarningBg}"
+                    Stroke="{StaticResource WarningBorder}"
+                    StrokeThickness="0.5"
+                    Padding="10,8"
+                    Margin="14,10,14,0">
+                <Label Text="{Binding WarningMessage}"
+                       FontSize="11"
+                       TextColor="{StaticResource WarningText}" />
+            </Border>
+
+            <Border IsVisible="{Binding ShowDangerBanner}"
+                    BackgroundColor="{StaticResource DangerBg}"
+                    Stroke="{StaticResource DangerBorder}"
+                    StrokeThickness="0.5"
+                    Padding="10,8"
+                    Margin="14,10,14,0">
+                <Label Text="{Binding WarningMessage}"
+                       FontSize="11"
+                       TextColor="{StaticResource DangerRed}" />
+            </Border>
+
+            <!-- Action strip -->
+            <Grid Padding="14,10,14,20"
+                  ColumnDefinitions="*,*,Auto"
+                  ColumnSpacing="8"
+                  Margin="0,10,0,0">
+                <Button Grid.Column="0"
+                        Text="Save Receipt"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource NavyButtonStyle}"
+                        HorizontalOptions="Fill" />
+                <Button Grid.Column="1"
+                        Text="Edit"
+                        Command="{Binding EditCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        HorizontalOptions="Fill" />
+                <Button Grid.Column="2"
+                        Command="{Binding DeleteCommand}"
+                        BackgroundColor="{StaticResource DangerBg}"
+                        BorderColor="{StaticResource DangerBorder}"
+                        BorderWidth="0.5"
+                        WidthRequest="46"
+                        HeightRequest="46"
+                        MinimumHeightRequest="46"
+                        CornerRadius="12"
+                        Text="{x:Static helpers:IconGlyphs.Trash}"
+                        TextColor="{StaticResource DangerRed}"
+                        Padding="0"
+                        VerticalOptions="Center" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

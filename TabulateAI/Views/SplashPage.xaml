@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:helpers="clr-namespace:TabulateAI.Helpers"
+             x:Class="TabulateAI.Views.SplashPage"
+             x:DataType="vm:SplashViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{StaticResource UoNNavy}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Row 0: Centered content -->
+        <VerticalStackLayout Grid.Row="0"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Padding="32,0"
+                             Spacing="0">
+
+            <!-- Logo ring -->
+            <Border WidthRequest="72"
+                    HeightRequest="72"
+                    BackgroundColor="{StaticResource UoNGold}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 18"
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,20">
+                <Label Text="{x:Static helpers:IconGlyphs.Receipt}"
+                       FontSize="36"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{StaticResource UoNNavyDark}" />
+            </Border>
+
+            <!-- App name -->
+            <Label Text="Expensely"
+                   FontFamily="OpenSansBold"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource White}"
+                   HorizontalOptions="Center" />
+
+            <!-- Tagline -->
+            <Label Text="Your pocket scanner with brains.&#10;Powered by Gemini AI."
+                   FontSize="13"
+                   TextColor="{StaticResource UoNBlueMid}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,8,0,0" />
+
+            <!-- UoN badge -->
+            <Border BackgroundColor="{StaticResource White10}"
+                    Stroke="{StaticResource White20}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="16,8"
+                    HorizontalOptions="Center"
+                    Margin="0,20,0,0">
+                <Label HorizontalTextAlignment="Center" FontSize="10">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Built for  " TextColor="{StaticResource White70}" />
+                            <Span Text="University of Newcastle · C3493921"
+                                  TextColor="{StaticResource White}"
+                                  FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Border>
+
+            <!-- Tech pillars -->
+            <HorizontalStackLayout Spacing="16"
+                                   HorizontalOptions="Center"
+                                   Margin="0,28,0,0">
+
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Label Text="OCR" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
+                    <Label Text="Gemini AI" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <BoxView WidthRequest="0.5" HeightRequest="24" Color="{StaticResource White20}" VerticalOptions="Center" />
+
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Label Text="Cloud" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
+                    <Label Text="Supabase" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <BoxView WidthRequest="0.5" HeightRequest="24" Color="{StaticResource White20}" VerticalOptions="Center" />
+
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Label Text=".NET" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
+                    <Label Text="MAUI" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Row 1: Bottom buttons -->
+        <VerticalStackLayout Grid.Row="1"
+                             Padding="32,0,32,48"
+                             Spacing="12">
+            <Button Text="Get Started"
+                    Command="{Binding GetStartedCommand}"
+                    BackgroundColor="{StaticResource UoNGold}"
+                    TextColor="{StaticResource UoNNavyDark}"
+                    FontFamily="OpenSansBold"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    HeightRequest="52"
+                    CornerRadius="12"
+                    HorizontalOptions="Fill" />
+            <Button Text="Sign in with UoN Account"
+                    Command="{Binding SignInCommand}"
+                    BackgroundColor="Transparent"
+                    BorderColor="{StaticResource White30}"
+                    BorderWidth="1.5"
+                    TextColor="{StaticResource White}"
+                    FontSize="13"
+                    HeightRequest="50"
+                    CornerRadius="12"
+                    HorizontalOptions="Fill" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

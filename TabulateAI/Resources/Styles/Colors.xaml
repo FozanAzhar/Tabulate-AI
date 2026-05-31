@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- UoN Brand Colour Tokens -->
+    <Color x:Key="UoNNavy">#003058</Color>
+    <Color x:Key="UoNNavyDark">#00213D</Color>
+    <Color x:Key="UoNNavyLight">#004080</Color>
+    <Color x:Key="UoNGold">#C8922A</Color>
+    <Color x:Key="UoNGoldLight">#E8A830</Color>
+    <Color x:Key="UoNGold3">#F5C84A</Color>
+    <Color x:Key="UoNBlueTint">#E8F2F9</Color>
+    <Color x:Key="UoNBlueMid">#B8D4E8</Color>
+    <Color x:Key="AppBackground">#F4F7FA</Color>
+    <Color x:Key="CardWhite">#FFFFFF</Color>
+    <Color x:Key="TextPrimary">#1A2B3C</Color>
+    <Color x:Key="TextMuted">#6B7D8C</Color>
+    <Color x:Key="BorderFaint">#D0DCE8</Color>
+    <Color x:Key="DangerRed">#DC2626</Color>
+    <Color x:Key="DangerBg">#FEF2F2</Color>
+    <Color x:Key="DangerBorder">#FECACA</Color>
+
+    <!-- Opacity variants -->
+    <Color x:Key="Gold15">#26C8922A</Color>
+    <Color x:Key="Gold20">#33C8922A</Color>
+    <Color x:Key="Gold30">#4DC8922A</Color>
+    <Color x:Key="Gold50">#80C8922A</Color>
+    <Color x:Key="Navy67">#AA003058</Color>
+    <Color x:Key="White10">#1AFFFFFF</Color>
+    <Color x:Key="White15">#26FFFFFF</Color>
+    <Color x:Key="White20">#33FFFFFF</Color>
+    <Color x:Key="White30">#4DFFFFFF</Color>
+    <Color x:Key="White40">#66FFFFFF</Color>
+    <Color x:Key="White50">#80FFFFFF</Color>
+    <Color x:Key="White55">#8CFFFFFF</Color>
+    <Color x:Key="White60">#99FFFFFF</Color>
+    <Color x:Key="White70">#B3FFFFFF</Color>
+    <Color x:Key="WhiteCC">#CCFFFFFF</Color>
+    <Color x:Key="BlueMid20">#33B8D4E8</Color>
+    <Color x:Key="BlueMid30">#4DB8D4E8</Color>
+    <Color x:Key="BlueMid50">#80B8D4E8</Color>
+    <Color x:Key="WarmTint">#FFF8EC</Color>
+    <Color x:Key="PharmacyTint">#F0F4F8</Color>
+    <Color x:Key="ScanBackground">#0A0E14</Color>
+    <Color x:Key="WarningBg">#FFF8EC</Color>
+    <Color x:Key="WarningBorder">#F6AD55</Color>
+    <Color x:Key="WarningText">#92400E</Color>
+    <Color x:Key="TabUnselected">#80B8D4E8</Color>
+
+    <!-- Legacy aliases for compatibility (Styles.xaml still references these) -->
+    <Color x:Key="Primary">#003058</Color>
+    <Color x:Key="PrimaryDark">#004080</Color>
+    <Color x:Key="PrimaryDarkText">#00213D</Color>
+    <Color x:Key="Secondary">#E8F2F9</Color>
+    <Color x:Key="SecondaryDarkText">#004080</Color>
+    <Color x:Key="Tertiary">#00213D</Color>
+    <Color x:Key="White">#FFFFFF</Color>
+    <Color x:Key="Black">#000000</Color>
+    <Color x:Key="Magenta">#C8922A</Color>
+    <Color x:Key="MidnightBlue">#003058</Color>
+    <Color x:Key="OffBlack">#1A2B3C</Color>
+
+    <Color x:Key="Gray100">#E1E1E1</Color>
+    <Color x:Key="Gray200">#D0DCE8</Color>
+    <Color x:Key="Gray300">#B8D4E8</Color>
+    <Color x:Key="Gray400">#919191</Color>
+    <Color x:Key="Gray500">#6B7D8C</Color>
+    <Color x:Key="Gray600">#404040</Color>
+    <Color x:Key="Gray900">#1A2B3C</Color>
+    <Color x:Key="Gray950">#141414</Color>
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
+    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}" />
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}" />
+    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}" />
+    <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}" />
+    <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}" />
+    <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300}" />
+    <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}" />
+    <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}" />
+    <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}" />
+    <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
+    <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
+
+    <SolidColorBrush x:Key="UoNNavyBrush" Color="{StaticResource UoNNavy}" />
+    <SolidColorBrush x:Key="UoNGoldBrush" Color="{StaticResource UoNGold}" />
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource AppBackground}" />
+    <SolidColorBrush x:Key="CardWhiteBrush" Color="{StaticResource CardWhite}" />
+    <SolidColorBrush x:Key="BorderFaintBrush" Color="{StaticResource BorderFaint}" />
+
+</ResourceDictionary>

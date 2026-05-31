@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
+             x:Class="TabulateAI.Views.ProcessingPage"
+             x:DataType="vm:ProcessingViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Header -->
+            <Grid BackgroundColor="{StaticResource UoNNavy}"
+                  Padding="16,14,16,12">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Processing" Style="{StaticResource PageTitleStyle}" />
+                    <Label Text="Extracting receipt data" Style="{StaticResource PageSubtitleStyle}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Central processing area -->
+            <VerticalStackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Spacing="14"
+                                 Padding="20"
+                                 Margin="0,40,0,0">
+
+                <!-- Receipt preview card -->
+                <Border x:Name="PreviewCard"
+                        WidthRequest="130"
+                        HeightRequest="165"
+                        BackgroundColor="{StaticResource CardWhite}"
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="{StaticResource BorderFaint}"
+                        StrokeThickness="0.5"
+                        Padding="10">
+                    <VerticalStackLayout Spacing="4">
+                        <HorizontalStackLayout Spacing="6" Margin="0,0,0,4">
+                            <BoxView WidthRequest="14" HeightRequest="14" Color="{StaticResource UoNGold}" VerticalOptions="Center" CornerRadius="7" />
+                            <Label Text="SCANNING" FontSize="8" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <BoxView HeightRequest="6" HorizontalOptions="Fill" Color="{StaticResource UoNBlueMid}" />
+                        <BoxView HeightRequest="6" WidthRequest="120" Color="{StaticResource BorderFaint}" Margin="0,4,0,0" HorizontalOptions="Start" />
+                        <BoxView HeightRequest="6" HorizontalOptions="Fill" Color="{StaticResource UoNBlueMid}" Margin="0,4,0,0" />
+                        <BoxView HeightRequest="6" WidthRequest="65" Color="{StaticResource BorderFaint}" Margin="0,8,0,0" HorizontalOptions="Start" />
+                        <BoxView HeightRequest="6" WidthRequest="95" Color="{StaticResource BorderFaint}" Margin="0,4,0,0" HorizontalOptions="Start" />
+                        <BoxView HeightRequest="6" WidthRequest="80" Color="{StaticResource BorderFaint}" Margin="0,4,0,0" HorizontalOptions="Start" />
+                        <BoxView HeightRequest="6" WidthRequest="100" Color="{StaticResource BorderFaint}" Margin="0,8,0,0" HorizontalOptions="Start" />
+                        <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" Margin="0,6,0,0" />
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+                            <Label Text="TOTAL" FontSize="7" TextColor="{StaticResource TextMuted}" />
+                            <Label Grid.Column="1" Text="$84.60" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <ProgressBar WidthRequest="160"
+                             HeightRequest="4"
+                             Progress="{Binding Progress}"
+                             ProgressColor="{StaticResource UoNGold}"
+                             BackgroundColor="{StaticResource BorderFaint}" />
+
+                <Label Text="{Binding StatusText}"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       HorizontalOptions="Center" />
+
+                <Label Text="Gemini AI is reading store name, items, totals, date &amp; payment method"
+                       FontSize="10"
+                       TextColor="{StaticResource TextMuted}"
+                       HorizontalTextAlignment="Center"
+                       MaximumWidthRequest="320"
+                       Margin="14,0,14,12" />
+
+                <!-- Step list -->
+                <VerticalStackLayout Spacing="6"
+                                     HorizontalOptions="Fill"
+                                     Padding="14,0">
+                    <CollectionView ItemsSource="{Binding Steps}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ProcessingStep">
+                                <Border BackgroundColor="{StaticResource CardWhite}"
+                                        StrokeShape="RoundRectangle 10"
+                                        Stroke="{StaticResource BorderFaint}"
+                                        StrokeThickness="0.5"
+                                        Padding="12,8"
+                                        Margin="0,0,0,6"
+                                        Opacity="{Binding Status, Converter={StaticResource ProcessingStepOpacityConverter}}">
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="{Binding Status, Converter={StaticResource ProcessingStepIconConverter}}"
+                                               FontSize="14"
+                                               TextColor="{StaticResource UoNGold}"
+                                               VerticalOptions="Center" />
+                                        <Label Text="{Binding Label}"
+                                               FontSize="12"
+                                               TextColor="{StaticResource TextPrimary}"
+                                               VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <Button Text="View Extracted Data"
+                        Command="{Binding ViewExtractedDataCommand}"
+                        Style="{StaticResource NavyButtonStyle}"
+                        Padding="28,12"
+                        Margin="0,8,0,20"
+                        IsVisible="{Binding IsComplete}" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

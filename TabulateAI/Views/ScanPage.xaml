@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:helpers="clr-namespace:TabulateAI.Helpers"
+             x:Class="TabulateAI.Views.ScanPage"
+             x:DataType="vm:ScanViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource ScanBackground}">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              BackgroundColor="{StaticResource UoNNavy}"
+              Padding="16,14,16,12"
+              ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                <Label Text="Scan Receipt" Style="{StaticResource PageTitleStyle}" />
+                <Label Text="Gemini AI OCR active" Style="{StaticResource PageSubtitleStyle}" />
+            </VerticalStackLayout>
+            <Label Grid.Column="1"
+                   Text="{x:Static helpers:IconGlyphs.Close}"
+                   FontSize="20"
+                   TextColor="{StaticResource White60}"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CloseCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!-- Info strip -->
+        <HorizontalStackLayout Grid.Row="1"
+                               BackgroundColor="{StaticResource UoNNavyDark}"
+                               Padding="14,8"
+                               Spacing="8"
+                               VerticalOptions="Center">
+            <BoxView WidthRequest="6" HeightRequest="6" Color="{StaticResource UoNGoldLight}" VerticalOptions="Center" CornerRadius="3" />
+            <Label Text="📍 Sydney CBD  ·  ✨ Auto-detect on"
+                   FontSize="10"
+                   TextColor="{StaticResource UoNBlueMid}"
+                   VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <!-- Camera viewfinder -->
+        <Grid Grid.Row="2" BackgroundColor="{StaticResource ScanBackground}">
+            <BoxView Color="{StaticResource Gold15}" Opacity="0.3" />
+            <GraphicsView x:Name="ViewfinderGraphics"
+                          HorizontalOptions="Fill"
+                          VerticalOptions="Fill" />
+            <Label Text="Align receipt within the frame. Keep steady for best results."
+                   FontSize="11"
+                   TextColor="{StaticResource White55}"
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="End"
+                   Padding="20,0,20,14" />
+        </Grid>
+
+        <!-- Action bar -->
+        <Grid Grid.Row="3"
+              BackgroundColor="{StaticResource UoNNavyDark}"
+              Padding="20,12,20,16"
+              ColumnDefinitions="*,Auto,*">
+            <VerticalStackLayout Grid.Column="0"
+                                 HorizontalOptions="Center"
+                                 Spacing="4">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PickPhotoCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="{x:Static helpers:IconGlyphs.Photo}"
+                       FontSize="20"
+                       TextColor="{StaticResource White50}"
+                       HorizontalOptions="Center" />
+                <Label Text="Gallery"
+                       FontSize="9"
+                       TextColor="{StaticResource White40}"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <Border Grid.Column="1"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    BackgroundColor="Transparent"
+                    Stroke="{StaticResource UoNGold}"
+                    StrokeThickness="3"
+                    StrokeShape="RoundRectangle 30">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CapturePhotoCommand}" />
+                </Border.GestureRecognizers>
+                <Border WidthRequest="48"
+                        HeightRequest="48"
+                        BackgroundColor="{StaticResource UoNGold}"
+                        StrokeShape="RoundRectangle 24"
+                        Stroke="Transparent"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+            </Border>
+
+            <VerticalStackLayout Grid.Column="2"
+                                 HorizontalOptions="Center"
+                                 Spacing="4">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleFlashCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+                <Label Text="{x:Static helpers:IconGlyphs.Flash}"
+                       FontSize="20"
+                       TextColor="{StaticResource White50}"
+                       HorizontalOptions="Center" />
+                <Label Text="Flash"
+                       FontSize="9"
+                       TextColor="{StaticResource White40}"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

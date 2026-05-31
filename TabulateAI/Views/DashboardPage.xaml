@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
+             x:Class="TabulateAI.Views.DashboardPage"
+             x:DataType="vm:DashboardViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Navy header -->
+            <Grid BackgroundColor="{StaticResource UoNNavy}"
+                  Padding="16,14,16,12"
+                  ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                    <Label Text="{Binding Greeting}"
+                           Style="{StaticResource PageSubtitleStyle}" />
+                    <Label Text="{Binding MonthLabel}"
+                           Style="{StaticResource PageTitleStyle}" />
+                </VerticalStackLayout>
+                <Border Grid.Column="1"
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        BackgroundColor="{StaticResource UoNGold}"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 18"
+                        VerticalOptions="Center">
+                    <Label Text="{Binding UserInitials}"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource UoNNavyDark}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+            <!-- Empty state -->
+            <VerticalStackLayout IsVisible="{Binding ShowEmptyState}"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Padding="32"
+                                 Margin="0,80,0,0">
+                <Label Text="🧾📷" FontSize="48" TextColor="{StaticResource BorderFaint}" HorizontalOptions="Center" />
+                <Label Text="No receipts yet"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       HorizontalOptions="Center"
+                       Margin="0,16,0,0" />
+                <Label Text="Tap the camera button below to scan your first receipt"
+                       FontSize="13"
+                       TextColor="{StaticResource TextMuted}"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,8,0,0" />
+                <Button Text="Scan Now"
+                        Command="{Binding ScanReceiptCommand}"
+                        Style="{StaticResource GoldButtonStyle}"
+                        WidthRequest="160"
+                        HeightRequest="46"
+                        Margin="0,20,0,0" />
+            </VerticalStackLayout>
+
+            <!-- Main content -->
+            <VerticalStackLayout IsVisible="{Binding HasData}" Spacing="0">
+
+                <!-- Hero spend card -->
+                <Border BackgroundColor="{StaticResource UoNNavy}"
+                        Margin="14,12,14,0"
+                        StrokeShape="RoundRectangle 16"
+                        Stroke="Transparent"
+                        Padding="16">
+                    <Grid>
+                        <Border WidthRequest="100"
+                                HeightRequest="100"
+                                BackgroundColor="{StaticResource Gold15}"
+                                StrokeShape="RoundRectangle 50"
+                                Stroke="Transparent"
+                                HorizontalOptions="End"
+                                VerticalOptions="Start"
+                                Margin="0,-20,-20,0" />
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="TOTAL SPENT THIS MONTH"
+                                   FontSize="10"
+                                   TextColor="{StaticResource UoNBlueMid}"
+                                   CharacterSpacing="0.6" />
+                            <Label Text="{Binding MonthlyTotal, StringFormat='{0:C2}'}"
+                                   FontSize="30"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource White}"
+                                   Margin="0,4,0,0" />
+                            <Label Text="{Binding ReceiptCount, StringFormat='{0} receipts scanned'}"
+                                   FontSize="11"
+                                   TextColor="{StaticResource UoNBlueMid}" />
+                            <FlexLayout Wrap="Wrap"
+                                        Direction="Row"
+                                        AlignItems="Center"
+                                        Margin="0,12,0,0">
+                                <Border BackgroundColor="{StaticResource Gold30}"
+                                        StrokeShape="RoundRectangle 20"
+                                        Stroke="Transparent"
+                                        Padding="12,4"
+                                        Margin="0,0,8,6">
+                                    <Label Text="{Binding TrendLabel}"
+                                           FontSize="10"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource UoNGold3}" />
+                                </Border>
+                                <Border BackgroundColor="{StaticResource White10}"
+                                        StrokeShape="RoundRectangle 20"
+                                        Stroke="Transparent"
+                                        Padding="12,4"
+                                        Margin="0,0,8,6">
+                                    <Label Text="{Binding BudgetLabel}"
+                                           FontSize="10"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource WhiteCC}" />
+                                </Border>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Mini stat cards -->
+                <Grid Margin="14,10,14,0"
+                      ColumnDefinitions="*,*,*"
+                      ColumnSpacing="10">
+                    <Border Grid.Column="0"
+                            BackgroundColor="{StaticResource CardWhite}"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="{StaticResource BorderFaint}"
+                            StrokeThickness="0.5"
+                            Padding="10"
+                            MinimumHeightRequest="78"
+                            VerticalOptions="Fill">
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="THIS WEEK" FontSize="9" TextColor="{StaticResource TextMuted}" CharacterSpacing="0.5" />
+                            <Label Text="{Binding WeeklyTotalFormatted}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="0,3,0,0" />
+                            <Label Text="{Binding WeeklyReceiptCount, StringFormat='{0} receipts'}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" Margin="0,2,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1"
+                            BackgroundColor="{StaticResource CardWhite}"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="{StaticResource BorderFaint}"
+                            StrokeThickness="0.5"
+                            Padding="10"
+                            MinimumHeightRequest="78"
+                            VerticalOptions="Fill">
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="TOP CATEGORY" FontSize="9" TextColor="{StaticResource TextMuted}" CharacterSpacing="0.5" />
+                            <Label Text="{Binding TopCategory}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="0,3,0,0" LineBreakMode="TailTruncation" MaxLines="1" />
+                            <Label Text="{Binding TopCategoryShare}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" Margin="0,2,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="2"
+                            BackgroundColor="{StaticResource CardWhite}"
+                            StrokeShape="RoundRectangle 12"
+                            Stroke="{StaticResource BorderFaint}"
+                            StrokeThickness="0.5"
+                            Padding="10"
+                            MinimumHeightRequest="78"
+                            VerticalOptions="Fill">
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="PENDING" FontSize="9" TextColor="{StaticResource TextMuted}" CharacterSpacing="0.5" />
+                            <Label Text="{Binding PendingCount}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="0,3,0,0" />
+                            <Label Text="need review" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" Margin="0,2,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- Spending chart card -->
+                <Border BackgroundColor="{StaticResource CardWhite}"
+                        Margin="14,10,14,0"
+                        StrokeShape="RoundRectangle 14"
+                        Stroke="{StaticResource BorderFaint}"
+                        StrokeThickness="0.5"
+                        Padding="12">
+                    <VerticalStackLayout Spacing="0">
+                        <Label Text="SPENDING BY CATEGORY"
+                               Style="{StaticResource SectionLabelStyle}"
+                               CharacterSpacing="0.5"
+                               Margin="0,0,0,8" />
+                        <Grid ColumnDefinitions="*,*,*,*,*"
+                              ColumnSpacing="5"
+                              RowDefinitions="48,Auto"
+                              RowSpacing="3">
+                            <BoxView Grid.Row="0" Grid.Column="0" HeightRequest="44" Color="{StaticResource UoNNavy}" VerticalOptions="End" CornerRadius="4,4,0,0" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="Food" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
+                            <BoxView Grid.Row="0" Grid.Column="1" HeightRequest="30" Color="{StaticResource UoNGold}" VerticalOptions="End" CornerRadius="4,4,0,0" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="Travel" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
+                            <BoxView Grid.Row="0" Grid.Column="2" HeightRequest="22" Color="{StaticResource UoNBlueMid}" VerticalOptions="End" CornerRadius="4,4,0,0" />
+                            <Label Grid.Row="1" Grid.Column="2" Text="Office" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
+                            <BoxView Grid.Row="0" Grid.Column="3" HeightRequest="36" Color="{StaticResource Navy67}" VerticalOptions="End" CornerRadius="4,4,0,0" />
+                            <Label Grid.Row="1" Grid.Column="3" Text="Health" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
+                            <BoxView Grid.Row="0" Grid.Column="4" HeightRequest="14" Color="{StaticResource BorderFaint}" VerticalOptions="End" CornerRadius="4,4,0,0" />
+                            <Label Grid.Row="1" Grid.Column="4" Text="Other" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Recent receipts -->
+                <Label Text="RECENT RECEIPTS"
+                       Style="{StaticResource SectionLabelStyle}" />
+
+                <Border BackgroundColor="{StaticResource CardWhite}"
+                        Margin="14,0,14,0"
+                        StrokeShape="RoundRectangle 14"
+                        Stroke="{StaticResource BorderFaint}"
+                        StrokeThickness="0.5"
+                        Padding="0">
+                    <CollectionView ItemsSource="{Binding RecentReceipts}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ReceiptDisplayItem">
+                                <VerticalStackLayout>
+                                    <Grid Padding="14,10"
+                                          ColumnDefinitions="Auto,*,Auto"
+                                          ColumnSpacing="10">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenReceiptCommand}"
+                                                                  CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+                                        <Border WidthRequest="38"
+                                                HeightRequest="38"
+                                                BackgroundColor="{Binding IconBackground}"
+                                                StrokeShape="RoundRectangle 10"
+                                                Stroke="Transparent"
+                                                VerticalOptions="Center">
+                                            <Label Text="{Binding Icon}"
+                                                   FontSize="16"
+                                                   TextColor="{Binding IconColor}"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                                            <Label Text="{Binding Meta}" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="2"
+                                               Text="{Binding AmountFormatted}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource UoNNavy}"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+
+                <!-- Scan button -->
+                <Button Text="📷  Scan New Receipt"
+                        Command="{Binding ScanReceiptCommand}"
+                        Style="{StaticResource GoldButtonStyle}"
+                        Margin="14,10,14,20" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

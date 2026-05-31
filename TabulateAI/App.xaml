@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TabulateAI"
+             xmlns:converters="clr-namespace:TabulateAI.Converters"
+             x:Class="TabulateAI.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+            <converters:FilePathToImageSourceConverter x:Key="FilePathToImageSourceConverter" />
+            <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+            <converters:StringEqualsConverter x:Key="StringEqualsConverter" />
+            <converters:StringEqualsToColorConverter x:Key="StringEqualsToColorConverter" />
+            <converters:StringEqualsToTextColorConverter x:Key="StringEqualsToTextColorConverter" />
+            <converters:ProcessingStepIconConverter x:Key="ProcessingStepIconConverter" />
+            <converters:ProcessingStepOpacityConverter x:Key="ProcessingStepOpacityConverter" />
+            <converters:DiscountTextColorConverter x:Key="DiscountTextColorConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

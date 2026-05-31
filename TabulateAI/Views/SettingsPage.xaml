@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             x:Class="TabulateAI.Views.SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <Grid BackgroundColor="{StaticResource UoNNavy}" Padding="16,14,16,12">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Settings" Style="{StaticResource PageTitleStyle}" />
+                    <Label Text="Account &amp; preferences" Style="{StaticResource PageSubtitleStyle}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border BackgroundColor="{StaticResource CardWhite}"
+                    Margin="14,14,14,0"
+                    StrokeShape="RoundRectangle 14"
+                    Stroke="{StaticResource BorderFaint}"
+                    StrokeThickness="0.5"
+                    Padding="14">
+                <HorizontalStackLayout Spacing="12">
+                    <Border WidthRequest="36"
+                            HeightRequest="36"
+                            BackgroundColor="{StaticResource UoNGold}"
+                            StrokeShape="RoundRectangle 18"
+                            Stroke="Transparent">
+                        <Label Text="{Binding UserName}"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource UoNNavyDark}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                        <Label Text="University of Newcastle" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                        <Label Text="{Binding UserEmail}" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Label Text="APP INFO"
+                   Style="{StaticResource SectionLabelStyle}"
+                   Margin="14,16,14,6" />
+
+            <Border BackgroundColor="{StaticResource CardWhite}"
+                    Margin="14,0,14,20"
+                    StrokeShape="RoundRectangle 14"
+                    Stroke="{StaticResource BorderFaint}"
+                    StrokeThickness="0.5"
+                    Padding="0">
+                <VerticalStackLayout>
+                    <Grid Padding="14,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="Version" FontSize="12" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="1.0.0" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                    <Grid Padding="14,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="OCR Engine" FontSize="12" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Gemini AI" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource UoNNavyLight}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
+                    <Grid Padding="14,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="Cloud Storage" FontSize="12" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Supabase" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource UoNNavyLight}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
