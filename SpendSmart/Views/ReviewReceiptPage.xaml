@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SpendSmart.ViewModels"
+             x:Class="SpendSmart.Views.ReviewReceiptPage"
+             x:DataType="vm:ReviewReceiptViewModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16">
+            <Image Source="{Binding ReceiptImage}"
+                   HeightRequest="220"
+                   Aspect="AspectFit"
+                   IsVisible="{Binding ReceiptImage, Converter={StaticResource IsNotNullConverter}}" />
+
+            <Entry Placeholder="Merchant"
+                   Text="{Binding Merchant}" />
+
+            <Entry Placeholder="Amount"
+                   Text="{Binding AmountText}"
+                   Keyboard="Numeric" />
+
+            <DatePicker Date="{Binding ReceiptDate}"
+                        Format="D" />
+
+            <Picker Title="Category"
+                    ItemsSource="{Binding Categories}"
+                    SelectedItem="{Binding Category}" />
+
+            <Button Text="Save Receipt"
+                    Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
+
+            <Button Text="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Style="{StaticResource SecondaryButton}" />
+
+            <Button Text="Delete Receipt"
+                    Command="{Binding DeleteCommand}"
+                    IsVisible="{Binding ReceiptId, Converter={StaticResource GreaterThanZeroConverter}}"
+                    BackgroundColor="#C62828"
+                    TextColor="White" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

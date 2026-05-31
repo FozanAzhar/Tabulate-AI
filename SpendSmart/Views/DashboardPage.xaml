@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SpendSmart.ViewModels"
+             xmlns:models="clr-namespace:SpendSmart.Models"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             x:Class="SpendSmart.Views.DashboardPage"
+             x:DataType="vm:DashboardViewModel"
+             Title="Dashboard">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+            <Label Text="{Binding MonthLabel}"
+                   Style="{StaticResource SubHeadline}" />
+
+            <Border Padding="20"
+                    BackgroundColor="{StaticResource Secondary}"
+                    StrokeShape="RoundRectangle 16">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Total spent this month"
+                           TextColor="{StaticResource Gray600}" />
+                    <Label Text="{Binding MonthlyTotal, StringFormat='{0:C2}'}"
+                           Style="{StaticResource Headline}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <microcharts:ChartView Chart="{Binding CategoryChart}"
+                                   HeightRequest="260"
+                                   IsVisible="{Binding HasData}" />
+
+            <Label Text="By category"
+                   FontAttributes="Bold"
+                   IsVisible="{Binding HasData}" />
+
+            <CollectionView ItemsSource="{Binding CategorySummaries}"
+                            IsVisible="{Binding HasData}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:CategorySummary">
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,8">
+                            <Label Text="{Binding Category}" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding Total, StringFormat='{0:C2}'}"
+                                   FontAttributes="Bold" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Add receipts to see your spending breakdown."
+                   HorizontalTextAlignment="Center"
+                   IsVisible="{Binding HasData, Converter={StaticResource InvertedBoolConverter}}" />
+
+            <Button Text="Share Summary"
+                    Command="{Binding ShareSummaryCommand}"
+                    Style="{StaticResource SecondaryButton}" />
+
+            <Button Text="Refresh"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource SecondaryButton}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

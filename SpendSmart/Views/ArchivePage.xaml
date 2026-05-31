@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SpendSmart.ViewModels"
+             xmlns:models="clr-namespace:SpendSmart.Models"
+             x:Class="SpendSmart.Views.ArchivePage"
+             x:DataType="vm:ArchiveViewModel"
+             Title="Archive">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+        <SearchBar Grid.Row="0"
+                   Placeholder="Search merchant or category"
+                   Text="{Binding SearchText}" />
+
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <Grid>
+                <CollectionView ItemsSource="{Binding Receipts}"
+                                SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="32" Spacing="8" VerticalOptions="Center">
+                            <Label Text="No receipts yet"
+                                   Style="{StaticResource SubHeadline}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Scan a receipt to build your archive."
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Receipt">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Execute">
+                                        <SwipeItem Text="Delete"
+                                                   BackgroundColor="#C62828"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ArchiveViewModel}}, Path=DeleteReceiptCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Border Margin="0,0,0,12"
+                                        Padding="12"
+                                        Stroke="{StaticResource Gray200}"
+                                        StrokeShape="RoundRectangle 12">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ArchiveViewModel}}, Path=OpenReceiptCommand}"
+                                                              CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="72,*,Auto" ColumnSpacing="12">
+                                        <Image Source="{Binding ImagePath, Converter={StaticResource FilePathToImageSourceConverter}}"
+                                               HeightRequest="72"
+                                               WidthRequest="72"
+                                               Aspect="AspectFill" />
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
+                                            <Label Text="{Binding Merchant}"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding Category}"
+                                                   TextColor="{StaticResource Gray500}" />
+                                            <Label Text="{Binding Date, StringFormat='{0:d}'}"
+                                                   TextColor="{StaticResource Gray500}" />
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="2"
+                                               Text="{Binding Amount, StringFormat='{0:C2}'}"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </RefreshView>
+    </Grid>
+</ContentPage>
