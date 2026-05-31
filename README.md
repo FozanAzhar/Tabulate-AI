@@ -78,10 +78,6 @@ Tabulate-AI/
 - Database: app local data folder (`tabulate.db3`)
 - Receipt images: `receipts/` under app data
 
-## Contributing
-
-This project was built for coursework (INFT6009 Mobile Application Development). Pull requests and issues are welcome for learning and collaboration.
-
 ## License
 
 All rights reserved unless a license file is added later.
