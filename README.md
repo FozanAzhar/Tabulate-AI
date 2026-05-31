@@ -1,8 +1,8 @@
 # Tabulate-AI
 
-**Less clutter. More clarity.**
+**Snap a receipt. Get every detail extracted and organised instantly.**
 
-Tabulate-AI is a receipt expense tracker for Windows. Capture receipts, extract details with OCR and optional cloud AI, review and save expenses locally, then view spending on a dashboard and export reports.
+Tabulate-AI is a receipt expense tracker. Capture receipts, extract details with OCR and optional cloud AI, review and save expenses locally, then view spending on a dashboard and export reports.
 
 ## Features
 
