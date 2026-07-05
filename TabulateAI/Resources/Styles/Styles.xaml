@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <Style TargetType="ActivityIndicator">
-        <Setter Property="Color" Value="{StaticResource UoNGold}" />
+        <Setter Property="Color" Value="{StaticResource Violet}" />
     </Style>
 
     <Style TargetType="IndicatorView">
@@ -13,7 +13,7 @@
     </Style>
 
     <Style TargetType="Border">
-        <Setter Property="Stroke" Value="{StaticResource BorderFaint}" />
+        <Setter Property="Stroke" Value="{StaticResource Border}" />
         <Setter Property="StrokeShape" Value="Rectangle"/>
         <Setter Property="StrokeThickness" Value="0.5"/>
     </Style>
@@ -222,8 +222,8 @@
     </Style>
 
     <Style TargetType="ProgressBar">
-        <Setter Property="ProgressColor" Value="{StaticResource UoNGold}" />
-        <Setter Property="BackgroundColor" Value="{StaticResource BorderFaint}" />
+        <Setter Property="ProgressColor" Value="{StaticResource Violet}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Border}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -413,32 +413,70 @@
     </Style>
     -->
 
+    <Style TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+    </Style>
+
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource AppBackground}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
     </Style>
 
-    <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{StaticResource UoNNavy}" />
-        <Setter Property="Shell.ForegroundColor" Value="{StaticResource White}" />
-        <Setter Property="Shell.TitleColor" Value="{StaticResource UoNGold}" />
-        <Setter Property="Shell.DisabledColor" Value="{StaticResource TabUnselected}" />
-        <Setter Property="Shell.UnselectedColor" Value="{StaticResource TabUnselected}" />
-        <Setter Property="Shell.NavBarHasShadow" Value="False" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource UoNNavy}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource UoNGold}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource UoNGold}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource TabUnselected}" />
+    <Style TargetType="TabBar">
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource CardWhite}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Violet}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource T3}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Violet}" />
     </Style>
 
-    <Style TargetType="Label" x:Key="SectionLabelStyle">
+    <Style x:Key="CardBorder" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource CardWhite}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+        <Setter Property="Stroke" Value="{StaticResource Border}" />
+        <Setter Property="StrokeThickness" Value="0.5" />
+    </Style>
+
+    <Style x:Key="SectionLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="OpenSansBold" />
         <Setter Property="FontSize" Value="10" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="TextColor" Value="{StaticResource TextMuted}" />
-        <Setter Property="CharacterSpacing" Value="0.6" />
+        <Setter Property="TextColor" Value="{StaticResource T3}" />
+        <Setter Property="CharacterSpacing" Value="0.7" />
+        <Setter Property="TextTransform" Value="Uppercase" />
         <Setter Property="Margin" Value="14,12,14,6" />
     </Style>
+
+    <Style x:Key="PrimaryBtn" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Violet}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontFamily" Value="OpenSansBold" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="CornerRadius" Value="13" />
+        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="BorderWidth" Value="0" />
+    </Style>
+
+    <Style x:Key="Divider" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="0.5" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Border2}" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+    </Style>
+
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Shell.ForegroundColor" Value="{StaticResource T1}" />
+        <Setter Property="Shell.TitleColor" Value="{StaticResource T1}" />
+        <Setter Property="Shell.DisabledColor" Value="{StaticResource T3}" />
+        <Setter Property="Shell.UnselectedColor" Value="{StaticResource T3}" />
+        <Setter Property="Shell.NavBarHasShadow" Value="False" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource CardWhite}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Violet}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Violet}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource T3}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="SectionLabelStyle" BasedOn="{StaticResource SectionLabel}" />
 
     <Style TargetType="Label" x:Key="ChipLabelStyle">
         <Setter Property="FontSize" Value="10" />
@@ -524,12 +562,7 @@
         <Setter Property="Margin" Value="0" />
     </Style>
 
-    <Style TargetType="Border" x:Key="CardBorderStyle">
-        <Setter Property="BackgroundColor" Value="{StaticResource CardWhite}" />
-        <Setter Property="Stroke" Value="{StaticResource BorderFaint}" />
-        <Setter Property="StrokeThickness" Value="0.5" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 14" />
-    </Style>
+    <Style TargetType="Border" x:Key="CardBorderStyle" BasedOn="{StaticResource CardBorder}" />
 
     <Style TargetType="NavigationPage">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />

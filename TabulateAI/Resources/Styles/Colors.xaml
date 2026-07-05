@@ -3,30 +3,42 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- UoN Brand Colour Tokens -->
-    <Color x:Key="UoNNavy">#003058</Color>
-    <Color x:Key="UoNNavyDark">#00213D</Color>
-    <Color x:Key="UoNNavyLight">#004080</Color>
-    <Color x:Key="UoNGold">#C8922A</Color>
-    <Color x:Key="UoNGoldLight">#E8A830</Color>
-    <Color x:Key="UoNGold3">#F5C84A</Color>
-    <Color x:Key="UoNBlueTint">#E8F2F9</Color>
-    <Color x:Key="UoNBlueMid">#B8D4E8</Color>
-    <Color x:Key="AppBackground">#F4F7FA</Color>
+    <!-- Tabulate AI colour system -->
+    <Color x:Key="Ink">#09090F</Color>
+    <Color x:Key="Ink2">#18181B</Color>
+    <Color x:Key="Ink3">#27272A</Color>
+    <Color x:Key="Ink4">#3F3F46</Color>
+    <Color x:Key="Ink5">#52525B</Color>
+    <Color x:Key="InkMuted">#71717A</Color>
+    <Color x:Key="InkSubtle">#A1A1AA</Color>
+    <Color x:Key="Violet">#7C3AED</Color>
+    <Color x:Key="Violet2">#6D28D9</Color>
+    <Color x:Key="Violet3">#A78BFA</Color>
+    <Color x:Key="VioletTint">#F5F3FF</Color>
+    <Color x:Key="VioletMid">#EDE9FE</Color>
+    <Color x:Key="VioletDark">#4C1D95</Color>
+    <Color x:Key="Amber">#F59E0B</Color>
+    <Color x:Key="AmberTint">#FFFBEB</Color>
+    <Color x:Key="AmberDark">#78350F</Color>
+    <Color x:Key="AmberLight">#FCD34D</Color>
+    <Color x:Key="Green">#10B981</Color>
+    <Color x:Key="GreenTint">#ECFDF5</Color>
+    <Color x:Key="GreenDark">#064E3B</Color>
+    <Color x:Key="GreenLight">#6EE7B7</Color>
+    <Color x:Key="Surface">#F9FAFB</Color>
     <Color x:Key="CardWhite">#FFFFFF</Color>
-    <Color x:Key="TextPrimary">#1A2B3C</Color>
-    <Color x:Key="TextMuted">#6B7D8C</Color>
-    <Color x:Key="BorderFaint">#D0DCE8</Color>
-    <Color x:Key="DangerRed">#DC2626</Color>
-    <Color x:Key="DangerBg">#FEF2F2</Color>
-    <Color x:Key="DangerBorder">#FECACA</Color>
+    <Color x:Key="T1">#111827</Color>
+    <Color x:Key="T2">#6B7280</Color>
+    <Color x:Key="T3">#9CA3AF</Color>
+    <Color x:Key="Border">#E5E7EB</Color>
+    <Color x:Key="Border2">#F3F4F6</Color>
+    <Color x:Key="Red">#EF4444</Color>
+    <Color x:Key="RedTint">#FEF2F2</Color>
+    <Color x:Key="RedBorder">#FECACA</Color>
+    <Color x:Key="AvatarGreen">#059669</Color>
+    <Color x:Key="AvatarOrange">#D97706</Color>
 
-    <!-- Opacity variants -->
-    <Color x:Key="Gold15">#26C8922A</Color>
-    <Color x:Key="Gold20">#33C8922A</Color>
-    <Color x:Key="Gold30">#4DC8922A</Color>
-    <Color x:Key="Gold50">#80C8922A</Color>
-    <Color x:Key="Navy67">#AA003058</Color>
+    <!-- Opacity variants (screens) -->
     <Color x:Key="White10">#1AFFFFFF</Color>
     <Color x:Key="White15">#26FFFFFF</Color>
     <Color x:Key="White20">#33FFFFFF</Color>
@@ -37,38 +49,61 @@
     <Color x:Key="White60">#99FFFFFF</Color>
     <Color x:Key="White70">#B3FFFFFF</Color>
     <Color x:Key="WhiteCC">#CCFFFFFF</Color>
+    <Color x:Key="Violet3_15">#26A78BFA</Color>
+    <Color x:Key="Violet3_30">#4DA78BFA</Color>
+
+    <!-- Legacy aliases (older screens — updated screen-by-screen) -->
+    <Color x:Key="UoNNavy">#003058</Color>
+    <Color x:Key="UoNNavyDark">#00213D</Color>
+    <Color x:Key="UoNNavyLight">#004080</Color>
+    <Color x:Key="UoNGold">#C8922A</Color>
+    <Color x:Key="UoNGoldLight">#E8A830</Color>
+    <Color x:Key="UoNGold3">#F5C84A</Color>
+    <Color x:Key="UoNBlueTint">#E8F2F9</Color>
+    <Color x:Key="UoNBlueMid">#B8D4E8</Color>
+    <Color x:Key="AppBackground">#F9FAFB</Color>
+    <Color x:Key="TextPrimary">#111827</Color>
+    <Color x:Key="TextMuted">#6B7280</Color>
+    <Color x:Key="BorderFaint">#E5E7EB</Color>
+    <Color x:Key="DangerRed">#EF4444</Color>
+    <Color x:Key="DangerBg">#FEF2F2</Color>
+    <Color x:Key="DangerBorder">#FECACA</Color>
+    <Color x:Key="Gold15">#26C8922A</Color>
+    <Color x:Key="Gold20">#33C8922A</Color>
+    <Color x:Key="Gold30">#4DC8922A</Color>
+    <Color x:Key="Gold50">#80C8922A</Color>
+    <Color x:Key="Navy67">#AA003058</Color>
     <Color x:Key="BlueMid20">#33B8D4E8</Color>
     <Color x:Key="BlueMid30">#4DB8D4E8</Color>
     <Color x:Key="BlueMid50">#80B8D4E8</Color>
     <Color x:Key="WarmTint">#FFF8EC</Color>
     <Color x:Key="PharmacyTint">#F0F4F8</Color>
-    <Color x:Key="ScanBackground">#0A0E14</Color>
-    <Color x:Key="WarningBg">#FFF8EC</Color>
-    <Color x:Key="WarningBorder">#F6AD55</Color>
+    <Color x:Key="ScanBackground">#0A0A10</Color>
+    <Color x:Key="WarningBg">#FFFBEB</Color>
+    <Color x:Key="WarningBorder">#F59E0B</Color>
     <Color x:Key="WarningText">#92400E</Color>
-    <Color x:Key="TabUnselected">#80B8D4E8</Color>
+    <Color x:Key="TabUnselected">#9CA3AF</Color>
 
-    <!-- Legacy aliases for compatibility (Styles.xaml still references these) -->
-    <Color x:Key="Primary">#003058</Color>
-    <Color x:Key="PrimaryDark">#004080</Color>
-    <Color x:Key="PrimaryDarkText">#00213D</Color>
-    <Color x:Key="Secondary">#E8F2F9</Color>
-    <Color x:Key="SecondaryDarkText">#004080</Color>
-    <Color x:Key="Tertiary">#00213D</Color>
+    <Color x:Key="Primary">#7C3AED</Color>
+    <Color x:Key="PrimaryDark">#6D28D9</Color>
+    <Color x:Key="PrimaryDarkText">#09090F</Color>
+    <Color x:Key="Secondary">#F5F3FF</Color>
+    <Color x:Key="SecondaryDarkText">#6D28D9</Color>
+    <Color x:Key="Tertiary">#4C1D95</Color>
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="Black">#000000</Color>
-    <Color x:Key="Magenta">#C8922A</Color>
-    <Color x:Key="MidnightBlue">#003058</Color>
-    <Color x:Key="OffBlack">#1A2B3C</Color>
+    <Color x:Key="Magenta">#7C3AED</Color>
+    <Color x:Key="MidnightBlue">#09090F</Color>
+    <Color x:Key="OffBlack">#111827</Color>
 
-    <Color x:Key="Gray100">#E1E1E1</Color>
-    <Color x:Key="Gray200">#D0DCE8</Color>
-    <Color x:Key="Gray300">#B8D4E8</Color>
-    <Color x:Key="Gray400">#919191</Color>
-    <Color x:Key="Gray500">#6B7D8C</Color>
-    <Color x:Key="Gray600">#404040</Color>
-    <Color x:Key="Gray900">#1A2B3C</Color>
-    <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="Gray100">#F3F4F6</Color>
+    <Color x:Key="Gray200">#E5E7EB</Color>
+    <Color x:Key="Gray300">#D1D5DB</Color>
+    <Color x:Key="Gray400">#9CA3AF</Color>
+    <Color x:Key="Gray500">#6B7280</Color>
+    <Color x:Key="Gray600">#4B5563</Color>
+    <Color x:Key="Gray900">#111827</Color>
+    <Color x:Key="Gray950">#09090F</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
@@ -83,11 +118,10 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}" />
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
-
     <SolidColorBrush x:Key="UoNNavyBrush" Color="{StaticResource UoNNavy}" />
     <SolidColorBrush x:Key="UoNGoldBrush" Color="{StaticResource UoNGold}" />
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource AppBackground}" />
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource Surface}" />
     <SolidColorBrush x:Key="CardWhiteBrush" Color="{StaticResource CardWhite}" />
-    <SolidColorBrush x:Key="BorderFaintBrush" Color="{StaticResource BorderFaint}" />
+    <SolidColorBrush x:Key="BorderFaintBrush" Color="{StaticResource Border}" />
 
 </ResourceDictionary>
