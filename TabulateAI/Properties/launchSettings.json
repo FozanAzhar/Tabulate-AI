@@ -1,16 +1,10 @@
 {
   "profiles": {
-    "Windows Machine": {
+    "Android Emulator": {
       "commandName": "Project",
-      "nativeDebugging": false,
       "environmentVariables": {
-        "TABULATE_AI_API_URL": "http://localhost:5299"
+        "TABULATE_AI_API_URL": "http://10.0.2.2:5299"
       }
-    },
-    "Run from output folder": {
-      "commandName": "Executable",
-      "executablePath": "bin\\Debug\\net9.0-windows10.0.19041.0\\win10-x64\\TabulateAI.exe",
-      "workingDirectory": "bin\\Debug\\net9.0-windows10.0.19041.0\\win10-x64"
     }
   }
 }

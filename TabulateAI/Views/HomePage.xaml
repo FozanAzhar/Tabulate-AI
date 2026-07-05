@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             x:Class="TabulateAI.Views.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{StaticResource Ink}">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Row 0: Scrollable content -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="28,24,28,0"
+                                 Spacing="0">
+
+                <!-- Logo row -->
+                <HorizontalStackLayout Spacing="10">
+                    <Border WidthRequest="36"
+                            HeightRequest="36"
+                            BackgroundColor="{StaticResource Violet}"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 10">
+                        <Image Source="icon_table.svg"
+                               WidthRequest="18"
+                               HeightRequest="18"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <Label FontFamily="OpenSansBold"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="tabulate"
+                                      TextColor="{StaticResource White}"
+                                      FontFamily="OpenSansBold"
+                                      FontSize="16"
+                                      FontAttributes="Bold" />
+                                <Span Text="ai"
+                                      TextColor="{StaticResource Violet3}"
+                                      FontFamily="OpenSansBold"
+                                      FontSize="16"
+                                      FontAttributes="Bold" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </HorizontalStackLayout>
+
+                <!-- Hero text block -->
+                <VerticalStackLayout Margin="0,32,0,0"
+                                     Spacing="0">
+                    <Label FontFamily="OpenSansBold"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           LineHeight="1.2"
+                           CharacterSpacing="-0.5">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Receipts&#x0a;sorted.&#x0a;"
+                                      TextColor="{StaticResource White}"
+                                      FontFamily="OpenSansBold"
+                                      FontSize="28"
+                                      FontAttributes="Bold" />
+                                <Span Text="Expenses"
+                                      TextColor="{StaticResource Violet3}"
+                                      FontFamily="OpenSansBold"
+                                      FontSize="28"
+                                      FontAttributes="Bold" />
+                                <Span Text="&#x0a;clear."
+                                      TextColor="{StaticResource White}"
+                                      FontFamily="OpenSansBold"
+                                      FontSize="28"
+                                      FontAttributes="Bold" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="Snap a receipt or type in an expense — your spending, organised."
+                           FontFamily="OpenSansRegular"
+                           FontSize="13"
+                           TextColor="{StaticResource InkMuted}"
+                           Margin="0,14,0,0"
+                           LineHeight="1.55" />
+                </VerticalStackLayout>
+
+                <!-- Feature list -->
+                <VerticalStackLayout Margin="0,28,0,0"
+                                     Spacing="10">
+
+                    <!-- Feature row 1 -->
+                    <Border BackgroundColor="{StaticResource Ink2}"
+                            Stroke="{StaticResource Ink3}"
+                            StrokeThickness="0.5"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="14,12">
+                        <HorizontalStackLayout Spacing="12"
+                                               VerticalOptions="Center">
+                            <Border WidthRequest="32"
+                                    HeightRequest="32"
+                                    BackgroundColor="#221E35"
+                                    Stroke="{StaticResource VioletDark}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 9">
+                                <Image Source="icon_feature_scan.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Spacing="2"
+                                                 VerticalOptions="Center">
+                                <Label Text="Instant scan"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource White}" />
+                                <Label Text="Point, shoot, done"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Ink5}" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!-- Feature row 2 -->
+                    <Border BackgroundColor="{StaticResource Ink2}"
+                            Stroke="{StaticResource Ink3}"
+                            StrokeThickness="0.5"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="14,12">
+                        <HorizontalStackLayout Spacing="12"
+                                               VerticalOptions="Center">
+                            <Border WidthRequest="32"
+                                    HeightRequest="32"
+                                    BackgroundColor="#221E35"
+                                    Stroke="{StaticResource VioletDark}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 9">
+                                <Image Source="icon_feature_reports.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Spacing="2"
+                                                 VerticalOptions="Center">
+                                <Label Text="Smart reports"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource White}" />
+                                <Label Text="Export for tax or work"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Ink5}" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!-- Feature row 3 -->
+                    <Border BackgroundColor="{StaticResource Ink2}"
+                            Stroke="{StaticResource Ink3}"
+                            StrokeThickness="0.5"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="14,12">
+                        <HorizontalStackLayout Spacing="12"
+                                               VerticalOptions="Center">
+                            <Border WidthRequest="32"
+                                    HeightRequest="32"
+                                    BackgroundColor="#221E35"
+                                    Stroke="{StaticResource VioletDark}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 9">
+                                <Image Source="icon_feature_tags.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Spacing="2"
+                                                 VerticalOptions="Center">
+                                <Label Text="Auto categorise"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource White}" />
+                                <Label Text="No manual tagging needed"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Ink5}" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Row 1: Fixed bottom buttons -->
+        <VerticalStackLayout Grid.Row="1"
+                             Padding="28,24,28,36"
+                             Spacing="10">
+            <Button Text="Get started"
+                    Command="{Binding GetStartedCommand}"
+                    BackgroundColor="{StaticResource Violet}"
+                    TextColor="{StaticResource White}"
+                    FontFamily="OpenSansBold"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    CornerRadius="14"
+                    HeightRequest="52"
+                    BorderWidth="0" />
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

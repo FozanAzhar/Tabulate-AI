@@ -1,5 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
 using TabulateAI.Views;
 
 namespace TabulateAI;
@@ -18,18 +16,9 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		var splash = IPlatformApplication.Current!.Services.GetRequiredService<SplashPage>();
-		NavigationPage.SetHasNavigationBar(splash, false);
-
-		var nav = new NavigationPage(splash)
+		var window = new Window(new AppShell())
 		{
-			BarBackgroundColor = Color.FromArgb("#003058"),
-			BackgroundColor = Color.FromArgb("#003058")
-		};
-
-		var window = new Window(nav)
-		{
-			Title = "Expensely",
+			Title = "Tabulate AI",
 			Width = 420,
 			Height = 780,
 			X = 100,

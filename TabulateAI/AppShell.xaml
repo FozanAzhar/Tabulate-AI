@@ -1,43 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="TabulateAI.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:TabulateAI.Views"
-    Title="Expensely"
-    Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="False">
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:TabulateAI.Views"
+       x:Class="TabulateAI.AppShell"
+       Shell.FlyoutBehavior="Disabled"
+       Shell.NavBarIsVisible="False">
+
+    <ShellContent Route="home"
+                  ContentTemplate="{DataTemplate views:HomePage}"
+                  Shell.TabBarIsVisible="False" />
 
     <TabBar>
-        <ShellContent
-            Title="Home"
-            Icon="icon_home.svg"
-            ContentTemplate="{DataTemplate views:DashboardPage}"
-            Route="DashboardPage" />
-
-        <ShellContent
-            Title="History"
-            Icon="icon_history.svg"
-            ContentTemplate="{DataTemplate views:HistoryPage}"
-            Route="HistoryPage" />
-
-        <ShellContent
-            Title=""
-            Icon="icon_camera_fab.svg"
-            ContentTemplate="{DataTemplate views:ScanPage}"
-            Route="ScanPage" />
-
-        <ShellContent
-            Title="Reports"
-            Icon="icon_reports.svg"
-            ContentTemplate="{DataTemplate views:ReportsPage}"
-            Route="ReportsPage" />
-
-        <ShellContent
-            Title="Settings"
-            Icon="icon_settings.svg"
-            ContentTemplate="{DataTemplate views:SettingsPage}"
-            Route="SettingsPage" />
+        <Tab Title="Home" Icon="icon_home.svg">
+            <ShellContent Route="dashboard"
+                          ContentTemplate="{DataTemplate views:DashboardPage}" />
+        </Tab>
+        <Tab Title="History" Icon="icon_history.svg">
+            <ShellContent Route="history"
+                          ContentTemplate="{DataTemplate views:HistoryPage}" />
+        </Tab>
+        <Tab Title="Scan" Icon="icon_camera_fab.svg">
+            <ShellContent Route="scan"
+                          ContentTemplate="{DataTemplate views:ScanPage}" />
+        </Tab>
+        <Tab Title="Reports" Icon="icon_reports.svg">
+            <ShellContent Route="reports"
+                          ContentTemplate="{DataTemplate views:ReportsPage}" />
+        </Tab>
+        <Tab Title="Settings" Icon="icon_settings.svg">
+            <ShellContent Route="settings"
+                          ContentTemplate="{DataTemplate views:SettingsPage}" />
+        </Tab>
     </TabBar>
-
 </Shell>

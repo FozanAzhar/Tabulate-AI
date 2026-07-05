@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
+             x:Class="TabulateAI.Views.ExportPreviewPage"
+             x:DataType="vm:ExportPreviewViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Surface}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <Grid Grid.Row="0"
+              BackgroundColor="{StaticResource CardWhite}"
+              Padding="16,14,16,12"
+              ColumnDefinitions="Auto,*,Auto"
+              RowDefinitions="Auto,Auto">
+            <Border Grid.Column="0"
+                    Grid.Row="0"
+                    WidthRequest="36"
+                    HeightRequest="36"
+                    BackgroundColor="{StaticResource CardWhite}"
+                    Stroke="{StaticResource Border}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10"
+                    VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Border.GestureRecognizers>
+                <Image Source="icon_ui_back.svg"
+                       WidthRequest="18"
+                       HeightRequest="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+            <VerticalStackLayout Grid.Column="1"
+                                 Grid.Row="0"
+                                 Spacing="0"
+                                 Margin="10,0,0,0"
+                                 VerticalOptions="Center">
+                <Label Text="CSV preview"
+                       FontFamily="OpenSansBold"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource T1}" />
+                <Label Text="{Binding PeriodLabel}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="11"
+                       TextColor="{StaticResource T2}"
+                       Margin="0,2,0,0" />
+            </VerticalStackLayout>
+            <BoxView Grid.Row="1"
+                     Grid.ColumnSpan="3"
+                     HeightRequest="0.5"
+                     Color="{StaticResource Border}"
+                     Margin="0,12,0,0" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="14,10,14,12" Spacing="10">
+
+                <Border BackgroundColor="{StaticResource Ink2}"
+                        StrokeShape="RoundRectangle 14"
+                        Stroke="Transparent"
+                        Padding="14,12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Period total"
+                               FontFamily="OpenSansRegular"
+                               FontSize="10"
+                               TextColor="{StaticResource InkMuted}" />
+                        <Label Text="{Binding TotalFormatted}"
+                               FontFamily="OpenSansBold"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource White}" />
+                        <Label Text="{Binding SummaryMeta}"
+                               FontFamily="OpenSansRegular"
+                               FontSize="10"
+                               TextColor="{StaticResource InkMuted}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Padding="0">
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Rows}" Spacing="0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:ExportPreviewRow">
+                                <VerticalStackLayout Spacing="0">
+                                    <BoxView HeightRequest="0.5"
+                                             Color="{StaticResource Border}"
+                                             Margin="14,0"
+                                             IsVisible="{Binding IsDivider}" />
+                                    <Grid Padding="12,10"
+                                          ColumnDefinitions="72,*,68,72"
+                                          ColumnSpacing="6">
+                                        <Grid.Triggers>
+                                            <DataTrigger TargetType="Grid"
+                                                         Binding="{Binding IsHeader}"
+                                                         Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Border2}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid"
+                                                         Binding="{Binding IsSummary}"
+                                                         Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource VioletTint}" />
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Date}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="10"
+                                               TextColor="{StaticResource T2}" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Merchant}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="11"
+                                               TextColor="{StaticResource T1}"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="2"
+                                               Text="{Binding Category}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="10"
+                                               TextColor="{StaticResource T2}"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="3"
+                                               Text="{Binding AmountDisplay}"
+                                               FontFamily="OpenSansBold"
+                                               FontSize="11"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource T1}"
+                                               HorizontalTextAlignment="End" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="2"
+                BackgroundColor="{StaticResource CardWhite}"
+                Stroke="{StaticResource Border}"
+                StrokeThickness="0.5"
+                Padding="14,12">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Button Grid.Column="0"
+                        Text="Back"
+                        Command="{Binding GoBackCommand}"
+                        BackgroundColor="{StaticResource Surface}"
+                        TextColor="{StaticResource T1}"
+                        FontFamily="OpenSansBold"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HeightRequest="48"
+                        CornerRadius="12"
+                        BorderColor="{StaticResource Border}"
+                        BorderWidth="1" />
+                <Button Grid.Column="1"
+                        Text="Share CSV"
+                        Command="{Binding ShareCsvCommand}"
+                        BackgroundColor="{StaticResource Violet}"
+                        TextColor="{StaticResource White}"
+                        FontFamily="OpenSansBold"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HeightRequest="48"
+                        CornerRadius="12" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
