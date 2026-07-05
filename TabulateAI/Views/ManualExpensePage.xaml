@@ -8,13 +8,13 @@
              x:DataType="vm:ManualExpenseViewModel"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
     <Grid RowDefinitions="Auto,*,Auto">
 
         <!-- Header -->
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
               Padding="16,14,16,12"
               ColumnDefinitions="*,Auto"
               RowDefinitions="Auto,Auto">
@@ -26,11 +26,11 @@
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}" />
+                       TextColor="{DynamicResource T1}" />
                 <Label Text="Enter details manually"
                        FontFamily="OpenSansRegular"
                        FontSize="11"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        Margin="0,2,0,0" />
             </VerticalStackLayout>
             <Border Grid.Column="1"
@@ -52,7 +52,7 @@
             <BoxView Grid.Row="1"
                      Grid.ColumnSpan="2"
                      HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,12,0,0" />
         </Grid>
 
@@ -62,8 +62,8 @@
 
                 <!-- Hint -->
                 <Border Margin="14,12,14,0"
-                        BackgroundColor="{StaticResource VioletTint}"
-                        Stroke="{StaticResource VioletMid}"
+                        BackgroundColor="{DynamicResource VioletTint}"
+                        Stroke="{DynamicResource VioletMid}"
                         StrokeThickness="0.5"
                         StrokeShape="RoundRectangle 12"
                         Padding="14,12">
@@ -86,11 +86,11 @@
                                    FontFamily="OpenSansBold"
                                    FontSize="12"
                                    FontAttributes="Bold"
-                                   TextColor="{StaticResource T1}" />
+                                   TextColor="{DynamicResource T1}" />
                             <Label Text="Add cash, card, or bank expenses in seconds."
                                    FontFamily="OpenSansRegular"
                                    FontSize="11"
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
                                    LineHeight="1.4" />
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
@@ -110,15 +110,15 @@
                             <Label Text="Store"
                                    FontFamily="OpenSansRegular"
                                    FontSize="12"
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
                                    VerticalOptions="Center" />
                             <Entry Grid.Column="1"
                                    Text="{Binding Merchant}"
                                    Placeholder="e.g. Woolworths, Uber"
                                    FontFamily="OpenSansRegular"
                                    FontSize="14"
-                                   TextColor="{StaticResource T1}"
-                                   PlaceholderColor="{StaticResource T3}"
+                                   TextColor="{DynamicResource T1}"
+                                   PlaceholderColor="{DynamicResource T3}"
                                    BackgroundColor="Transparent" />
                         </Grid>
                         <BoxView Style="{StaticResource Divider}" />
@@ -128,7 +128,7 @@
                             <Label Text="Amount"
                                    FontFamily="OpenSansRegular"
                                    FontSize="12"
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
                                    VerticalOptions="Center" />
                             <Entry Grid.Column="1"
                                    Text="{Binding AmountText}"
@@ -138,7 +138,7 @@
                                    FontSize="16"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource Violet}"
-                                   PlaceholderColor="{StaticResource T3}"
+                                   PlaceholderColor="{DynamicResource T3}"
                                    BackgroundColor="Transparent" />
                         </Grid>
                     </VerticalStackLayout>
@@ -168,8 +168,8 @@
                                         <DataTrigger TargetType="Border"
                                                      Binding="{Binding IsSelected}"
                                                      Value="False">
-                                            <Setter Property="BackgroundColor" Value="{StaticResource CardWhite}" />
-                                            <Setter Property="Stroke" Value="{StaticResource Border}" />
+                                            <Setter Property="BackgroundColor" Value="{DynamicResource CardWhite}" />
+                                            <Setter Property="Stroke" Value="{DynamicResource Border}" />
                                         </DataTrigger>
                                     </Border.Triggers>
                                     <Border.GestureRecognizers>
@@ -189,7 +189,7 @@
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding IsSelected}"
                                                          Value="False">
-                                                <Setter Property="TextColor" Value="{StaticResource T2}" />
+                                                <Setter Property="TextColor" Value="{DynamicResource T2}" />
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
@@ -207,15 +207,15 @@
                         <Label Text="Custom"
                                FontFamily="OpenSansRegular"
                                FontSize="12"
-                               TextColor="{StaticResource T2}"
+                               TextColor="{DynamicResource T2}"
                                VerticalOptions="Center" />
                         <Entry Grid.Column="1"
                                Text="{Binding CustomCategory}"
                                Placeholder="Or type your own category"
                                FontFamily="OpenSansRegular"
                                FontSize="13"
-                               TextColor="{StaticResource T1}"
-                               PlaceholderColor="{StaticResource T3}"
+                               TextColor="{DynamicResource T1}"
+                               PlaceholderColor="{DynamicResource T3}"
                                BackgroundColor="Transparent" />
                     </Grid>
                 </Border>
@@ -233,8 +233,8 @@
                             MinimumHeightRequest="72"
                             FontFamily="OpenSansRegular"
                             FontSize="13"
-                            TextColor="{StaticResource T1}"
-                            PlaceholderColor="{StaticResource T3}"
+                            TextColor="{DynamicResource T1}"
+                            PlaceholderColor="{DynamicResource T3}"
                             BackgroundColor="Transparent" />
                 </Border>
 
@@ -248,7 +248,7 @@
                     <DatePicker Date="{Binding ExpenseDate}"
                                 FontFamily="OpenSansRegular"
                                 FontSize="14"
-                                TextColor="{StaticResource T1}"
+                                TextColor="{DynamicResource T1}"
                                 BackgroundColor="Transparent" />
                 </Border>
 
@@ -258,9 +258,9 @@
         <!-- Save -->
         <VerticalStackLayout Grid.Row="2"
                              Padding="14,8,14,20"
-                             BackgroundColor="{StaticResource CardWhite}">
+                             BackgroundColor="{DynamicResource CardWhite}">
             <BoxView HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,0,0,12" />
             <Button Text="Save expense"
                     Command="{Binding SaveCommand}"

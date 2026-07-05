@@ -414,25 +414,25 @@
     -->
 
     <Style TargetType="ContentPage">
-        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Surface}" />
     </Style>
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Surface}" />
     </Style>
 
     <Style TargetType="TabBar">
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource CardWhite}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource CardWhite}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Violet}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource T3}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource T3}" />
         <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Violet}" />
     </Style>
 
     <Style x:Key="CardBorder" TargetType="Border">
-        <Setter Property="BackgroundColor" Value="{StaticResource CardWhite}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource CardWhite}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 14" />
-        <Setter Property="Stroke" Value="{StaticResource Border}" />
+        <Setter Property="Stroke" Value="{DynamicResource Border}" />
         <Setter Property="StrokeThickness" Value="0.5" />
     </Style>
 
@@ -440,7 +440,7 @@
         <Setter Property="FontFamily" Value="OpenSansBold" />
         <Setter Property="FontSize" Value="10" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="TextColor" Value="{StaticResource T3}" />
+        <Setter Property="TextColor" Value="{DynamicResource T3}" />
         <Setter Property="CharacterSpacing" Value="0.7" />
         <Setter Property="TextTransform" Value="Uppercase" />
         <Setter Property="Margin" Value="14,12,14,6" />
@@ -459,21 +459,21 @@
 
     <Style x:Key="Divider" TargetType="BoxView">
         <Setter Property="HeightRequest" Value="0.5" />
-        <Setter Property="BackgroundColor" Value="{StaticResource Border2}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Border2}" />
         <Setter Property="HorizontalOptions" Value="Fill" />
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Surface}" />
-        <Setter Property="Shell.ForegroundColor" Value="{StaticResource T1}" />
-        <Setter Property="Shell.TitleColor" Value="{StaticResource T1}" />
-        <Setter Property="Shell.DisabledColor" Value="{StaticResource T3}" />
-        <Setter Property="Shell.UnselectedColor" Value="{StaticResource T3}" />
+        <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Surface}" />
+        <Setter Property="Shell.ForegroundColor" Value="{DynamicResource T1}" />
+        <Setter Property="Shell.TitleColor" Value="{DynamicResource T1}" />
+        <Setter Property="Shell.DisabledColor" Value="{DynamicResource T3}" />
+        <Setter Property="Shell.UnselectedColor" Value="{DynamicResource T3}" />
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource CardWhite}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource CardWhite}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Violet}" />
         <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Violet}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource T3}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource T3}" />
     </Style>
 
     <Style TargetType="Label" x:Key="SectionLabelStyle" BasedOn="{StaticResource SectionLabel}" />

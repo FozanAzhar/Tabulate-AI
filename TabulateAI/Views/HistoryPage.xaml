@@ -8,13 +8,13 @@
              x:Name="RootPage"
              x:DataType="vm:HistoryViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
     <Grid RowDefinitions="Auto,*">
 
         <!-- Row 0: Header -->
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
               Padding="16,14,16,12"
               ColumnDefinitions="*,Auto"
               RowDefinitions="Auto,Auto">
@@ -26,11 +26,11 @@
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}" />
+                       TextColor="{DynamicResource T1}" />
                 <Label Text="{Binding Subtitle}"
                        FontFamily="OpenSansRegular"
                        FontSize="11"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        Margin="0,2,0,0" />
             </VerticalStackLayout>
             <Image Grid.Column="1"
@@ -42,7 +42,7 @@
             <BoxView Grid.Row="1"
                      Grid.ColumnSpan="2"
                      HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,12,0,0" />
         </Grid>
 
@@ -52,10 +52,10 @@
 
             <!-- Search bar -->
             <Border Grid.Row="0"
-                    BackgroundColor="{StaticResource CardWhite}"
+                    BackgroundColor="{DynamicResource CardWhite}"
                     Margin="14,10,14,6"
                     StrokeShape="RoundRectangle 12"
-                    Stroke="{StaticResource Border}"
+                    Stroke="{DynamicResource Border}"
                     StrokeThickness="0.5"
                     Padding="12,9">
                 <HorizontalStackLayout Spacing="8"
@@ -66,10 +66,10 @@
                            VerticalOptions="Center" />
                     <Entry Text="{Binding SearchQuery}"
                            Placeholder="Search store, amount, date..."
-                           PlaceholderColor="{StaticResource T3}"
+                           PlaceholderColor="{DynamicResource T3}"
                            FontFamily="OpenSansRegular"
                            FontSize="12"
-                           TextColor="{StaticResource T1}"
+                           TextColor="{DynamicResource T1}"
                            BackgroundColor="Transparent"
                            HorizontalOptions="FillAndExpand"
                            VerticalOptions="Center" />
@@ -86,10 +86,10 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:CategoryOption">
                             <Border StrokeShape="RoundRectangle 20"
-                                    Stroke="{StaticResource Border}"
+                                    Stroke="{DynamicResource Border}"
                                     StrokeThickness="0.5"
                                     Padding="13,6"
-                                    BackgroundColor="{StaticResource CardWhite}">
+                                    BackgroundColor="{DynamicResource CardWhite}">
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border"
                                                  Binding="{Binding IsSelected}"
@@ -108,7 +108,7 @@
                                        FontAttributes="Bold"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       TextColor="{StaticResource T2}">
+                                       TextColor="{DynamicResource T2}">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding IsSelected}"
@@ -131,8 +131,8 @@
                                  Padding="32">
                 <Border WidthRequest="56"
                         HeightRequest="56"
-                        BackgroundColor="{StaticResource VioletTint}"
-                        Stroke="{StaticResource VioletMid}"
+                        BackgroundColor="{DynamicResource VioletTint}"
+                        Stroke="{DynamicResource VioletMid}"
                         StrokeThickness="0.5"
                         StrokeShape="RoundRectangle 16"
                         HorizontalOptions="Center">
@@ -146,13 +146,13 @@
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}"
+                       TextColor="{DynamicResource T1}"
                        HorizontalOptions="Center"
                        Margin="0,16,0,0" />
                 <Label Text="Scan a receipt to build your history."
                        FontFamily="OpenSansRegular"
                        FontSize="13"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        HorizontalTextAlignment="Center"
                        Margin="0,8,0,0" />
                 <Border BackgroundColor="{StaticResource Violet}"
@@ -207,8 +207,8 @@
                                         <Setter Property="Margin" Value="14,0,14,10" />
                                     </DataTrigger>
                                 </VerticalStackLayout.Triggers>
-                                <Border BackgroundColor="{StaticResource CardWhite}"
-                                        Stroke="{StaticResource Border}"
+                                <Border BackgroundColor="{DynamicResource CardWhite}"
+                                        Stroke="{DynamicResource Border}"
                                         StrokeThickness="0.5"
                                         Padding="0">
                                     <Border.StrokeShape>
@@ -227,7 +227,7 @@
                                                     <DataTrigger TargetType="Border"
                                                                  Binding="{Binding HasMerchantLogo}"
                                                                  Value="True">
-                                                        <Setter Property="Stroke" Value="{StaticResource Border}" />
+                                                        <Setter Property="Stroke" Value="{DynamicResource Border}" />
                                                         <Setter Property="StrokeThickness" Value="0.5" />
                                                     </DataTrigger>
                                                 </Border.Triggers>
@@ -255,23 +255,23 @@
                                                        FontFamily="OpenSansBold"
                                                        FontSize="13"
                                                        FontAttributes="Bold"
-                                                       TextColor="{StaticResource T1}"
+                                                       TextColor="{DynamicResource T1}"
                                                        LineBreakMode="TailTruncation" />
                                                 <Label Text="{Binding Meta}"
                                                        FontFamily="OpenSansRegular"
                                                        FontSize="10"
-                                                       TextColor="{StaticResource T2}" />
+                                                       TextColor="{DynamicResource T2}" />
                                             </VerticalStackLayout>
                                             <Label Grid.Column="2"
                                                    Text="{Binding AmountFormatted}"
                                                    FontFamily="OpenSansBold"
                                                    FontSize="14"
                                                    FontAttributes="Bold"
-                                                   TextColor="{StaticResource T1}"
+                                                   TextColor="{DynamicResource T1}"
                                                    VerticalOptions="Center" />
                                         </Grid>
                                         <BoxView HeightRequest="0.5"
-                                                 Color="{StaticResource Border2}"
+                                                 Color="{DynamicResource Border2}"
                                                  Margin="14,0"
                                                  IsVisible="{Binding ShowDivider}" />
                                     </VerticalStackLayout>

@@ -1,4 +1,5 @@
 using System.Globalization;
+using TabulateAI.Helpers;
 
 namespace TabulateAI.Converters;
 
@@ -94,8 +95,8 @@ public class StringEqualsToColorConverter : IValueConverter
         var selected = value?.ToString() ?? string.Empty;
         var current = parameter?.ToString() ?? string.Empty;
         return string.Equals(selected, current, StringComparison.OrdinalIgnoreCase)
-            ? Color.FromArgb("#7C3AED")
-            : Color.FromArgb("#FFFFFF");
+            ? ThemeColors.Get("Violet", "#7C3AED")
+            : ThemeColors.Get("CardWhite", "#FFFFFF");
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -110,7 +111,7 @@ public class StringEqualsToTextColorConverter : IValueConverter
         var current = parameter?.ToString() ?? string.Empty;
         return string.Equals(selected, current, StringComparison.OrdinalIgnoreCase)
             ? Colors.White
-            : Color.FromArgb("#6B7280");
+            : ThemeColors.Get("T2", "#6B7280");
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -163,7 +164,7 @@ public class DiscountTextColorConverter : IValueConverter
             return Color.FromArgb("#EF4444");
         }
 
-        return Color.FromArgb("#111827");
+        return ThemeColors.Get("T1", "#111827");
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

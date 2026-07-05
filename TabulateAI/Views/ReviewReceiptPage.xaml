@@ -14,7 +14,7 @@
 
              Shell.NavBarIsVisible="False"
 
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
 
 
@@ -26,7 +26,7 @@
 
         <Grid Grid.Row="0"
 
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
 
               Padding="16,14,16,12"
 
@@ -42,9 +42,9 @@
 
                     HeightRequest="36"
 
-                    BackgroundColor="{StaticResource CardWhite}"
+                    BackgroundColor="{DynamicResource CardWhite}"
 
-                    Stroke="{StaticResource Border}"
+                    Stroke="{DynamicResource Border}"
 
                     StrokeThickness="1"
 
@@ -88,7 +88,7 @@
 
                        FontAttributes="Bold"
 
-                       TextColor="{StaticResource T1}" />
+                       TextColor="{DynamicResource T1}" />
 
                 <Label Text="Review &amp; confirm"
 
@@ -96,7 +96,7 @@
 
                        FontSize="11"
 
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
 
                        Margin="0,2,0,0" />
 
@@ -110,9 +110,9 @@
 
                     HeightRequest="32"
 
-                    BackgroundColor="{StaticResource Surface}"
+                    BackgroundColor="{DynamicResource Surface}"
 
-                    Stroke="{StaticResource Border}"
+                    Stroke="{DynamicResource Border}"
 
                     StrokeThickness="0.5"
 
@@ -146,7 +146,7 @@
 
                      HeightRequest="0.5"
 
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
 
                      Margin="0,12,0,0" />
 
@@ -370,7 +370,7 @@
 
                                    FontSize="12"
 
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
 
                                    VerticalOptions="Center" />
 
@@ -384,9 +384,9 @@
 
                                    FontSize="14"
 
-                                   TextColor="{StaticResource T1}"
+                                   TextColor="{DynamicResource T1}"
 
-                                   PlaceholderColor="{StaticResource T3}"
+                                   PlaceholderColor="{DynamicResource T3}"
 
                                    BackgroundColor="Transparent" />
 
@@ -406,7 +406,7 @@
 
                                    FontSize="12"
 
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
 
                                    VerticalOptions="Center" />
 
@@ -426,7 +426,7 @@
 
                                    TextColor="{StaticResource Violet}"
 
-                                   PlaceholderColor="{StaticResource T3}"
+                                   PlaceholderColor="{DynamicResource T3}"
 
                                    BackgroundColor="Transparent"
 
@@ -464,7 +464,7 @@
 
                                    FontSize="12"
 
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
 
                                    VerticalOptions="Center" />
 
@@ -476,7 +476,7 @@
 
                                         FontSize="14"
 
-                                        TextColor="{StaticResource T1}"
+                                        TextColor="{DynamicResource T1}"
 
                                         BackgroundColor="Transparent" />
 
@@ -496,7 +496,7 @@
 
                                    FontSize="12"
 
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
 
                                    VerticalOptions="Center" />
 
@@ -510,9 +510,9 @@
 
                                    FontSize="13"
 
-                                   TextColor="{StaticResource T1}"
+                                   TextColor="{DynamicResource T1}"
 
-                                   PlaceholderColor="{StaticResource T3}"
+                                   PlaceholderColor="{DynamicResource T3}"
 
                                    BackgroundColor="Transparent" />
 
@@ -576,9 +576,9 @@
 
                                                      Value="False">
 
-                                            <Setter Property="BackgroundColor" Value="{StaticResource CardWhite}" />
+                                            <Setter Property="BackgroundColor" Value="{DynamicResource CardWhite}" />
 
-                                            <Setter Property="Stroke" Value="{StaticResource Border}" />
+                                            <Setter Property="Stroke" Value="{DynamicResource Border}" />
 
                                         </DataTrigger>
 
@@ -618,7 +618,7 @@
 
                                                          Value="False">
 
-                                                <Setter Property="TextColor" Value="{StaticResource T2}" />
+                                                <Setter Property="TextColor" Value="{DynamicResource T2}" />
 
                                             </DataTrigger>
 
@@ -656,7 +656,7 @@
 
                                FontSize="12"
 
-                               TextColor="{StaticResource T2}"
+                               TextColor="{DynamicResource T2}"
 
                                VerticalOptions="Center" />
 
@@ -670,9 +670,9 @@
 
                                FontSize="13"
 
-                               TextColor="{StaticResource T1}"
+                               TextColor="{DynamicResource T1}"
 
-                               PlaceholderColor="{StaticResource T3}"
+                               PlaceholderColor="{DynamicResource T3}"
 
                                BackgroundColor="Transparent" />
 
@@ -710,9 +710,9 @@
 
                             FontSize="13"
 
-                            TextColor="{StaticResource T1}"
+                            TextColor="{DynamicResource T1}"
 
-                            PlaceholderColor="{StaticResource T3}"
+                            PlaceholderColor="{DynamicResource T3}"
 
                             BackgroundColor="Transparent" />
 
@@ -734,7 +734,7 @@
 
                            FontSize="13"
 
-                           TextColor="{StaticResource T2}"
+                           TextColor="{DynamicResource T2}"
 
                            LineBreakMode="WordWrap"
 
@@ -746,7 +746,7 @@
 
                            FontSize="13"
 
-                           TextColor="{StaticResource T3}"
+                           TextColor="{DynamicResource T3}"
 
                            IsVisible="{Binding HasDescription, Converter={StaticResource InvertedBoolConverter}}" />
 
@@ -776,7 +776,7 @@
 
                                FontSize="11"
 
-                               TextColor="{StaticResource T3}"
+                               TextColor="{DynamicResource T3}"
 
                                Padding="12,10"
 
@@ -806,7 +806,7 @@
 
                                                    FontSize="11"
 
-                                                   TextColor="{StaticResource T2}"
+                                                   TextColor="{DynamicResource T2}"
 
                                                    VerticalOptions="Center"
 
@@ -832,7 +832,7 @@
 
                                         <BoxView HeightRequest="0.5"
 
-                                                 Color="{StaticResource Border2}"
+                                                 Color="{DynamicResource Border2}"
 
                                                  IsVisible="{Binding ShowDivider}" />
 
@@ -848,7 +848,7 @@
 
 
 
-                        <Border BackgroundColor="{StaticResource VioletTint}"
+                        <Border BackgroundColor="{DynamicResource VioletTint}"
 
                                 Stroke="Transparent"
 
@@ -926,7 +926,7 @@
 
                                    FontSize="11"
 
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
 
                                    VerticalOptions="Center" />
 
@@ -940,7 +940,7 @@
 
                                    FontAttributes="Bold"
 
-                                   TextColor="{StaticResource T1}"
+                                   TextColor="{DynamicResource T1}"
 
                                    VerticalOptions="Center"
 
@@ -950,7 +950,7 @@
 
                         <BoxView HeightRequest="0.5"
 
-                                 Color="{StaticResource Border2}" />
+                                 Color="{DynamicResource Border2}" />
 
                         <Grid Padding="12,9"
 
@@ -962,7 +962,7 @@
 
                                    FontSize="11"
 
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
 
                                    VerticalOptions="Center" />
 
@@ -1070,11 +1070,11 @@
 
                                 Command="{Binding CancelEditCommand}"
 
-                                BackgroundColor="{StaticResource VioletTint}"
+                                BackgroundColor="{DynamicResource VioletTint}"
 
                                 TextColor="{StaticResource Violet}"
 
-                                BorderColor="{StaticResource VioletMid}"
+                                BorderColor="{DynamicResource VioletMid}"
 
                                 BorderWidth="0.5"
 
