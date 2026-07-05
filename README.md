@@ -1,83 +1,63 @@
-# Tabulate-AI
+# Expensely (Tabulate-AI)
 
-**Snap a receipt. Get every detail extracted and organised instantly.**
+Snap a receipt. AI extracts the details. Track spending and export reports — all on your phone.
 
-Tabulate-AI is a receipt expense tracker. Capture receipts, extract details with OCR and optional cloud AI, review and save expenses locally, then view spending on a dashboard and export reports.
+## What it does
 
-## Features
-
-- Scan receipts with the camera or photo gallery
-- Extract merchant, date, amount, and line items (cloud AI or on-device Windows OCR)
-- Review and edit fields before saving
-- Store receipts offline (SQLite and local image files)
-- Dashboard with monthly totals and category breakdown
-- History search, edit, and delete
-- Export spending summaries
-
-## Tech stack
-
-| Layer | Technologies |
-|-------|----------------|
-| Mobile app | .NET 9, .NET MAUI, C#, XAML, MVVM |
-| Backend (optional) | ASP.NET Core (`TabulateAI.Api`) |
-| Data | SQLite, local file storage |
-| Charts | Microcharts.Maui |
+- Scan receipts with the camera or gallery
+- AI reads merchant, date, amount, and line items
+- Review and edit before saving
+- Dashboard, history, budgets, and category breakdowns
+- Export CSV/PDF or email a report with attachments
+- Light/dark mode, backup & restore
 
 ## Requirements
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/download)
-- Windows 10/11 (current app target)
-- Visual Studio 2022 or later with the **.NET MAUI** workload
+- Visual Studio 2022+ with the **.NET MAUI** workload
+- Android emulator or device (app targets **Android**)
 
-## Quick start
-
-### 1. Clone and open
+## Run the app
 
 ```powershell
 git clone https://github.com/FozanAzhar/Tabulate-AI.git
 cd Tabulate-AI
 ```
 
-Open `Tabulate-AI.slnx` in Visual Studio, set the startup project to **TabulateAI**, choose **Windows Machine**, and press **F5**.
+Open `Tabulate-AI.slnx` in Visual Studio, set **TabulateAI** as the startup project, pick an Android emulator, and press **F5**.
 
 Or from the terminal:
 
 ```powershell
-dotnet build Tabulate-AI.slnx
-dotnet run --project TabulateAI -f net9.0-windows10.0.19041.0
+dotnet build TabulateAI/TabulateAI.csproj -f net9.0-android
 ```
 
-The app runs without the API using Windows OCR only.
+## AI extraction (optional)
 
-### 2. Optional — cloud AI (Mistral + Gemini)
-
-For higher-quality extraction, run the API and add your keys (never commit keys to Git).
+For best results, run the API locally. Keys stay on the server — never in the app.
 
 ```powershell
 cd TabulateAI.Api
-dotnet user-secrets set "Ai:GeminiApiKey" "YOUR_GEMINI_KEY"
-dotnet user-secrets set "Ai:MistralApiKey" "YOUR_MISTRAL_KEY"
+copy appsettings.Development.json.example appsettings.Development.json
+# Add your Gemini + Mistral keys to appsettings.Development.json
 dotnet run
 ```
 
-In another terminal, run the MAUI app. The default API URL is `http://localhost:5299` (see `TabulateAI/Properties/launchSettings.json`).
+The app talks to the API at `http://10.0.2.2:5299` on the Android emulator by default.
 
-You can also copy `TabulateAI.Api/appsettings.Development.json.example` to `appsettings.Development.json` and add keys there. That file is gitignored.
-
-## Solution layout
+## Project structure
 
 ```
 Tabulate-AI/
-├── TabulateAI/          MAUI client (UI, ViewModels, local data)
-├── TabulateAI.Api/      Optional OCR + parsing API
-└── Tabulate-AI.slnx     Solution file
+├── TabulateAI/       Mobile app (MAUI)
+├── TabulateAI.Api/   AI receipt extraction API
+└── Tabulate-AI.slnx
 ```
 
-## Data storage
+## Data
 
-- Database: app local data folder (`tabulate.db3`)
-- Receipt images: `receipts/` under app data
+Everything is stored locally on the device — SQLite database and receipt images in the app folder. No account required.
 
 ## License
 
-All rights reserved unless a license file is added later.
+All rights reserved.
