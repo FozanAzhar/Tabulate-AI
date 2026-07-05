@@ -17,6 +17,7 @@ public class ReceiptRepository : IReceiptRepository
         var dbPath = Path.Combine(FileSystem.AppDataDirectory, "tabulate.db3");
         _database = new SQLiteAsyncConnection(dbPath);
         await _database.CreateTableAsync<Receipt>();
+        await MigrateSchemaAsync(_database);
         return _database;
     }
 
@@ -45,7 +46,8 @@ public class ReceiptRepository : IReceiptRepository
         return receipts
             .Where(r =>
                 r.Merchant.Contains(normalized, StringComparison.OrdinalIgnoreCase) ||
-                r.Category.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                r.Category.Contains(normalized, StringComparison.OrdinalIgnoreCase) ||
+                r.Description.Contains(normalized, StringComparison.OrdinalIgnoreCase))
             .OrderByDescending(r => r.Date)
             .ToList();
     }
@@ -116,5 +118,71 @@ public class ReceiptRepository : IReceiptRepository
             })
             .OrderByDescending(c => c.Total)
             .ToList();
+    }
+
+    private static async Task MigrateSchemaAsync(SQLiteAsyncConnection db)
+    {
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN Description TEXT NOT NULL DEFAULT ''");
+        }
+        catch
+        {
+            // Column already exists.
+        }
+
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN LocationAddress TEXT NOT NULL DEFAULT ''");
+        }
+        catch
+        {
+            // Column already exists.
+        }
+
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN Latitude REAL");
+        }
+        catch
+        {
+            // Column already exists.
+        }
+
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN Longitude REAL");
+        }
+        catch
+        {
+            // Column already exists.
+        }
+
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN PaymentMethod TEXT NOT NULL DEFAULT ''");
+        }
+        catch
+        {
+            // Column already exists.
+        }
+
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN LineItemsJson TEXT NOT NULL DEFAULT ''");
+        }
+        catch
+        {
+            // Column already exists.
+        }
+
+        try
+        {
+            await db.ExecuteAsync("ALTER TABLE Receipt ADD COLUMN MerchantLogoPath TEXT NOT NULL DEFAULT ''");
+        }
+        catch
+        {
+            // Column already exists.
+        }
     }
 }

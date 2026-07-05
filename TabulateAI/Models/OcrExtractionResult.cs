@@ -12,6 +12,14 @@ public class OcrExtractionResult
 
     public string SuggestedCategory { get; set; } = ExpenseCategories.Other;
 
+    public string CustomCategory { get; set; } = string.Empty;
+
+    public string Location { get; set; } = string.Empty;
+
+    public string PaymentMethod { get; set; } = string.Empty;
+
+    public List<LineItem> LineItems { get; set; } = [];
+
     public string Source { get; set; } = "Local";
 
     public double? Confidence { get; set; }

@@ -22,7 +22,7 @@ public sealed class CloudOcrService : IOcrService
         if (_options.IsCloudEnabled && _options.ApiBaseUrl is not null)
         {
             _httpClient.BaseAddress = new Uri(_options.ApiBaseUrl);
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
+            _httpClient.Timeout = TimeSpan.FromSeconds(180);
         }
     }
 
@@ -68,6 +68,18 @@ public sealed class CloudOcrService : IOcrService
             SuggestedCategory = string.IsNullOrWhiteSpace(cloudResult.Category)
                 ? ExpenseCategories.Other
                 : cloudResult.Category,
+            CustomCategory = cloudResult.CustomCategory ?? string.Empty,
+            Location = cloudResult.Location ?? string.Empty,
+            PaymentMethod = cloudResult.PaymentMethod ?? string.Empty,
+            LineItems = (cloudResult.LineItems ?? [])
+                .Select(item => new LineItem
+                {
+                    Name = item.Name,
+                    Quantity = item.Quantity ?? string.Empty,
+                    Price = item.Price,
+                    IsDiscount = item.IsDiscount
+                })
+                .ToList(),
             Source = cloudResult.Source ?? "MistralOcr+Gemini",
             Confidence = cloudResult.Confidence,
             IsReceipt = cloudResult.IsReceipt,
@@ -96,6 +108,14 @@ public sealed class CloudOcrService : IOcrService
 
         public string? Category { get; set; }
 
+        public string? CustomCategory { get; set; }
+
+        public string? Location { get; set; }
+
+        public string? PaymentMethod { get; set; }
+
+        public List<CloudLineItemDto>? LineItems { get; set; }
+
         public bool IsReceipt { get; set; } = true;
 
         public double Confidence { get; set; }
@@ -103,5 +123,16 @@ public sealed class CloudOcrService : IOcrService
         public List<string>? ValidationIssues { get; set; }
 
         public string? Source { get; set; }
+    }
+
+    private sealed class CloudLineItemDto
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public string? Quantity { get; set; }
+
+        public decimal Price { get; set; }
+
+        public bool IsDiscount { get; set; }
     }
 }

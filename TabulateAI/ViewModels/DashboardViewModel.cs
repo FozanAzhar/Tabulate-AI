@@ -9,15 +9,16 @@ namespace TabulateAI.ViewModels;
 public partial class DashboardViewModel : ObservableObject
 {
     private readonly IReceiptRepository _receiptRepository;
+    private readonly IMerchantLogoService _merchantLogoService;
 
     [ObservableProperty]
-    private decimal _monthlyTotal;
+    private decimal _totalSpent;
 
     [ObservableProperty]
-    private string _monthLabel = "May 2026";
+    private string _heroPeriodLabel = string.Empty;
 
     [ObservableProperty]
-    private string _greeting = "Good morning, FA";
+    private string _greeting = "Good morning";
 
     [ObservableProperty]
     private string _userInitials = "FA";
@@ -26,49 +27,55 @@ public partial class DashboardViewModel : ObservableObject
     private int _receiptCount;
 
     [ObservableProperty]
-    private string _weeklyTotalFormatted = "$312";
+    private string _weeklyTotalFormatted = "$0";
 
     [ObservableProperty]
-    private int _weeklyReceiptCount = 6;
+    private int _weeklyReceiptCount;
 
     [ObservableProperty]
-    private string _topCategory = "Grocery";
+    private string _topCategory = "—";
 
     [ObservableProperty]
-    private string _topCategoryShare = "40% of spend";
+    private string _topCategoryShare = string.Empty;
 
     [ObservableProperty]
-    private int _pendingCount = 2;
+    private int _pendingCount;
 
     [ObservableProperty]
-    private string _trendLabel = "↑ 12% vs Apr";
+    private string _trendLabel = string.Empty;
 
     [ObservableProperty]
-    private string _budgetLabel = "Budget: $1,500";
+    private bool _showTrendChip;
 
     [ObservableProperty]
     private List<ReceiptDisplayItem> _recentReceipts = [];
 
     [ObservableProperty]
-    private bool _hasData = true;
+    private List<CategoryBreakdownItem> _categoryBreakdown = [];
 
     [ObservableProperty]
-    private bool _showEmptyState;
+    private List<StackedBarSegment> _stackedBarSegments = [];
+
+    [ObservableProperty]
+    private List<ReportLegendItem> _legendItems = [];
+
+    [ObservableProperty]
+    private bool _hasData;
+
+    [ObservableProperty]
+    private bool _showEmptyState = true;
+
+    [ObservableProperty]
+    private bool _hasCategoryBreakdown;
 
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
-    public DashboardViewModel(IReceiptRepository receiptRepository)
+    public DashboardViewModel(IReceiptRepository receiptRepository, IMerchantLogoService merchantLogoService)
     {
         _receiptRepository = receiptRepository;
-        var hour = DateTime.Now.Hour;
-        var timeGreeting = hour switch
-        {
-            < 12 => "Good morning",
-            < 17 => "Good afternoon",
-            _ => "Good evening"
-        };
-        Greeting = $"{timeGreeting}, FA";
+        _merchantLogoService = merchantLogoService;
+        Greeting = BuildGreeting();
     }
 
     public async Task InitializeAsync()
@@ -83,9 +90,15 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task ScanReceiptAsync()
+    private async Task ScanAsync()
     {
-        await Shell.Current.GoToAsync("//ScanPage");
+        await Shell.Current.GoToAsync("//scan");
+    }
+
+    [RelayCommand]
+    private async Task AddManualAsync()
+    {
+        await AppNavigation.GoManualExpenseAsync();
     }
 
     [RelayCommand]
@@ -93,7 +106,7 @@ public partial class DashboardViewModel : ObservableObject
     {
         if (item.Id > 0)
         {
-            await Shell.Current.GoToAsync($"ReviewReceipt?ReceiptId={item.Id}");
+            await Shell.Current.GoToAsync($"receiptdetail?ReceiptId={item.Id}&ReturnTo=dashboard");
         }
     }
 
@@ -102,10 +115,15 @@ public partial class DashboardViewModel : ObservableObject
         try
         {
             ErrorMessage = string.Empty;
+            Greeting = BuildGreeting();
+
             var now = DateTime.Now;
-            MonthLabel = now.ToString("MMMM yyyy");
+            HeroPeriodLabel = $"{now:MMMM yyyy}".ToUpperInvariant() + " · TOTAL SPENT";
+
             var monthlyTotal = await _receiptRepository.GetMonthlyTotalAsync(now.Year, now.Month);
             var allReceipts = await _receiptRepository.GetAllAsync();
+            await _merchantLogoService.BackfillMissingLogosAsync(allReceipts, _receiptRepository, 10);
+            allReceipts = await _receiptRepository.GetAllAsync();
             var monthReceipts = allReceipts
                 .Where(r => r.Date.Year == now.Year && r.Date.Month == now.Month)
                 .OrderByDescending(r => r.Date)
@@ -113,22 +131,44 @@ public partial class DashboardViewModel : ObservableObject
 
             if (monthReceipts.Count == 0)
             {
-                ApplySampleData();
-            ShowEmptyState = false;
-            HasData = true;
-            return;
-        }
+                TotalSpent = 0;
+                ReceiptCount = 0;
+                RecentReceipts = [];
+                CategoryBreakdown = [];
+                StackedBarSegments = [];
+                LegendItems = [];
+                HasCategoryBreakdown = false;
+                WeeklyTotalFormatted = "$0";
+                WeeklyReceiptCount = 0;
+                TopCategory = "—";
+                TopCategoryShare = string.Empty;
+                PendingCount = 0;
+                ShowTrendChip = false;
+                HasData = false;
+                ShowEmptyState = true;
+                return;
+            }
 
-        MonthlyTotal = monthlyTotal;
+            TotalSpent = monthlyTotal;
             ReceiptCount = monthReceipts.Count;
-            RecentReceipts = monthReceipts.Take(3).Select(ReceiptDisplayHelper.ToDisplayItem).ToList();
             HasData = true;
             ShowEmptyState = false;
+
+            var recent = monthReceipts.Take(3).Select(ReceiptDisplayHelper.ToDisplayItem).ToList();
+            for (var i = 0; i < recent.Count; i++)
+            {
+                recent[i].ShowDivider = i < recent.Count - 1;
+            }
+
+            RecentReceipts = recent;
 
             var weekStart = now.Date.AddDays(-(int)now.DayOfWeek);
             var weekReceipts = monthReceipts.Where(r => r.Date >= weekStart).ToList();
             WeeklyTotalFormatted = weekReceipts.Sum(r => r.Amount).ToString("C0");
             WeeklyReceiptCount = weekReceipts.Count;
+
+            PendingCount = monthReceipts.Count(r =>
+                string.IsNullOrWhiteSpace(r.Category) || r.Category == ExpenseCategories.Other);
 
             var summaries = await _receiptRepository.GetCategorySummariesAsync(now.Year, now.Month);
             if (summaries.Count > 0)
@@ -137,23 +177,54 @@ public partial class DashboardViewModel : ObservableObject
                 TopCategory = top.Category;
                 TopCategoryShare = monthlyTotal > 0
                     ? $"{(int)((top.Total / monthlyTotal) * 100)}% of spend"
-                    : "0% of spend";
+                    : string.Empty;
+            }
+            else
+            {
+                TopCategory = "—";
+                TopCategoryShare = string.Empty;
+            }
+
+            CategoryBreakdown = CategoryChartHelper.BuildBreakdown(summaries, monthlyTotal);
+            StackedBarSegments = CategoryChartHelper.BuildStackedBar(summaries, monthlyTotal);
+            LegendItems = CategoryChartHelper.BuildLegend(summaries);
+            HasCategoryBreakdown = CategoryBreakdown.Count > 0;
+
+            var previousMonth = now.AddMonths(-1);
+            var previousTotal = await _receiptRepository.GetMonthlyTotalAsync(previousMonth.Year, previousMonth.Month);
+            if (previousTotal > 0)
+            {
+                var change = (int)Math.Round((monthlyTotal - previousTotal) / previousTotal * 100);
+                var monthName = previousMonth.ToString("MMMM");
+                TrendLabel = change >= 0
+                    ? $"↑ {change}% vs {monthName}"
+                    : $"↓ {Math.Abs(change)}% vs {monthName}";
+                ShowTrendChip = true;
+            }
+            else
+            {
+                ShowTrendChip = false;
+                TrendLabel = string.Empty;
             }
         }
         catch (Exception ex)
         {
             ErrorMessage = "Could not load dashboard data.";
-            ApplySampleData();
+            HasData = false;
+            ShowEmptyState = true;
             System.Diagnostics.Debug.WriteLine($"Dashboard load failed: {ex}");
         }
     }
 
-    private void ApplySampleData()
+    private static string BuildGreeting()
     {
-        MonthlyTotal = 1284.60m;
-        ReceiptCount = 34;
-        RecentReceipts = ReceiptDisplayHelper.GetSampleReceipts();
-        HasData = true;
-        ShowEmptyState = false;
+        var hour = DateTime.Now.Hour;
+        var timeGreeting = hour switch
+        {
+            < 12 => "Good morning",
+            < 17 => "Good afternoon",
+            _ => "Good evening"
+        };
+        return timeGreeting;
     }
 }

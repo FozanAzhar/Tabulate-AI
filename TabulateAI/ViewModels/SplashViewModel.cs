@@ -14,7 +14,7 @@ public partial class SplashViewModel : ObservableObject
         }
 
         window.Page = new AppShell();
-        await Shell.Current.GoToAsync("//DashboardPage");
+        await Shell.Current.GoToAsync("//dashboard");
     }
 
     [RelayCommand]

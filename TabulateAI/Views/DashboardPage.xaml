@@ -3,262 +3,548 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TabulateAI.ViewModels"
              xmlns:models="clr-namespace:TabulateAI.Models"
+             xmlns:helpers="clr-namespace:TabulateAI.Helpers"
              x:Class="TabulateAI.Views.DashboardPage"
              x:DataType="vm:DashboardViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource AppBackground}">
+             BackgroundColor="{StaticResource Surface}">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="0">
+    <Grid RowDefinitions="Auto,*">
 
-            <!-- Navy header -->
-            <Grid BackgroundColor="{StaticResource UoNNavy}"
-                  Padding="16,14,16,12"
-                  ColumnDefinitions="*,Auto">
-                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
-                    <Label Text="{Binding Greeting}"
-                           Style="{StaticResource PageSubtitleStyle}" />
-                    <Label Text="{Binding MonthLabel}"
-                           Style="{StaticResource PageTitleStyle}" />
-                </VerticalStackLayout>
-                <Border Grid.Column="1"
-                        WidthRequest="36"
-                        HeightRequest="36"
-                        BackgroundColor="{StaticResource UoNGold}"
-                        Stroke="Transparent"
-                        StrokeShape="RoundRectangle 18"
-                        VerticalOptions="Center">
-                    <Label Text="{Binding UserInitials}"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource UoNNavyDark}"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
-                </Border>
-            </Grid>
-
-            <!-- Empty state -->
-            <VerticalStackLayout IsVisible="{Binding ShowEmptyState}"
+        <!-- Row 0: Page header -->
+        <Grid Grid.Row="0"
+              BackgroundColor="{StaticResource CardWhite}"
+              Padding="16,14,16,12"
+              ColumnDefinitions="*,Auto"
+              RowDefinitions="Auto,Auto">
+            <VerticalStackLayout Grid.Column="0"
+                                 Grid.Row="0"
                                  VerticalOptions="Center"
-                                 HorizontalOptions="Center"
-                                 Padding="32"
-                                 Margin="0,80,0,0">
-                <Label Text="🧾📷" FontSize="48" TextColor="{StaticResource BorderFaint}" HorizontalOptions="Center" />
-                <Label Text="No receipts yet"
+                                 Spacing="0">
+                <Label Text="{Binding Greeting}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="12"
+                       TextColor="{StaticResource T2}" />
+                <Label Text="Overview"
+                       FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource TextPrimary}"
-                       HorizontalOptions="Center"
-                       Margin="0,16,0,0" />
-                <Label Text="Tap the camera button below to scan your first receipt"
-                       FontSize="13"
-                       TextColor="{StaticResource TextMuted}"
-                       HorizontalTextAlignment="Center"
-                       Margin="0,8,0,0" />
-                <Button Text="Scan Now"
-                        Command="{Binding ScanReceiptCommand}"
-                        Style="{StaticResource GoldButtonStyle}"
-                        WidthRequest="160"
-                        HeightRequest="46"
-                        Margin="0,20,0,0" />
+                       TextColor="{StaticResource T1}"
+                       Margin="0,2,0,0" />
             </VerticalStackLayout>
+            <Border Grid.Column="1"
+                    Grid.Row="0"
+                    WidthRequest="34"
+                    HeightRequest="34"
+                    BackgroundColor="{StaticResource VioletTint}"
+                    Stroke="{StaticResource VioletMid}"
+                    StrokeThickness="0.5"
+                    StrokeShape="RoundRectangle 17"
+                    VerticalOptions="Center">
+                <Label Text="{Binding UserInitials}"
+                       FontFamily="OpenSansBold"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Violet}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+            <BoxView Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     HeightRequest="0.5"
+                     Color="{StaticResource Border}"
+                     Margin="0,12,0,0"
+                     VerticalOptions="End" />
+        </Grid>
 
-            <!-- Main content -->
-            <VerticalStackLayout IsVisible="{Binding HasData}" Spacing="0">
+        <!-- Row 1: ScrollView -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="0">
 
-                <!-- Hero spend card -->
-                <Border BackgroundColor="{StaticResource UoNNavy}"
-                        Margin="14,12,14,0"
-                        StrokeShape="RoundRectangle 16"
-                        Stroke="Transparent"
-                        Padding="16">
-                    <Grid>
-                        <Border WidthRequest="100"
-                                HeightRequest="100"
-                                BackgroundColor="{StaticResource Gold15}"
-                                StrokeShape="RoundRectangle 50"
-                                Stroke="Transparent"
-                                HorizontalOptions="End"
-                                VerticalOptions="Start"
-                                Margin="0,-20,-20,0" />
-                        <VerticalStackLayout Spacing="0">
-                            <Label Text="TOTAL SPENT THIS MONTH"
-                                   FontSize="10"
-                                   TextColor="{StaticResource UoNBlueMid}"
-                                   CharacterSpacing="0.6" />
-                            <Label Text="{Binding MonthlyTotal, StringFormat='{0:C2}'}"
-                                   FontSize="30"
+                <!-- Empty state -->
+                <VerticalStackLayout IsVisible="{Binding ShowEmptyState}"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="Center"
+                                     Padding="32"
+                                     Margin="0,80,0,0">
+                    <Border WidthRequest="56"
+                            HeightRequest="56"
+                            BackgroundColor="{StaticResource VioletTint}"
+                            Stroke="{StaticResource VioletMid}"
+                            StrokeThickness="0.5"
+                            StrokeShape="RoundRectangle 16"
+                            HorizontalOptions="Center">
+                        <Image Source="icon_cat_receipt.svg"
+                               WidthRequest="28"
+                               HeightRequest="28"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="No receipts yet"
+                           FontFamily="OpenSansBold"
+                           FontSize="17"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource T1}"
+                           HorizontalOptions="Center"
+                           Margin="0,16,0,0" />
+                    <Label Text="Scan a receipt or add an expense manually."
+                           FontFamily="OpenSansRegular"
+                           FontSize="13"
+                           TextColor="{StaticResource T2}"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,8,0,0" />
+                    <Border BackgroundColor="{StaticResource Violet}"
+                            StrokeShape="RoundRectangle 13"
+                            Stroke="Transparent"
+                            HeightRequest="52"
+                            WidthRequest="220"
+                            Margin="0,20,0,0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ScanCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="8"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                            <Image Source="icon_feature_scan.svg"
+                                   WidthRequest="18"
+                                   HeightRequest="18"
+                                   VerticalOptions="Center" />
+                            <Label Text="Scan receipt"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="14"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource White}"
-                                   Margin="0,4,0,0" />
-                            <Label Text="{Binding ReceiptCount, StringFormat='{0} receipts scanned'}"
-                                   FontSize="11"
-                                   TextColor="{StaticResource UoNBlueMid}" />
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Button Text="Add manually"
+                            Command="{Binding AddManualCommand}"
+                            BackgroundColor="{StaticResource VioletTint}"
+                            TextColor="{StaticResource Violet}"
+                            BorderColor="{StaticResource VioletMid}"
+                            BorderWidth="0.5"
+                            FontFamily="OpenSansBold"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            CornerRadius="13"
+                            HeightRequest="48"
+                            WidthRequest="220"
+                            Margin="0,8,0,0" />
+                </VerticalStackLayout>
+
+                <!-- Main content -->
+                <VerticalStackLayout IsVisible="{Binding HasData}"
+                                     Spacing="0">
+
+                    <!-- Hero spend card -->
+                    <Border BackgroundColor="{StaticResource Violet}"
+                            Margin="14,12,14,0"
+                            StrokeShape="RoundRectangle 18"
+                            Stroke="Transparent"
+                            Padding="18">
+                        <Grid>
+                            <Border WidthRequest="90"
+                                    HeightRequest="90"
+                                    BackgroundColor="{StaticResource White10}"
+                                    StrokeShape="RoundRectangle 45"
+                                    Stroke="Transparent"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    Margin="0,-16,-16,0" />
+                            <Border WidthRequest="60"
+                                    HeightRequest="60"
+                                    BackgroundColor="#0FFFFFFF"
+                                    StrokeShape="RoundRectangle 30"
+                                    Stroke="Transparent"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    Margin="0,0,20,-24" />
+                            <VerticalStackLayout Spacing="0">
+                                <Label Text="{Binding HeroPeriodLabel}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="10"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource White60}"
+                                       CharacterSpacing="0.7" />
+                                <Label Text="{Binding TotalSpent, StringFormat='${0:N2}'}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="32"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource White}"
+                                       Margin="0,6,0,2"
+                                       CharacterSpacing="-1" />
+                                <Label Text="{Binding ReceiptCount, StringFormat='{0} receipts scanned'}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="11"
+                                       TextColor="{StaticResource White60}" />
+                                <HorizontalStackLayout Margin="0,14,0,0"
+                                                       Spacing="8"
+                                                       IsVisible="{Binding ShowTrendChip}">
+                                    <Border BackgroundColor="{StaticResource White30}"
+                                            StrokeShape="RoundRectangle 20"
+                                            Stroke="Transparent"
+                                            Padding="12,4">
+                                        <Label Text="{Binding TrendLabel}"
+                                               FontFamily="OpenSansBold"
+                                               FontSize="10"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource White}" />
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!-- Quick actions -->
+                    <Grid Margin="14,10,14,0"
+                          ColumnDefinitions="*,*"
+                          ColumnSpacing="8">
+                        <Border Grid.Column="0"
+                                BackgroundColor="{StaticResource CardWhite}"
+                                Stroke="{StaticResource VioletMid}"
+                                StrokeThickness="0.5"
+                                StrokeShape="RoundRectangle 12"
+                                HeightRequest="42">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ScanCommand}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="6"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center">
+                                <Image Source="icon_feature_scan_violet.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       VerticalOptions="Center" />
+                                <Label Text="Scan"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <Border Grid.Column="1"
+                                BackgroundColor="{StaticResource VioletTint}"
+                                Stroke="{StaticResource VioletMid}"
+                                StrokeThickness="0.5"
+                                StrokeShape="RoundRectangle 12"
+                                HeightRequest="42">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AddManualCommand}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="6"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center">
+                                <Image Source="icon_ui_edit_violet.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       VerticalOptions="Center" />
+                                <Label Text="Add manual"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- Mini stat cards -->
+                    <Grid Margin="14,10,14,0"
+                          ColumnDefinitions="*,*,*"
+                          ColumnSpacing="8">
+                        <Border Grid.Column="0"
+                                BackgroundColor="{StaticResource CardWhite}"
+                                StrokeShape="RoundRectangle 14"
+                                Stroke="{StaticResource Border}"
+                                StrokeThickness="0.5"
+                                Padding="12">
+                            <VerticalStackLayout Spacing="0">
+                                <Label Text="This week"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource T3}"
+                                       CharacterSpacing="0.5"
+                                       TextTransform="Uppercase" />
+                                <Label Text="{Binding WeeklyTotalFormatted}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource T1}"
+                                       Margin="0,4,0,0" />
+                                <Label Text="{Binding WeeklyReceiptCount, StringFormat='{0} receipts'}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       Margin="0,2,0,0" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Column="1"
+                                BackgroundColor="{StaticResource CardWhite}"
+                                StrokeShape="RoundRectangle 14"
+                                Stroke="{StaticResource Border}"
+                                StrokeThickness="0.5"
+                                Padding="12">
+                            <VerticalStackLayout Spacing="0">
+                                <Label Text="Top category"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource T3}"
+                                       CharacterSpacing="0.5"
+                                       TextTransform="Uppercase" />
+                                <Label Text="{Binding TopCategory}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource T1}"
+                                       Margin="0,4,0,0"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="1" />
+                                <Label Text="{Binding TopCategoryShare}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       Margin="0,2,0,0" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Column="2"
+                                BackgroundColor="{StaticResource CardWhite}"
+                                StrokeShape="RoundRectangle 14"
+                                Stroke="{StaticResource Border}"
+                                StrokeThickness="0.5"
+                                Padding="12">
+                            <VerticalStackLayout Spacing="0">
+                                <Label Text="Pending"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource T3}"
+                                       CharacterSpacing="0.5"
+                                       TextTransform="Uppercase" />
+                                <Label Text="{Binding PendingCount}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource T1}"
+                                       Margin="0,4,0,0" />
+                                <Label Text="need review"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Amber}"
+                                       Margin="0,2,0,0" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- Spending breakdown -->
+                    <Border Style="{StaticResource CardBorder}"
+                            Margin="14,10,14,0"
+                            Padding="14,12,14,14">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Spending breakdown"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="10"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource T3}"
+                                   CharacterSpacing="0.7"
+                                   TextTransform="Uppercase" />
+
+                            <Border HeightRequest="10"
+                                    StrokeShape="RoundRectangle 5"
+                                    Stroke="Transparent"
+                                    BackgroundColor="{StaticResource Border2}"
+                                    HorizontalOptions="Fill"
+                                    IsVisible="{Binding HasCategoryBreakdown}">
+                                <FlexLayout Direction="Row"
+                                            AlignItems="Stretch"
+                                            HeightRequest="10"
+                                            BindableLayout.ItemsSource="{Binding StackedBarSegments}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="models:StackedBarSegment">
+                                            <BoxView HeightRequest="10"
+                                                     Color="{Binding Color}"
+                                                     FlexLayout.Grow="{Binding Share}" />
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </FlexLayout>
+                            </Border>
+
                             <FlexLayout Wrap="Wrap"
                                         Direction="Row"
                                         AlignItems="Center"
-                                        Margin="0,12,0,0">
-                                <Border BackgroundColor="{StaticResource Gold30}"
-                                        StrokeShape="RoundRectangle 20"
-                                        Stroke="Transparent"
-                                        Padding="12,4"
-                                        Margin="0,0,8,6">
-                                    <Label Text="{Binding TrendLabel}"
-                                           FontSize="10"
-                                           FontAttributes="Bold"
-                                           TextColor="{StaticResource UoNGold3}" />
-                                </Border>
-                                <Border BackgroundColor="{StaticResource White10}"
-                                        StrokeShape="RoundRectangle 20"
-                                        Stroke="Transparent"
-                                        Padding="12,4"
-                                        Margin="0,0,8,6">
-                                    <Label Text="{Binding BudgetLabel}"
-                                           FontSize="10"
-                                           FontAttributes="Bold"
-                                           TextColor="{StaticResource WhiteCC}" />
-                                </Border>
-                            </FlexLayout>
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
-
-                <!-- Mini stat cards -->
-                <Grid Margin="14,10,14,0"
-                      ColumnDefinitions="*,*,*"
-                      ColumnSpacing="10">
-                    <Border Grid.Column="0"
-                            BackgroundColor="{StaticResource CardWhite}"
-                            StrokeShape="RoundRectangle 12"
-                            Stroke="{StaticResource BorderFaint}"
-                            StrokeThickness="0.5"
-                            Padding="10"
-                            MinimumHeightRequest="78"
-                            VerticalOptions="Fill">
-                        <VerticalStackLayout Spacing="0">
-                            <Label Text="THIS WEEK" FontSize="9" TextColor="{StaticResource TextMuted}" CharacterSpacing="0.5" />
-                            <Label Text="{Binding WeeklyTotalFormatted}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="0,3,0,0" />
-                            <Label Text="{Binding WeeklyReceiptCount, StringFormat='{0} receipts'}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" Margin="0,2,0,0" />
-                        </VerticalStackLayout>
-                    </Border>
-                    <Border Grid.Column="1"
-                            BackgroundColor="{StaticResource CardWhite}"
-                            StrokeShape="RoundRectangle 12"
-                            Stroke="{StaticResource BorderFaint}"
-                            StrokeThickness="0.5"
-                            Padding="10"
-                            MinimumHeightRequest="78"
-                            VerticalOptions="Fill">
-                        <VerticalStackLayout Spacing="0">
-                            <Label Text="TOP CATEGORY" FontSize="9" TextColor="{StaticResource TextMuted}" CharacterSpacing="0.5" />
-                            <Label Text="{Binding TopCategory}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="0,3,0,0" LineBreakMode="TailTruncation" MaxLines="1" />
-                            <Label Text="{Binding TopCategoryShare}" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" Margin="0,2,0,0" />
-                        </VerticalStackLayout>
-                    </Border>
-                    <Border Grid.Column="2"
-                            BackgroundColor="{StaticResource CardWhite}"
-                            StrokeShape="RoundRectangle 12"
-                            Stroke="{StaticResource BorderFaint}"
-                            StrokeThickness="0.5"
-                            Padding="10"
-                            MinimumHeightRequest="78"
-                            VerticalOptions="Fill">
-                        <VerticalStackLayout Spacing="0">
-                            <Label Text="PENDING" FontSize="9" TextColor="{StaticResource TextMuted}" CharacterSpacing="0.5" />
-                            <Label Text="{Binding PendingCount}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="0,3,0,0" />
-                            <Label Text="need review" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" Margin="0,2,0,0" />
-                        </VerticalStackLayout>
-                    </Border>
-                </Grid>
-
-                <!-- Spending chart card -->
-                <Border BackgroundColor="{StaticResource CardWhite}"
-                        Margin="14,10,14,0"
-                        StrokeShape="RoundRectangle 14"
-                        Stroke="{StaticResource BorderFaint}"
-                        StrokeThickness="0.5"
-                        Padding="12">
-                    <VerticalStackLayout Spacing="0">
-                        <Label Text="SPENDING BY CATEGORY"
-                               Style="{StaticResource SectionLabelStyle}"
-                               CharacterSpacing="0.5"
-                               Margin="0,0,0,8" />
-                        <Grid ColumnDefinitions="*,*,*,*,*"
-                              ColumnSpacing="5"
-                              RowDefinitions="48,Auto"
-                              RowSpacing="3">
-                            <BoxView Grid.Row="0" Grid.Column="0" HeightRequest="44" Color="{StaticResource UoNNavy}" VerticalOptions="End" CornerRadius="4,4,0,0" />
-                            <Label Grid.Row="1" Grid.Column="0" Text="Food" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
-                            <BoxView Grid.Row="0" Grid.Column="1" HeightRequest="30" Color="{StaticResource UoNGold}" VerticalOptions="End" CornerRadius="4,4,0,0" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="Travel" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
-                            <BoxView Grid.Row="0" Grid.Column="2" HeightRequest="22" Color="{StaticResource UoNBlueMid}" VerticalOptions="End" CornerRadius="4,4,0,0" />
-                            <Label Grid.Row="1" Grid.Column="2" Text="Office" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
-                            <BoxView Grid.Row="0" Grid.Column="3" HeightRequest="36" Color="{StaticResource Navy67}" VerticalOptions="End" CornerRadius="4,4,0,0" />
-                            <Label Grid.Row="1" Grid.Column="3" Text="Health" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
-                            <BoxView Grid.Row="0" Grid.Column="4" HeightRequest="14" Color="{StaticResource BorderFaint}" VerticalOptions="End" CornerRadius="4,4,0,0" />
-                            <Label Grid.Row="1" Grid.Column="4" Text="Other" FontSize="8" TextColor="{StaticResource TextMuted}" HorizontalTextAlignment="Center" />
-                        </Grid>
-                    </VerticalStackLayout>
-                </Border>
-
-                <!-- Recent receipts -->
-                <Label Text="RECENT RECEIPTS"
-                       Style="{StaticResource SectionLabelStyle}" />
-
-                <Border BackgroundColor="{StaticResource CardWhite}"
-                        Margin="14,0,14,0"
-                        StrokeShape="RoundRectangle 14"
-                        Stroke="{StaticResource BorderFaint}"
-                        StrokeThickness="0.5"
-                        Padding="0">
-                    <CollectionView ItemsSource="{Binding RecentReceipts}"
-                                    SelectionMode="None">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:ReceiptDisplayItem">
-                                <VerticalStackLayout>
-                                    <Grid Padding="14,10"
-                                          ColumnDefinitions="Auto,*,Auto"
-                                          ColumnSpacing="10">
-                                        <Grid.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenReceiptCommand}"
-                                                                  CommandParameter="{Binding .}" />
-                                        </Grid.GestureRecognizers>
-                                        <Border WidthRequest="38"
-                                                HeightRequest="38"
-                                                BackgroundColor="{Binding IconBackground}"
-                                                StrokeShape="RoundRectangle 10"
-                                                Stroke="Transparent"
-                                                VerticalOptions="Center">
-                                            <Label Text="{Binding Icon}"
-                                                   FontSize="16"
-                                                   TextColor="{Binding IconColor}"
-                                                   HorizontalOptions="Center"
+                                        IsVisible="{Binding HasCategoryBreakdown}"
+                                        BindableLayout.ItemsSource="{Binding LegendItems}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:ReportLegendItem">
+                                        <HorizontalStackLayout Spacing="5"
+                                                               Margin="0,0,12,0">
+                                            <BoxView WidthRequest="8"
+                                                     HeightRequest="8"
+                                                     CornerRadius="2"
+                                                     Color="{Binding Color}"
+                                                     VerticalOptions="Center" />
+                                            <Label Text="{Binding Label}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="10"
+                                                   TextColor="{StaticResource T2}"
                                                    VerticalOptions="Center" />
-                                        </Border>
-                                        <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
-                                            <Label Text="{Binding Name}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
-                                            <Label Text="{Binding Meta}" FontSize="10" TextColor="{StaticResource TextMuted}" />
-                                        </VerticalStackLayout>
-                                        <Label Grid.Column="2"
-                                               Text="{Binding AmountFormatted}"
-                                               FontSize="14"
-                                               FontAttributes="Bold"
-                                               TextColor="{StaticResource UoNNavy}"
-                                               VerticalOptions="Center" />
-                                    </Grid>
-                                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
-                                </VerticalStackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </Border>
+                                        </HorizontalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
 
-                <!-- Scan button -->
-                <Button Text="📷  Scan New Receipt"
-                        Command="{Binding ScanReceiptCommand}"
-                        Style="{StaticResource GoldButtonStyle}"
-                        Margin="14,10,14,20" />
+                            <VerticalStackLayout Spacing="10"
+                                                 IsVisible="{Binding HasCategoryBreakdown}"
+                                                 BindableLayout.ItemsSource="{Binding CategoryBreakdown}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:CategoryBreakdownItem">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <Label Text="{Binding Category}"
+                                                       FontFamily="OpenSansBold"
+                                                       FontSize="12"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource T1}"
+                                                       VerticalOptions="Center" />
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding AmountLabel}"
+                                                       FontFamily="OpenSansRegular"
+                                                       FontSize="11"
+                                                       TextColor="{StaticResource T2}"
+                                                       VerticalOptions="Center"
+                                                       HorizontalTextAlignment="End" />
+                                            </Grid>
+                                            <Grid HeightRequest="6"
+                                                  BackgroundColor="{StaticResource Border}">
+                                                <Border HeightRequest="6"
+                                                        HorizontalOptions="Start"
+                                                        WidthRequest="{Binding BarFillWidth}"
+                                                        BackgroundColor="{Binding BarColor}"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        Stroke="Transparent" />
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+
+                            <Label Text="Add expenses to see how your spending splits by category."
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   TextColor="{StaticResource T2}"
+                                   IsVisible="{Binding HasCategoryBreakdown, Converter={StaticResource InvertedBoolConverter}}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Recent receipts -->
+                    <Label Text="Recent receipts"
+                           Style="{StaticResource SectionLabel}" />
+
+                    <Border Style="{StaticResource CardBorder}"
+                            Margin="14,0,14,0"
+                            Padding="0">
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentReceipts}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:ReceiptDisplayItem">
+                                    <VerticalStackLayout>
+                                        <Grid Padding="14,10"
+                                              ColumnDefinitions="Auto,*,Auto">
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenReceiptCommand}"
+                                                                      CommandParameter="{Binding .}" />
+                                            </Grid.GestureRecognizers>
+                                            <Border WidthRequest="38"
+                                                    HeightRequest="38"
+                                                    BackgroundColor="{Binding IconBackground}"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    Stroke="Transparent"
+                                                    VerticalOptions="Center">
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border"
+                                                                 Binding="{Binding HasMerchantLogo}"
+                                                                 Value="True">
+                                                        <Setter Property="Stroke" Value="{StaticResource Border}" />
+                                                        <Setter Property="StrokeThickness" Value="0.5" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                                <Image Source="{Binding IconSource}"
+                                                       WidthRequest="18"
+                                                       HeightRequest="18"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center">
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image"
+                                                                     Binding="{Binding HasMerchantLogo}"
+                                                                     Value="True">
+                                                            <Setter Property="WidthRequest" Value="28" />
+                                                            <Setter Property="HeightRequest" Value="28" />
+                                                            <Setter Property="Aspect" Value="AspectFit" />
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                            </Border>
+                                            <VerticalStackLayout Grid.Column="1"
+                                                                 Margin="10,0,0,0"
+                                                                 Spacing="1"
+                                                                 VerticalOptions="Center">
+                                                <Label Text="{Binding Name}"
+                                                       FontFamily="OpenSansBold"
+                                                       FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource T1}" />
+                                                <Label Text="{Binding Meta}"
+                                                       FontFamily="OpenSansRegular"
+                                                       FontSize="10"
+                                                       TextColor="{StaticResource T2}" />
+                                            </VerticalStackLayout>
+                                            <Label Grid.Column="2"
+                                                   Text="{Binding AmountFormatted}"
+                                                   FontFamily="OpenSansBold"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource T1}"
+                                                   VerticalOptions="Center" />
+                                        </Grid>
+                                        <BoxView HeightRequest="0.5"
+                                                 Color="{StaticResource Border2}"
+                                                 IsVisible="{Binding ShowDivider}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Scan button -->
+                    <Border BackgroundColor="{StaticResource Violet}"
+                            StrokeShape="RoundRectangle 13"
+                            Stroke="Transparent"
+                            HeightRequest="52"
+                            Margin="14,10,14,8">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ScanCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="8"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                            <Image Source="icon_feature_scan.svg"
+                                   WidthRequest="18"
+                                   HeightRequest="18"
+                                   VerticalOptions="Center" />
+                            <Label Text="Scan new receipt"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource White}"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
             </VerticalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

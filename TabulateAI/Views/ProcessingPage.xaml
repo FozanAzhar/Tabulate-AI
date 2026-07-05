@@ -2,117 +2,275 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TabulateAI.ViewModels"
-             xmlns:models="clr-namespace:TabulateAI.Models"
              x:Class="TabulateAI.Views.ProcessingPage"
              x:DataType="vm:ProcessingViewModel"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{StaticResource AppBackground}">
+             BackgroundColor="{StaticResource Surface}">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="0">
+    <Grid RowDefinitions="Auto,*">
 
-            <!-- Header -->
-            <Grid BackgroundColor="{StaticResource UoNNavy}"
-                  Padding="16,14,16,12">
-                <VerticalStackLayout Spacing="2">
-                    <Label Text="Processing" Style="{StaticResource PageTitleStyle}" />
-                    <Label Text="Extracting receipt data" Style="{StaticResource PageSubtitleStyle}" />
-                </VerticalStackLayout>
-            </Grid>
+        <!-- Row 0: Header -->
+        <Grid Grid.Row="0"
+              BackgroundColor="{StaticResource CardWhite}"
+              Padding="16,14,16,12"
+              RowDefinitions="Auto,Auto">
+            <VerticalStackLayout Grid.Row="0"
+                                 Spacing="0"
+                                 HorizontalOptions="Center">
+                <Label Text="Processing"
+                       FontFamily="OpenSansBold"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource T1}"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Extracting your receipt data"
+                       FontFamily="OpenSansRegular"
+                       FontSize="11"
+                       TextColor="{StaticResource T2}"
+                       Margin="0,2,0,0"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+            <BoxView Grid.Row="1"
+                     HeightRequest="0.5"
+                     Color="{StaticResource Border}"
+                     Margin="0,12,0,0" />
+        </Grid>
 
-            <!-- Central processing area -->
-            <VerticalStackLayout HorizontalOptions="Center"
-                                 VerticalOptions="Center"
-                                 Spacing="14"
-                                 Padding="20"
-                                 Margin="0,40,0,0">
+        <!-- Row 1: Central content -->
+        <Grid Grid.Row="1"
+              Padding="24"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill">
 
-                <!-- Receipt preview card -->
-                <Border x:Name="PreviewCard"
-                        WidthRequest="130"
-                        HeightRequest="165"
+            <ScrollView HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        HorizontalScrollBarVisibility="Never"
+                        VerticalScrollBarVisibility="Never">
+                <Grid MinimumHeightRequest="520"
+                      HorizontalOptions="Fill"
+                      VerticalOptions="Fill">
+                    <VerticalStackLayout HorizontalOptions="Center"
+                                         VerticalOptions="Center"
+                                         Spacing="16"
+                                         WidthRequest="320"
+                                         MaximumWidthRequest="360">
+
+                <!-- Pulsing receipt card -->
+                <Border x:Name="ReceiptCard"
+                        WidthRequest="128"
+                        HeightRequest="162"
+                        HorizontalOptions="Center"
                         BackgroundColor="{StaticResource CardWhite}"
                         StrokeShape="RoundRectangle 12"
-                        Stroke="{StaticResource BorderFaint}"
+                        Stroke="{StaticResource Border}"
                         StrokeThickness="0.5"
                         Padding="10">
-                    <VerticalStackLayout Spacing="4">
-                        <HorizontalStackLayout Spacing="6" Margin="0,0,0,4">
-                            <BoxView WidthRequest="14" HeightRequest="14" Color="{StaticResource UoNGold}" VerticalOptions="Center" CornerRadius="7" />
-                            <Label Text="SCANNING" FontSize="8" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" VerticalOptions="Center" />
-                        </HorizontalStackLayout>
-                        <BoxView HeightRequest="6" HorizontalOptions="Fill" Color="{StaticResource UoNBlueMid}" />
-                        <BoxView HeightRequest="6" WidthRequest="120" Color="{StaticResource BorderFaint}" Margin="0,4,0,0" HorizontalOptions="Start" />
-                        <BoxView HeightRequest="6" HorizontalOptions="Fill" Color="{StaticResource UoNBlueMid}" Margin="0,4,0,0" />
-                        <BoxView HeightRequest="6" WidthRequest="65" Color="{StaticResource BorderFaint}" Margin="0,8,0,0" HorizontalOptions="Start" />
-                        <BoxView HeightRequest="6" WidthRequest="95" Color="{StaticResource BorderFaint}" Margin="0,4,0,0" HorizontalOptions="Start" />
-                        <BoxView HeightRequest="6" WidthRequest="80" Color="{StaticResource BorderFaint}" Margin="0,4,0,0" HorizontalOptions="Start" />
-                        <BoxView HeightRequest="6" WidthRequest="100" Color="{StaticResource BorderFaint}" Margin="0,8,0,0" HorizontalOptions="Start" />
-                        <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" Margin="0,6,0,0" />
-                        <Grid ColumnDefinitions="*,Auto" Margin="0,6,0,0">
-                            <Label Text="TOTAL" FontSize="7" TextColor="{StaticResource TextMuted}" />
-                            <Label Grid.Column="1" Text="$84.60" FontSize="9" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" />
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <VerticalStackLayout Grid.Row="0"
+                                             Spacing="4">
+                            <HorizontalStackLayout Spacing="6"
+                                                   Margin="0,0,0,4">
+                                <BoxView WidthRequest="14"
+                                         HeightRequest="14"
+                                         CornerRadius="7"
+                                         Color="{StaticResource Violet}"
+                                         VerticalOptions="Center" />
+                                <Label Text="READING"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="8"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <BoxView HeightRequest="6"
+                                     WidthRequest="102"
+                                     CornerRadius="3"
+                                     Color="{StaticResource VioletMid}"
+                                     HorizontalOptions="Start" />
+                            <BoxView HeightRequest="6"
+                                     WidthRequest="77"
+                                     CornerRadius="3"
+                                     Color="{StaticResource Border2}"
+                                     Margin="0,2,0,0"
+                                     HorizontalOptions="Start" />
+                            <BoxView HeightRequest="6"
+                                     WidthRequest="115"
+                                     CornerRadius="3"
+                                     Color="{StaticResource VioletMid}"
+                                     Margin="0,2,0,0"
+                                     HorizontalOptions="Start" />
+                            <BoxView HeightRequest="6"
+                                     WidthRequest="64"
+                                     CornerRadius="3"
+                                     Color="{StaticResource Border2}"
+                                     Margin="0,6,0,0"
+                                     HorizontalOptions="Start" />
+                            <BoxView HeightRequest="6"
+                                     WidthRequest="96"
+                                     CornerRadius="3"
+                                     Color="{StaticResource Border2}"
+                                     Margin="0,2,0,0"
+                                     HorizontalOptions="Start" />
+                            <BoxView HeightRequest="6"
+                                     WidthRequest="83"
+                                     CornerRadius="3"
+                                     Color="{StaticResource Border2}"
+                                     Margin="0,2,0,0"
+                                     HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="2"
+                              RowDefinitions="Auto,Auto"
+                              Margin="0,6,0,0">
+                            <BoxView Grid.Row="0"
+                                     HeightRequest="0.5"
+                                     Color="{StaticResource Border}" />
+                            <Grid Grid.Row="1"
+                                  ColumnDefinitions="*,Auto"
+                                  Padding="0,6,0,0">
+                                <Label Text="TOTAL"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="7"
+                                       TextColor="{StaticResource T3}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding PreviewTotalFormatted}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       VerticalOptions="Center" />
+                            </Grid>
                         </Grid>
-                    </VerticalStackLayout>
+                    </Grid>
                 </Border>
 
-                <ProgressBar WidthRequest="160"
+                <!-- Progress bar -->
+                <ProgressBar x:Name="ProcessingProgressBar"
+                             WidthRequest="160"
                              HeightRequest="4"
-                             Progress="{Binding Progress}"
-                             ProgressColor="{StaticResource UoNGold}"
-                             BackgroundColor="{StaticResource BorderFaint}" />
+                             Progress="0"
+                             ProgressColor="{StaticResource Violet}"
+                             BackgroundColor="{StaticResource Border}"
+                             HorizontalOptions="Center" />
 
+                <!-- Status -->
                 <Label Text="{Binding StatusText}"
+                       FontFamily="OpenSansBold"
                        FontSize="13"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource TextPrimary}"
-                       HorizontalOptions="Center" />
+                       TextColor="{StaticResource T1}"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
 
-                <Label Text="Gemini AI is reading store name, items, totals, date &amp; payment method"
+                <Label Text="Reading store name, items, totals, date &amp; payment method"
+                       FontFamily="OpenSansRegular"
                        FontSize="10"
-                       TextColor="{StaticResource TextMuted}"
+                       TextColor="{StaticResource T2}"
+                       HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
-                       MaximumWidthRequest="320"
-                       Margin="14,0,14,12" />
+                       LineHeight="1.5"
+                       MaximumWidthRequest="320" />
 
                 <!-- Step list -->
                 <VerticalStackLayout Spacing="6"
-                                     HorizontalOptions="Fill"
-                                     Padding="14,0">
-                    <CollectionView ItemsSource="{Binding Steps}" SelectionMode="None">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:ProcessingStep">
-                                <Border BackgroundColor="{StaticResource CardWhite}"
-                                        StrokeShape="RoundRectangle 10"
-                                        Stroke="{StaticResource BorderFaint}"
-                                        StrokeThickness="0.5"
-                                        Padding="12,8"
-                                        Margin="0,0,0,6"
-                                        Opacity="{Binding Status, Converter={StaticResource ProcessingStepOpacityConverter}}">
-                                    <HorizontalStackLayout Spacing="8">
-                                        <Label Text="{Binding Status, Converter={StaticResource ProcessingStepIconConverter}}"
-                                               FontSize="14"
-                                               TextColor="{StaticResource UoNGold}"
+                                     WidthRequest="320"
+                                     MaximumWidthRequest="360"
+                                     HorizontalOptions="Center"
+                                     Margin="0,4,0,0">
+
+                    <Border BackgroundColor="{StaticResource CardWhite}"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="{StaticResource Border}"
+                            StrokeThickness="0.5"
+                            Padding="12,9"
+                            IsVisible="{Binding Step1Done}">
+                        <HorizontalStackLayout Spacing="8"
+                                               VerticalOptions="Center">
+                            <Image Source="icon_ui_check_violet.svg"
+                                   WidthRequest="14"
+                                   HeightRequest="14"
+                                   VerticalOptions="Center" />
+                            <Label Text="Store name extracted"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   TextColor="{StaticResource T1}"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Border BackgroundColor="{StaticResource CardWhite}"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="{StaticResource Border}"
+                            StrokeThickness="0.5"
+                            Padding="12,9"
+                            IsVisible="{Binding Step2Done}">
+                        <HorizontalStackLayout Spacing="8"
+                                               VerticalOptions="Center">
+                            <Image Source="icon_ui_check_violet.svg"
+                                   WidthRequest="14"
+                                   HeightRequest="14"
+                                   VerticalOptions="Center" />
+                            <Label Text="Date &amp; time found"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   TextColor="{StaticResource T1}"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Border BackgroundColor="{StaticResource CardWhite}"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="{StaticResource Border}"
+                            StrokeThickness="0.5"
+                            Padding="12,9"
+                            Opacity="{Binding Step3Opacity}">
+                        <HorizontalStackLayout Spacing="8"
+                                               VerticalOptions="Center">
+                            <Image Source="icon_ui_check_violet.svg"
+                                   WidthRequest="14"
+                                   HeightRequest="14"
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding Step3InProgress, Converter={StaticResource InvertedBoolConverter}}" />
+                            <ActivityIndicator Color="{StaticResource Violet}"
+                                               WidthRequest="14"
+                                               HeightRequest="14"
+                                               IsRunning="{Binding Step3InProgress}"
+                                               IsVisible="{Binding Step3InProgress}"
                                                VerticalOptions="Center" />
-                                        <Label Text="{Binding Label}"
-                                               FontSize="12"
-                                               TextColor="{StaticResource TextPrimary}"
-                                               VerticalOptions="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                            <Label FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Step3InProgress}"
+                                                 Value="True">
+                                        <Setter Property="Text" Value="Reading line items..." />
+                                        <Setter Property="TextColor" Value="{StaticResource T2}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Step3InProgress}"
+                                                 Value="False">
+                                        <Setter Property="Text" Value="Line items extracted" />
+                                        <Setter Property="TextColor" Value="{StaticResource T1}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </Border>
                 </VerticalStackLayout>
 
-                <Button Text="View Extracted Data"
-                        Command="{Binding ViewExtractedDataCommand}"
-                        Style="{StaticResource NavyButtonStyle}"
-                        Padding="28,12"
-                        Margin="0,8,0,20"
+                <Button Text="View extracted data"
+                        Command="{Binding ViewResultsCommand}"
+                        Style="{StaticResource PrimaryBtn}"
+                        Padding="12,0"
+                        Margin="0,4,0,20"
+                        HorizontalOptions="Fill"
                         IsVisible="{Binding IsComplete}" />
-            </VerticalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+                    </VerticalStackLayout>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </Grid>
 </ContentPage>

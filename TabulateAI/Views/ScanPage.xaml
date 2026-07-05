@@ -2,114 +2,171 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TabulateAI.ViewModels"
-             xmlns:helpers="clr-namespace:TabulateAI.Helpers"
              x:Class="TabulateAI.Views.ScanPage"
              x:DataType="vm:ScanViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource ScanBackground}">
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="#0A0A10">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
-        <!-- Header -->
+        <!-- Row 0: Header -->
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource UoNNavy}"
+              BackgroundColor="#111116"
               Padding="16,14,16,12"
-              ColumnDefinitions="*,Auto">
-            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
-                <Label Text="Scan Receipt" Style="{StaticResource PageTitleStyle}" />
-                <Label Text="Gemini AI OCR active" Style="{StaticResource PageSubtitleStyle}" />
+              ColumnDefinitions="*,Auto"
+              RowDefinitions="Auto,Auto">
+            <VerticalStackLayout Grid.Column="0"
+                                 Grid.Row="0"
+                                 Spacing="0"
+                                 VerticalOptions="Center">
+                <Label Text="Scan receipt"
+                       FontFamily="OpenSansBold"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource White}" />
+                <Label Text="Scan or enter manually"
+                       FontFamily="OpenSansRegular"
+                       FontSize="11"
+                       TextColor="{StaticResource Ink5}"
+                       Margin="0,2,0,0" />
             </VerticalStackLayout>
-            <Label Grid.Column="1"
-                   Text="{x:Static helpers:IconGlyphs.Close}"
-                   FontSize="20"
-                   TextColor="{StaticResource White60}"
-                   VerticalOptions="Center">
-                <Label.GestureRecognizers>
+            <Border Grid.Column="1"
+                    Grid.Row="0"
+                    WidthRequest="32"
+                    HeightRequest="32"
+                    BackgroundColor="Transparent"
+                    Stroke="Transparent"
+                    VerticalOptions="Center">
+                <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding CloseCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
+                </Border.GestureRecognizers>
+                <Image Source="icon_ui_close_white.svg"
+                       WidthRequest="18"
+                       HeightRequest="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+            <BoxView Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     HeightRequest="0.5"
+                     Color="#1F1F26"
+                     Margin="0,12,0,0" />
         </Grid>
 
-        <!-- Info strip -->
-        <HorizontalStackLayout Grid.Row="1"
-                               BackgroundColor="{StaticResource UoNNavyDark}"
-                               Padding="14,8"
-                               Spacing="8"
-                               VerticalOptions="Center">
-            <BoxView WidthRequest="6" HeightRequest="6" Color="{StaticResource UoNGoldLight}" VerticalOptions="Center" CornerRadius="3" />
-            <Label Text="📍 Sydney CBD  ·  ✨ Auto-detect on"
-                   FontSize="10"
-                   TextColor="{StaticResource UoNBlueMid}"
-                   VerticalOptions="Center" />
-        </HorizontalStackLayout>
+        <!-- Row 1: Info strip -->
+        <Grid Grid.Row="1"
+              BackgroundColor="#0F0F15"
+              Padding="14,6">
+            <HorizontalStackLayout Spacing="8"
+                                   VerticalOptions="Center">
+                <BoxView WidthRequest="6"
+                         HeightRequest="6"
+                         CornerRadius="3"
+                         Color="{StaticResource Violet3}"
+                         VerticalOptions="Center" />
+                <Label Text="{Binding InfoStripText}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="10"
+                       TextColor="{StaticResource Ink5}"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Grid>
 
-        <!-- Camera viewfinder -->
-        <Grid Grid.Row="2" BackgroundColor="{StaticResource ScanBackground}">
-            <BoxView Color="{StaticResource Gold15}" Opacity="0.3" />
+        <!-- Row 2: Camera viewfinder -->
+        <Grid Grid.Row="2"
+              BackgroundColor="#050508">
             <GraphicsView x:Name="ViewfinderGraphics"
                           HorizontalOptions="Fill"
                           VerticalOptions="Fill" />
-            <Label Text="Align receipt within the frame. Keep steady for best results."
+            <Label Text="Align the receipt inside the frame"
+                   FontFamily="OpenSansRegular"
                    FontSize="11"
                    TextColor="{StaticResource White55}"
                    HorizontalTextAlignment="Center"
                    VerticalOptions="End"
-                   Padding="20,0,20,14" />
+                   Margin="20,0,20,16" />
         </Grid>
 
-        <!-- Action bar -->
+        <!-- Row 3: Camera action bar -->
         <Grid Grid.Row="3"
-              BackgroundColor="{StaticResource UoNNavyDark}"
-              Padding="20,12,20,16"
+              BackgroundColor="#0F0F15"
+              Padding="14,14,14,18"
               ColumnDefinitions="*,Auto,*">
+
+            <!-- Gallery -->
             <VerticalStackLayout Grid.Column="0"
                                  HorizontalOptions="Center"
                                  Spacing="4">
                 <VerticalStackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding PickPhotoCommand}" />
+                    <TapGestureRecognizer Command="{Binding PickGalleryCommand}" />
                 </VerticalStackLayout.GestureRecognizers>
-                <Label Text="{x:Static helpers:IconGlyphs.Photo}"
-                       FontSize="20"
-                       TextColor="{StaticResource White50}"
-                       HorizontalOptions="Center" />
+                <Border WidthRequest="40"
+                        HeightRequest="40"
+                        BackgroundColor="#1A1A24"
+                        Stroke="#2A2A35"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 12"
+                        HorizontalOptions="Center">
+                    <Image Source="icon_ui_gallery_light.svg"
+                           WidthRequest="20"
+                           HeightRequest="20"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
                 <Label Text="Gallery"
+                       FontFamily="OpenSansRegular"
                        FontSize="9"
-                       TextColor="{StaticResource White40}"
+                       TextColor="{StaticResource Ink4}"
                        HorizontalOptions="Center" />
             </VerticalStackLayout>
 
+            <!-- Shutter -->
             <Border Grid.Column="1"
-                    WidthRequest="60"
-                    HeightRequest="60"
+                    WidthRequest="62"
+                    HeightRequest="62"
                     BackgroundColor="Transparent"
-                    Stroke="{StaticResource UoNGold}"
-                    StrokeThickness="3"
-                    StrokeShape="RoundRectangle 30">
+                    Stroke="{StaticResource Violet}"
+                    StrokeThickness="2.5"
+                    StrokeShape="RoundRectangle 31"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
                 <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding CapturePhotoCommand}" />
+                    <TapGestureRecognizer Command="{Binding CaptureCommand}" />
                 </Border.GestureRecognizers>
-                <Border WidthRequest="48"
-                        HeightRequest="48"
-                        BackgroundColor="{StaticResource UoNGold}"
-                        StrokeShape="RoundRectangle 24"
+                <Border WidthRequest="50"
+                        HeightRequest="50"
+                        BackgroundColor="{StaticResource Violet}"
+                        StrokeShape="RoundRectangle 25"
                         Stroke="Transparent"
                         HorizontalOptions="Center"
                         VerticalOptions="Center" />
             </Border>
 
+            <!-- Manual entry -->
             <VerticalStackLayout Grid.Column="2"
                                  HorizontalOptions="Center"
                                  Spacing="4">
                 <VerticalStackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToggleFlashCommand}" />
+                    <TapGestureRecognizer Command="{Binding ManualEntryCommand}" />
                 </VerticalStackLayout.GestureRecognizers>
-                <Label Text="{x:Static helpers:IconGlyphs.Flash}"
-                       FontSize="20"
-                       TextColor="{StaticResource White50}"
-                       HorizontalOptions="Center" />
-                <Label Text="Flash"
+                <Border WidthRequest="40"
+                        HeightRequest="40"
+                        BackgroundColor="#1A1A24"
+                        Stroke="#2A2A35"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 12"
+                        HorizontalOptions="Center">
+                    <Image Source="icon_ui_edit_light.svg"
+                           WidthRequest="20"
+                           HeightRequest="20"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+                <Label Text="Manual"
+                       FontFamily="OpenSansRegular"
                        FontSize="9"
-                       TextColor="{StaticResource White40}"
+                       TextColor="{StaticResource Ink4}"
                        HorizontalOptions="Center" />
             </VerticalStackLayout>
         </Grid>

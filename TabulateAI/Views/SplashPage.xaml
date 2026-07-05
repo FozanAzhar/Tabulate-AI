@@ -26,11 +26,11 @@
                     StrokeShape="RoundRectangle 18"
                     HorizontalOptions="Center"
                     Margin="0,0,0,20">
-                <Label Text="{x:Static helpers:IconGlyphs.Receipt}"
-                       FontSize="36"
+                <Image Source="icon_table.svg"
+                       WidthRequest="36"
+                       HeightRequest="36"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="{StaticResource UoNNavyDark}" />
+                       VerticalOptions="Center" />
             </Border>
 
             <!-- App name -->

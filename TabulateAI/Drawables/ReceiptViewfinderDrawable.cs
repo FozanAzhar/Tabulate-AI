@@ -6,55 +6,42 @@ public class ReceiptViewfinderDrawable : IDrawable
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        const float viewfinderWidth = 190f;
-        const float viewfinderHeight = 240f;
-        const float cornerArm = 20f;
-        const float strokeWidth = 2.5f;
+        var cx = dirtyRect.Width / 2f;
+        var cy = dirtyRect.Height / 2f;
+        const float w = 188f;
+        const float h = 238f;
+        var left = cx - w / 2f;
+        var top = cy - h / 2f;
+        var right = cx + w / 2f;
+        var bottom = cy + h / 2f;
+        const float arm = 22f;
+        const float stroke = 2.5f;
 
-        var left = (dirtyRect.Width - viewfinderWidth) / 2f;
-        var top = (dirtyRect.Height - viewfinderHeight) / 2f;
-        var right = left + viewfinderWidth;
-        var bottom = top + viewfinderHeight;
+        canvas.StrokeColor = Color.FromArgb("#30A78BFA");
+        canvas.StrokeSize = 1f;
+        canvas.DrawRectangle(left, top, w, h);
 
-        canvas.StrokeColor = Color.FromArgb("#C8922A");
-        canvas.StrokeSize = strokeWidth;
+        canvas.StrokeColor = Color.FromArgb("#A78BFA");
+        canvas.StrokeSize = stroke;
         canvas.StrokeLineCap = LineCap.Square;
 
-        DrawCorner(canvas, left, top, cornerArm, true, true);
-        DrawCorner(canvas, right, top, cornerArm, false, true);
-        DrawCorner(canvas, left, bottom, cornerArm, true, false);
-        DrawCorner(canvas, right, bottom, cornerArm, false, false);
+        canvas.DrawLine(left, top + arm, left, top);
+        canvas.DrawLine(left, top, left + arm, top);
 
-        var scanY = top + ScanLineY;
-        if (scanY >= top + 8 && scanY <= bottom - 8)
+        canvas.DrawLine(right - arm, top, right, top);
+        canvas.DrawLine(right, top, right, top + arm);
+
+        canvas.DrawLine(left, bottom - arm, left, bottom);
+        canvas.DrawLine(left, bottom, left + arm, bottom);
+
+        canvas.DrawLine(right - arm, bottom, right, bottom);
+        canvas.DrawLine(right, bottom, right, bottom - arm);
+
+        if (ScanLineY >= top + 8f && ScanLineY <= bottom - 8f)
         {
-            canvas.StrokeColor = Color.FromArgb("#80C8922A");
+            canvas.StrokeColor = Color.FromArgb("#80A78BFA");
             canvas.StrokeSize = 1.5f;
-            canvas.DrawLine(left + 8, scanY, right - 8, scanY);
-        }
-    }
-
-    private static void DrawCorner(ICanvas canvas, float x, float y, float arm, bool isLeft, bool isTop)
-    {
-        if (isLeft && isTop)
-        {
-            canvas.DrawLine(x, y, x + arm, y);
-            canvas.DrawLine(x, y, x, y + arm);
-        }
-        else if (!isLeft && isTop)
-        {
-            canvas.DrawLine(x, y, x - arm, y);
-            canvas.DrawLine(x, y, x, y + arm);
-        }
-        else if (isLeft && !isTop)
-        {
-            canvas.DrawLine(x, y, x + arm, y);
-            canvas.DrawLine(x, y, x, y - arm);
-        }
-        else
-        {
-            canvas.DrawLine(x, y, x - arm, y);
-            canvas.DrawLine(x, y, x, y - arm);
+            canvas.DrawLine(left + 8f, ScanLineY, right - 8f, ScanLineY);
         }
     }
 }

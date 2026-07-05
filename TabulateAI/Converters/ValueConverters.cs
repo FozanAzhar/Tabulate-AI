@@ -94,7 +94,7 @@ public class StringEqualsToColorConverter : IValueConverter
         var selected = value?.ToString() ?? string.Empty;
         var current = parameter?.ToString() ?? string.Empty;
         return string.Equals(selected, current, StringComparison.OrdinalIgnoreCase)
-            ? Color.FromArgb("#003058")
+            ? Color.FromArgb("#7C3AED")
             : Color.FromArgb("#FFFFFF");
     }
 
@@ -110,7 +110,7 @@ public class StringEqualsToTextColorConverter : IValueConverter
         var current = parameter?.ToString() ?? string.Empty;
         return string.Equals(selected, current, StringComparison.OrdinalIgnoreCase)
             ? Colors.White
-            : Color.FromArgb("#6B7D8C");
+            : Color.FromArgb("#6B7280");
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -160,10 +160,10 @@ public class DiscountTextColorConverter : IValueConverter
     {
         if (value is bool isDiscount && isDiscount)
         {
-            return Color.FromArgb("#DC2626");
+            return Color.FromArgb("#EF4444");
         }
 
-        return Color.FromArgb("#1A2B3C");
+        return Color.FromArgb("#111827");
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -48,30 +48,31 @@ public class ExpenseExportService : IExpenseExportService
 
     public async Task<string> SaveCsvAsync(string csvContent, string fileToken)
     {
-        var exportDirectory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            "Expensely",
-            "Exports");
-
+        var exportDirectory = Path.Combine(FileSystem.CacheDirectory, "exports");
         Directory.CreateDirectory(exportDirectory);
 
         var fileName = $"Expensely_Report_{fileToken}_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
         var filePath = Path.Combine(exportDirectory, fileName);
 
-        await File.WriteAllTextAsync(filePath, csvContent, Encoding.UTF8);
+        // UTF-8 BOM helps Excel and Google Sheets detect columns correctly.
+        await using var stream = File.Create(filePath);
+        await using var writer = new StreamWriter(stream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
+        await writer.WriteAsync(csvContent);
+
         return filePath;
     }
 
-    public async Task OpenCsvAsync(string filePath)
+    public Task ShareCsvAsync(string filePath)
     {
         if (!File.Exists(filePath))
         {
-            return;
+            throw new FileNotFoundException("Export file was not found.", filePath);
         }
 
-        await Launcher.Default.OpenAsync(new OpenFileRequest
+        return Share.Default.RequestAsync(new ShareFileRequest
         {
-            File = new ReadOnlyFile(filePath, "text/csv")
+            Title = "Export expense report",
+            File = new ShareFile(filePath, "text/csv")
         });
     }
 

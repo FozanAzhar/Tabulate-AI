@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using TabulateAI.Helpers;
 using TabulateAI.Models;
 
 namespace TabulateAI.Services;
@@ -52,15 +53,10 @@ public static partial class ReceiptParser
     {
         foreach (Match match in DateRegex().Matches(text))
         {
-            var value = match.Value;
-            if (DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.None, out var parsed))
+            var candidate = ReceiptDateHelper.Parse(match.Value);
+            if (candidate.HasValue)
             {
-                return parsed.Date;
-            }
-
-            if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsed))
-            {
-                return parsed.Date;
+                return candidate;
             }
         }
 

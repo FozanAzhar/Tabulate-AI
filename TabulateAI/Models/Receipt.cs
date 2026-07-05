@@ -19,5 +19,19 @@ public class Receipt
 
     public string RawOcrText { get; set; } = string.Empty;
 
+    public string Description { get; set; } = string.Empty;
+
+    public string LocationAddress { get; set; } = string.Empty;
+
+    public double? Latitude { get; set; }
+
+    public double? Longitude { get; set; }
+
+    public string PaymentMethod { get; set; } = string.Empty;
+
+    public string LineItemsJson { get; set; } = string.Empty;
+
+    public string MerchantLogoPath { get; set; } = string.Empty;
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

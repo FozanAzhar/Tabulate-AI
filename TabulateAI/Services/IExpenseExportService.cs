@@ -8,5 +8,5 @@ public interface IExpenseExportService
 
     Task<string> SaveCsvAsync(string csvContent, string fileToken);
 
-    Task OpenCsvAsync(string filePath);
+    Task ShareCsvAsync(string filePath);
 }

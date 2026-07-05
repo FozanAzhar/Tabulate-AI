@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TabulateAI.Helpers;
 using TabulateAI.Services;
 
 namespace TabulateAI.ViewModels;
@@ -12,7 +13,7 @@ public partial class ScanViewModel : ObservableObject
     private bool _isBusy;
 
     [ObservableProperty]
-    private string _statusMessage = "Snap a receipt or pick one from your gallery.";
+    private string _infoStripText = "Smart extract on";
 
     public ScanViewModel(IImageStorageService imageStorageService)
     {
@@ -20,7 +21,7 @@ public partial class ScanViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task CapturePhotoAsync()
+    private async Task CaptureAsync()
     {
         if (IsBusy)
         {
@@ -31,7 +32,13 @@ public partial class ScanViewModel : ObservableObject
         {
             if (!MediaPicker.Default.IsCaptureSupported)
             {
-                StatusMessage = "Camera capture is not available on this device.";
+                await Shell.Current.DisplayAlert("Camera", "Camera capture is not available on this device.", "OK");
+                return;
+            }
+
+            if (!await MediaPermissionHelper.EnsureCameraAsync())
+            {
+                await Shell.Current.DisplayAlert("Camera", "Camera permission is required to capture receipts.", "OK");
                 return;
             }
 
@@ -49,20 +56,24 @@ public partial class ScanViewModel : ObservableObject
         }
         catch (FeatureNotSupportedException)
         {
-            StatusMessage = "Camera is not supported on this device.";
+            await Shell.Current.DisplayAlert("Camera", "Camera is not supported on this device.", "OK");
         }
         catch (PermissionException)
         {
-            StatusMessage = "Camera permission was denied.";
+            await Shell.Current.DisplayAlert("Camera", "Camera permission was denied.", "OK");
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Capture failed: {ex.Message}";
+            await Shell.Current.DisplayAlert("Camera", $"Capture failed: {ex.Message}", "OK");
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
     [RelayCommand]
-    private async Task PickPhotoAsync()
+    private async Task PickGalleryAsync()
     {
         if (IsBusy)
         {
@@ -71,10 +82,7 @@ public partial class ScanViewModel : ObservableObject
 
         try
         {
-            var photo = await MediaPicker.Default.PickPhotoAsync(new MediaPickerOptions
-            {
-                Title = "Select receipt"
-            });
+            var photo = await MediaPermissionHelper.PickReceiptImageAsync();
 
             if (photo is null)
             {
@@ -85,51 +93,65 @@ public partial class ScanViewModel : ObservableObject
         }
         catch (FeatureNotSupportedException)
         {
-            StatusMessage = "Photo picker is not supported on this device.";
+            await Shell.Current.DisplayAlert("Gallery", "Photo picker is not supported on this device.", "OK");
         }
         catch (PermissionException)
         {
-            StatusMessage = "Storage permission was denied.";
+            await Shell.Current.DisplayAlert("Gallery", "Storage permission was denied.", "OK");
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Selection failed: {ex.Message}";
+            await Shell.Current.DisplayAlert("Gallery", $"Selection failed: {ex.Message}", "OK");
         }
-    }
-
-    [RelayCommand]
-    private async Task ManualEntryAsync()
-    {
-        await Shell.Current.GoToAsync("ReviewReceipt");
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
     private async Task CloseAsync()
     {
-        await Shell.Current.GoToAsync("//DashboardPage");
+        await AppNavigation.GoDashboardAsync();
     }
 
     [RelayCommand]
-    private async Task ToggleFlashAsync()
+    private async Task ManualEntryAsync()
     {
-        await Shell.Current.DisplayAlert("Flash", "Flash toggled.", "OK");
+        await AppNavigation.GoManualExpenseAsync();
     }
+
+    [RelayCommand]
+    private void ToggleFlash()
+    {
+        // Flash hardware control is platform-specific; no-op until implemented.
+    }
+
+    public void ResetInteractionState() => IsBusy = false;
 
     private async Task ProcessPhotoAsync(FileResult photo)
     {
         IsBusy = true;
-        StatusMessage = "Saving receipt image...";
 
         try
         {
             await using var stream = await photo.OpenReadAsync();
-            var savedPath = await _imageStorageService.SaveReceiptImageAsync(stream, Path.GetExtension(photo.FileName));
-            await Shell.Current.GoToAsync($"Processing?ImagePath={Uri.EscapeDataString(savedPath)}");
-            StatusMessage = "Snap a receipt or pick one from your gallery.";
+            var extension = Path.GetExtension(photo.FileName);
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".jpg";
+            }
+
+            var savedPath = await _imageStorageService.SaveReceiptImageAsync(stream, extension);
+
+            // Go to processing immediately — GPS runs there in parallel with OCR.
+            IsBusy = false;
+            await Shell.Current.GoToAsync($"processing?ImagePath={Uri.EscapeDataString(savedPath)}");
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Could not read receipt: {ex.Message}";
+            App.WriteCrashLog(ex.ToString());
+            await Shell.Current.DisplayAlert("Receipt", $"Could not read receipt: {ex.Message}", "OK");
         }
         finally
         {
