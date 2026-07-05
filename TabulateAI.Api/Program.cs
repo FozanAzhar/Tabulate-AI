@@ -6,8 +6,14 @@ using TabulateAI.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<AiOptions>(builder.Configuration.GetSection(AiOptions.SectionName));
-builder.Services.AddHttpClient<MistralOcrClient>();
-builder.Services.AddHttpClient<GeminiReceiptParser>();
+builder.Services.AddHttpClient<MistralOcrClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(90);
+});
+builder.Services.AddHttpClient<GeminiReceiptParser>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(120);
+});
 builder.Services.AddSingleton<ReceiptAiPipeline>();
 
 builder.Services.AddCors(options =>

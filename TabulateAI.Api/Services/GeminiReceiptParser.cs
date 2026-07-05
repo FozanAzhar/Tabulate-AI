@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
+using TabulateAI.Api.Helpers;
 using TabulateAI.Api.Models;
 using TabulateAI.Api.Options;
 
@@ -34,10 +35,26 @@ public sealed class GeminiReceiptParser
             Extract structured fields and validate the content.
 
             Rules:
-            - merchant: store or business name
+            - merchant: store or business name (not the street address)
             - amount: total paid (numeric only, no currency symbol)
-            - date: ISO yyyy-MM-dd if possible
-            - category: one of Food, Transport, Shopping, Bills, Other
+            - date: purchase/transaction date as ISO yyyy-MM-dd only.
+              Australian receipts usually use dd/MM/yyyy — interpret day-first unless clearly US format.
+              Use the sale/transaction date, NOT today's date, print timestamps, or copyright years.
+              If unsure, leave empty and add an issue.
+            - category: best matching preset — one of Food, Groceries, Transport, Shopping, Home, Bills, Health, Entertainment, Travel, Other
+            - customCategory: optional more specific label ONLY when it adds meaning beyond the preset
+              (e.g. "Fuel & Gas" for a petrol station, "Pharmacy" for a chemist). Leave empty if the preset is enough.
+            - location: full merchant address printed on the receipt (street, city, etc.). Empty if not visible.
+            - paymentMethod: card type or payment method if shown (e.g. MASTERCARD, VISA, CASH). Empty if unknown.
+            - lineItems: EVERY product/service row printed on the receipt — critical for grocery stores
+              (Woolworths, Coles, Aldi, etc.), fuel pumps, restaurants, and retail.
+              For each row include:
+              - name: product description exactly as shown (e.g. "Bananas", "FULL CREAM MILK 2L")
+              - quantity: optional qty/volume prefix when shown (e.g. "2", "3x", "1.5kg", "10.5L") — empty if not shown
+              - price: the line total for that item (numeric only)
+              - isDiscount: true for discounts, savings, or negative amounts
+              Do NOT include subtotal, tax, GST, or grand-total summary rows — only purchased items.
+              If the receipt lists 15 products, return all 15 in lineItems.
             - isReceipt: false if the text does not look like a purchase receipt
             - confidence: 0.0 to 1.0 for overall extraction quality
             - issues: short validation warnings (empty array if none)
@@ -73,7 +90,26 @@ public sealed class GeminiReceiptParser
                         category = new
                         {
                             type = "STRING",
-                            @enum = new[] { "Food", "Transport", "Shopping", "Bills", "Other" }
+                            @enum = new[] { "Food", "Groceries", "Transport", "Shopping", "Home", "Bills", "Health", "Entertainment", "Travel", "Other" }
+                        },
+                        customCategory = new { type = "STRING" },
+                        location = new { type = "STRING" },
+                        paymentMethod = new { type = "STRING" },
+                        lineItems = new
+                        {
+                            type = "ARRAY",
+                            items = new
+                            {
+                                type = "OBJECT",
+                                properties = new
+                                {
+                                    name = new { type = "STRING" },
+                                    quantity = new { type = "STRING" },
+                                    price = new { type = "NUMBER" },
+                                    isDiscount = new { type = "BOOLEAN" }
+                                },
+                                required = new[] { "name", "price" }
+                            }
                         },
                         isReceipt = new { type = "BOOLEAN" },
                         confidence = new { type = "NUMBER" },
@@ -83,7 +119,7 @@ public sealed class GeminiReceiptParser
                             items = new { type = "STRING" }
                         }
                     },
-                    required = new[] { "merchant", "amount", "date", "category", "isReceipt", "confidence", "issues" }
+                    required = new[] { "merchant", "amount", "date", "category", "isReceipt", "confidence", "issues", "lineItems" }
                 }
             }
         };
@@ -118,10 +154,14 @@ public sealed class GeminiReceiptParser
         var root = parsed.RootElement;
 
         DateTime? date = null;
-        if (root.TryGetProperty("date", out var dateElement) &&
-            DateTime.TryParse(dateElement.GetString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
+        if (root.TryGetProperty("date", out var dateElement))
         {
-            date = parsedDate.Date;
+            date = ReceiptDateHelper.Parse(dateElement.GetString())
+                ?? ReceiptDateHelper.ParseFromOcrText(ocrText);
+        }
+        else
+        {
+            date = ReceiptDateHelper.ParseFromOcrText(ocrText);
         }
 
         decimal? amount = null;
@@ -146,6 +186,52 @@ public sealed class GeminiReceiptParser
             }
         }
 
+        if (!date.HasValue && root.TryGetProperty("date", out var rawDateElement) &&
+            !string.IsNullOrWhiteSpace(rawDateElement.GetString()))
+        {
+            issues.Add("Receipt date could not be parsed — please verify manually.");
+        }
+        else if (!date.HasValue)
+        {
+            issues.Add("No receipt date found — please enter the date manually.");
+        }
+
+        var lineItems = new List<ReceiptLineItem>();
+        if (root.TryGetProperty("lineItems", out var lineItemsElement) && lineItemsElement.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in lineItemsElement.EnumerateArray())
+            {
+                if (!item.TryGetProperty("name", out var nameElement))
+                {
+                    continue;
+                }
+
+                var name = nameElement.GetString()?.Trim();
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    continue;
+                }
+
+                if (!item.TryGetProperty("price", out var priceElement) || priceElement.ValueKind != JsonValueKind.Number)
+                {
+                    continue;
+                }
+
+                var isDiscount = item.TryGetProperty("isDiscount", out var discountElement)
+                    && discountElement.ValueKind == JsonValueKind.True;
+
+                lineItems.Add(new ReceiptLineItem
+                {
+                    Name = name,
+                    Quantity = item.TryGetProperty("quantity", out var quantityElement)
+                        ? quantityElement.GetString()?.Trim() ?? string.Empty
+                        : string.Empty,
+                    Price = priceElement.GetDecimal(),
+                    IsDiscount = isDiscount
+                });
+            }
+        }
+
         return new ReceiptExtractionResponse
         {
             RawText = ocrText,
@@ -153,6 +239,16 @@ public sealed class GeminiReceiptParser
             Amount = amount,
             Date = date,
             Category = root.TryGetProperty("category", out var category) ? category.GetString() ?? "Other" : "Other",
+            CustomCategory = root.TryGetProperty("customCategory", out var customCategory)
+                ? customCategory.GetString()?.Trim() ?? string.Empty
+                : string.Empty,
+            Location = root.TryGetProperty("location", out var location)
+                ? location.GetString()?.Trim() ?? string.Empty
+                : string.Empty,
+            PaymentMethod = root.TryGetProperty("paymentMethod", out var paymentMethod)
+                ? paymentMethod.GetString()?.Trim() ?? string.Empty
+                : string.Empty,
+            LineItems = lineItems,
             IsReceipt = root.TryGetProperty("isReceipt", out var isReceipt) && isReceipt.GetBoolean(),
             Confidence = root.TryGetProperty("confidence", out var confidence) && confidence.ValueKind == JsonValueKind.Number
                 ? confidence.GetDouble()

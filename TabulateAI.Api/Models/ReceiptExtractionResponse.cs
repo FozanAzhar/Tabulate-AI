@@ -12,6 +12,14 @@ public sealed class ReceiptExtractionResponse
 
     public string Category { get; set; } = "Other";
 
+    public string CustomCategory { get; set; } = string.Empty;
+
+    public string Location { get; set; } = string.Empty;
+
+    public string PaymentMethod { get; set; } = string.Empty;
+
+    public IReadOnlyList<ReceiptLineItem> LineItems { get; set; } = [];
+
     public bool IsReceipt { get; set; } = true;
 
     public double Confidence { get; set; }
