@@ -1,63 +1,42 @@
-# Expensely (Tabulate-AI)
+# TabulateAI
 
-Snap a receipt. AI extracts the details. Track spending and export reports — all on your phone.
+Snap a receipt. AI pulls out the details. Track your spending — all on your phone.
 
-## What it does
+## Screenshots
 
-- Scan receipts with the camera or gallery
-- AI reads merchant, date, amount, and line items
-- Review and edit before saving
-- Dashboard, history, budgets, and category breakdowns
-- Export CSV/PDF or email a report with attachments
-- Light/dark mode, backup & restore
+| Welcome | Dashboard |
+|:---:|:---:|
+| ![Welcome screen](docs/screenshots/welcome.png) | ![Dashboard overview](docs/screenshots/dashboard.png) |
 
-## Requirements
+| Receipt detail | Reports |
+|:---:|:---:|
+| ![Receipt detail with line items](docs/screenshots/receipt-detail.png) | ![Reports and export](docs/screenshots/reports.png) |
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download)
-- Visual Studio 2022+ with the **.NET MAUI** workload
-- Android emulator or device (app targets **Android**)
+## What you can do
 
-## Run the app
+- **Scan receipts** with your camera or pick one from your gallery
+- **Let AI read it** — merchant, date, amount, and each line item are filled in for you
+- **Review and edit** anything before saving
+- **See your spending** on a dashboard with category breakdowns and monthly budgets
+- **Search your history** and edit or delete past receipts
+- **Export reports** as CSV or PDF, or email a report with the PDF attached
+- **Set monthly budgets** per category and track how you're going
+- **Light and dark mode**, plus backup & restore of your data
 
-```powershell
-git clone https://github.com/FozanAzhar/Tabulate-AI.git
-cd Tabulate-AI
-```
+## Your data stays yours
 
-Open `Tabulate-AI.slnx` in Visual Studio, set **TabulateAI** as the startup project, pick an Android emulator, and press **F5**.
+Everything is stored **on your device** — there's no account to create and no sign-in. Your receipts and images never leave your phone unless you choose to export or email a report.
 
-Or from the terminal:
+## Getting started
 
-```powershell
-dotnet build TabulateAI/TabulateAI.csproj -f net9.0-android
-```
+1. Open the app and tap the **camera** button
+2. Point it at a receipt (or choose one from your gallery)
+3. Wait a moment while the AI reads it
+4. Check the details, pick a category, and **save**
+5. Head to the **Dashboard** and **Reports** tabs to see your spending
 
-## AI extraction (optional)
+## Tips
 
-For best results, run the API locally. Keys stay on the server — never in the app.
-
-```powershell
-cd TabulateAI.Api
-copy appsettings.Development.json.example appsettings.Development.json
-# Add your Gemini + Mistral keys to appsettings.Development.json
-dotnet run
-```
-
-The app talks to the API at `http://10.0.2.2:5299` on the Android emulator by default.
-
-## Project structure
-
-```
-Tabulate-AI/
-├── TabulateAI/       Mobile app (MAUI)
-├── TabulateAI.Api/   AI receipt extraction API
-└── Tabulate-AI.slnx
-```
-
-## Data
-
-Everything is stored locally on the device — SQLite database and receipt images in the app folder. No account required.
-
-## License
-
-All rights reserved.
+- Add your **name and email** in Settings so exported reports are personalised
+- Set **monthly budgets** in Settings to get category tracking on your dashboard
+- Use **Reports → Email report** to send a PDF (with receipt thumbnails) to yourself, your manager, or your accountant
