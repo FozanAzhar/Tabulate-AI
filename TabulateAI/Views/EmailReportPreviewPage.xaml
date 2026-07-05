@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             x:Class="TabulateAI.Views.EmailReportPreviewPage"
+             x:DataType="vm:EmailReportPreviewViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{DynamicResource Surface}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <Grid Grid.Row="0"
+              BackgroundColor="{DynamicResource CardWhite}"
+              Padding="16,14,16,12"
+              ColumnDefinitions="Auto,*,Auto"
+              RowDefinitions="Auto,Auto">
+            <Border Grid.Column="0"
+                    Grid.Row="0"
+                    WidthRequest="36"
+                    HeightRequest="36"
+                    BackgroundColor="{DynamicResource CardWhite}"
+                    Stroke="{DynamicResource Border}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10"
+                    VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Border.GestureRecognizers>
+                <Image Source="icon_ui_back.svg"
+                       WidthRequest="18"
+                       HeightRequest="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+            <VerticalStackLayout Grid.Column="1"
+                                 Grid.Row="0"
+                                 Spacing="0"
+                                 Margin="10,0,0,0"
+                                 VerticalOptions="Center">
+                <Label Text="Email preview"
+                       FontFamily="OpenSansBold"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T1}" />
+                <Label Text="{Binding PeriodLabel}"
+                       FontFamily="OpenSansRegular"
+                       FontSize="11"
+                       TextColor="{DynamicResource T2}"
+                       Margin="0,2,0,0" />
+            </VerticalStackLayout>
+            <Border Grid.Column="2"
+                    Grid.Row="0"
+                    Padding="10,6"
+                    BackgroundColor="{DynamicResource Surface}"
+                    Stroke="{DynamicResource Border}"
+                    StrokeThickness="0.5"
+                    StrokeShape="RoundRectangle 10"
+                    VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ResetTemplateCommand}" />
+                </Border.GestureRecognizers>
+                <Label Text="Reset"
+                       FontFamily="OpenSansBold"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T2}" />
+            </Border>
+            <BoxView Grid.Row="1"
+                     Grid.ColumnSpan="3"
+                     HeightRequest="0.5"
+                     Color="{DynamicResource Border}"
+                     Margin="0,12,0,0" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="14,10,14,12" Spacing="10">
+
+                <Border Style="{StaticResource CardBorder}" Padding="14,12">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="PREVIEW"
+                               FontFamily="OpenSansBold"
+                               FontSize="10"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource T3}" />
+                        <Label Text="{Binding PreviewFrom, StringFormat='From: {0}'}"
+                               FontFamily="OpenSansRegular"
+                               FontSize="12"
+                               TextColor="{DynamicResource T2}" />
+                        <Label Text="{Binding PreviewTo, StringFormat='To: {0}'}"
+                               FontFamily="OpenSansRegular"
+                               FontSize="12"
+                               TextColor="{DynamicResource T2}" />
+                        <Label Text="{Binding PreviewSubject, StringFormat='Subject: {0}'}"
+                               FontFamily="OpenSansBold"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource T1}" />
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Label Text="{Binding PreviewBodySnippet}"
+                               FontFamily="OpenSansRegular"
+                               FontSize="12"
+                               TextColor="{DynamicResource T2}"
+                               LineBreakMode="WordWrap" />
+                        <Border BackgroundColor="{DynamicResource VioletTint}"
+                                Stroke="{DynamicResource VioletMid}"
+                                StrokeThickness="0.5"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="10,8">
+                            <HorizontalStackLayout Spacing="8">
+                                <Image Source="icon_export_pdf.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       VerticalOptions="Center" />
+                                <Label Text="{Binding AttachmentLabel}"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="11"
+                                       TextColor="{DynamicResource T1}"
+                                       VerticalOptions="Center"
+                                       LineBreakMode="WordWrap" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Padding="14,12">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="EDIT MESSAGE"
+                               FontFamily="OpenSansBold"
+                               FontSize="10"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource T3}" />
+
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="To"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="11"
+                                   TextColor="{DynamicResource T2}" />
+                            <Entry Text="{Binding RecipientEmail}"
+                                   Placeholder="manager@company.com"
+                                   PlaceholderColor="{DynamicResource T3}"
+                                   Keyboard="Email"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T1}"
+                                   BackgroundColor="{DynamicResource Surface}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Subject"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="11"
+                                   TextColor="{DynamicResource T2}" />
+                            <Entry Text="{Binding Subject}"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T1}"
+                                   BackgroundColor="{DynamicResource Surface}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Message"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="11"
+                                   TextColor="{DynamicResource T2}" />
+                            <Editor Text="{Binding Body}"
+                                    AutoSize="TextChanges"
+                                    MinimumHeightRequest="180"
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="13"
+                                    TextColor="{DynamicResource T1}"
+                                    BackgroundColor="{DynamicResource Surface}" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="2"
+                BackgroundColor="{DynamicResource CardWhite}"
+                Stroke="{DynamicResource Border}"
+                StrokeThickness="0.5"
+                Padding="14,12">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Button Grid.Column="0"
+                        Text="Back"
+                        Command="{Binding GoBackCommand}"
+                        BackgroundColor="{DynamicResource Surface}"
+                        TextColor="{DynamicResource T1}"
+                        FontFamily="OpenSansBold"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HeightRequest="48"
+                        CornerRadius="12"
+                        BorderColor="{DynamicResource Border}"
+                        BorderWidth="1" />
+                <Button Grid.Column="1"
+                        Text="Send email"
+                        Command="{Binding SendEmailCommand}"
+                        IsEnabled="{Binding HasReceipts}"
+                        BackgroundColor="{StaticResource Violet}"
+                        TextColor="{StaticResource White}"
+                        FontFamily="OpenSansBold"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HeightRequest="48"
+                        CornerRadius="12">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsBusy}"
+                                     Value="True">
+                            <Setter Property="Text" Value="Preparing..." />
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

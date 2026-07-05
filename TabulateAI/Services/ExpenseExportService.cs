@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using TabulateAI.Helpers;
 using TabulateAI.Models;
 
 namespace TabulateAI.Services;
@@ -73,6 +74,65 @@ public class ExpenseExportService : IExpenseExportService
         {
             Title = "Export expense report",
             File = new ShareFile(filePath, "text/csv")
+        });
+    }
+
+    public async Task<string> SavePdfAsync(IReadOnlyList<Receipt> receipts, string periodLabel, string fileToken)
+    {
+        var pdfBytes = PdfReportBuilder.Build(receipts, periodLabel);
+        var exportDirectory = Path.Combine(FileSystem.CacheDirectory, "exports");
+        Directory.CreateDirectory(exportDirectory);
+
+        var fileName = $"Expensely_Report_{fileToken}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+        var filePath = Path.Combine(exportDirectory, fileName);
+        await File.WriteAllBytesAsync(filePath, pdfBytes);
+        return filePath;
+    }
+
+    public Task SharePdfAsync(string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException("Export file was not found.", filePath);
+        }
+
+        return Share.Default.RequestAsync(new ShareFileRequest
+        {
+            Title = "Export expense report",
+            File = new ShareFile(filePath, "application/pdf")
+        });
+    }
+
+    public async Task SendEmailReportAsync(string recipient, string subject, string body, string pdfFilePath)
+    {
+        if (!File.Exists(pdfFilePath))
+        {
+            throw new FileNotFoundException("PDF attachment was not found.", pdfFilePath);
+        }
+
+        if (Email.Default.IsComposeSupported)
+        {
+            var message = new EmailMessage
+            {
+                Subject = subject,
+                Body = body,
+                BodyFormat = EmailBodyFormat.PlainText
+            };
+
+            if (!string.IsNullOrWhiteSpace(recipient))
+            {
+                message.To.Add(recipient.Trim());
+            }
+
+            message.Attachments.Add(new EmailAttachment(pdfFilePath, "application/pdf"));
+            await Email.Default.ComposeAsync(message);
+            return;
+        }
+
+        await Share.Default.RequestAsync(new ShareFileRequest
+        {
+            Title = subject,
+            File = new ShareFile(pdfFilePath, "application/pdf")
         });
     }
 

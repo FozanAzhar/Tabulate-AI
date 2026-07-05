@@ -9,4 +9,10 @@ public interface IExpenseExportService
     Task<string> SaveCsvAsync(string csvContent, string fileToken);
 
     Task ShareCsvAsync(string filePath);
+
+    Task<string> SavePdfAsync(IReadOnlyList<Receipt> receipts, string periodLabel, string fileToken);
+
+    Task SharePdfAsync(string filePath);
+
+    Task SendEmailReportAsync(string recipient, string subject, string body, string pdfFilePath);
 }

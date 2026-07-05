@@ -6,12 +6,12 @@
              x:Class="TabulateAI.Views.ExportPreviewPage"
              x:DataType="vm:ExportPreviewViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
     <Grid RowDefinitions="Auto,*,Auto">
 
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
               Padding="16,14,16,12"
               ColumnDefinitions="Auto,*,Auto"
               RowDefinitions="Auto,Auto">
@@ -19,8 +19,8 @@
                     Grid.Row="0"
                     WidthRequest="36"
                     HeightRequest="36"
-                    BackgroundColor="{StaticResource CardWhite}"
-                    Stroke="{StaticResource Border}"
+                    BackgroundColor="{DynamicResource CardWhite}"
+                    Stroke="{DynamicResource Border}"
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 10"
                     VerticalOptions="Center">
@@ -42,17 +42,17 @@
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}" />
+                       TextColor="{DynamicResource T1}" />
                 <Label Text="{Binding PeriodLabel}"
                        FontFamily="OpenSansRegular"
                        FontSize="11"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        Margin="0,2,0,0" />
             </VerticalStackLayout>
             <BoxView Grid.Row="1"
                      Grid.ColumnSpan="3"
                      HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,12,0,0" />
         </Grid>
 
@@ -86,7 +86,7 @@
                             <DataTemplate x:DataType="models:ExportPreviewRow">
                                 <VerticalStackLayout Spacing="0">
                                     <BoxView HeightRequest="0.5"
-                                             Color="{StaticResource Border}"
+                                             Color="{DynamicResource Border}"
                                              Margin="14,0"
                                              IsVisible="{Binding IsDivider}" />
                                     <Grid Padding="12,10"
@@ -96,37 +96,37 @@
                                             <DataTrigger TargetType="Grid"
                                                          Binding="{Binding IsHeader}"
                                                          Value="True">
-                                                <Setter Property="BackgroundColor" Value="{StaticResource Border2}" />
+                                                <Setter Property="BackgroundColor" Value="{DynamicResource Border2}" />
                                             </DataTrigger>
                                             <DataTrigger TargetType="Grid"
                                                          Binding="{Binding IsSummary}"
                                                          Value="True">
-                                                <Setter Property="BackgroundColor" Value="{StaticResource VioletTint}" />
+                                                <Setter Property="BackgroundColor" Value="{DynamicResource VioletTint}" />
                                             </DataTrigger>
                                         </Grid.Triggers>
                                         <Label Grid.Column="0"
                                                Text="{Binding Date}"
                                                FontFamily="OpenSansRegular"
                                                FontSize="10"
-                                               TextColor="{StaticResource T2}" />
+                                               TextColor="{DynamicResource T2}" />
                                         <Label Grid.Column="1"
                                                Text="{Binding Merchant}"
                                                FontFamily="OpenSansRegular"
                                                FontSize="11"
-                                               TextColor="{StaticResource T1}"
+                                               TextColor="{DynamicResource T1}"
                                                LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="2"
                                                Text="{Binding Category}"
                                                FontFamily="OpenSansRegular"
                                                FontSize="10"
-                                               TextColor="{StaticResource T2}"
+                                               TextColor="{DynamicResource T2}"
                                                LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="3"
                                                Text="{Binding AmountDisplay}"
                                                FontFamily="OpenSansBold"
                                                FontSize="11"
                                                FontAttributes="Bold"
-                                               TextColor="{StaticResource T1}"
+                                               TextColor="{DynamicResource T1}"
                                                HorizontalTextAlignment="End" />
                                     </Grid>
                                 </VerticalStackLayout>
@@ -138,22 +138,22 @@
         </ScrollView>
 
         <Border Grid.Row="2"
-                BackgroundColor="{StaticResource CardWhite}"
-                Stroke="{StaticResource Border}"
+                BackgroundColor="{DynamicResource CardWhite}"
+                Stroke="{DynamicResource Border}"
                 StrokeThickness="0.5"
                 Padding="14,12">
             <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                 <Button Grid.Column="0"
                         Text="Back"
                         Command="{Binding GoBackCommand}"
-                        BackgroundColor="{StaticResource Surface}"
-                        TextColor="{StaticResource T1}"
+                        BackgroundColor="{DynamicResource Surface}"
+                        TextColor="{DynamicResource T1}"
                         FontFamily="OpenSansBold"
                         FontSize="14"
                         FontAttributes="Bold"
                         HeightRequest="48"
                         CornerRadius="12"
-                        BorderColor="{StaticResource Border}"
+                        BorderColor="{DynamicResource Border}"
                         BorderWidth="1" />
                 <Button Grid.Column="1"
                         Text="Share CSV"

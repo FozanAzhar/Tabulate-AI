@@ -11,6 +11,7 @@ public partial class ExportPreviewViewModel : ObservableObject
 {
     private readonly IReceiptRepository _receiptRepository;
     private readonly IExpenseExportService _exportService;
+    private readonly IAppSettingsService _appSettings;
 
     private List<Receipt> _receipts = [];
     private ReportPeriodHelper.PeriodRange _periodRange = ReportPeriodHelper.Resolve("This month");
@@ -33,10 +34,14 @@ public partial class ExportPreviewViewModel : ObservableObject
     [ObservableProperty]
     private bool _isExporting;
 
-    public ExportPreviewViewModel(IReceiptRepository receiptRepository, IExpenseExportService exportService)
+    public ExportPreviewViewModel(
+        IReceiptRepository receiptRepository,
+        IExpenseExportService exportService,
+        IAppSettingsService appSettings)
     {
         _receiptRepository = receiptRepository;
         _exportService = exportService;
+        _appSettings = appSettings;
     }
 
     partial void OnPeriodSelectionChanged(string value) => _ = LoadAsync();
@@ -74,7 +79,11 @@ public partial class ExportPreviewViewModel : ObservableObject
 
     private async Task LoadAsync()
     {
-        _periodRange = ReportPeriodHelper.Resolve(PeriodSelection);
+        _appSettings.Load();
+        _periodRange = ReportPeriodHelper.Resolve(
+            PeriodSelection,
+            PeriodSelection == "Custom" ? _appSettings.CustomReportStart : null,
+            PeriodSelection == "Custom" ? _appSettings.CustomReportEnd : null);
         PeriodLabel = _periodRange.Label;
         _receipts = await _receiptRepository.GetByDateRangeAsync(_periodRange.Start, _periodRange.End);
 

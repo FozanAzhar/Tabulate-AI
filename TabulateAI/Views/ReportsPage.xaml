@@ -6,13 +6,13 @@
              x:Class="TabulateAI.Views.ReportsPage"
              x:DataType="vm:ReportsViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
     <Grid RowDefinitions="Auto,*">
 
         <!-- Row 0: Header -->
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
               Padding="16,14,16,12"
               RowDefinitions="Auto,Auto">
             <VerticalStackLayout Grid.Row="0"
@@ -21,16 +21,16 @@
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}" />
+                       TextColor="{DynamicResource T1}" />
                 <Label Text="Analyse &amp; export spending"
                        FontFamily="OpenSansRegular"
                        FontSize="11"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        Margin="0,2,0,0" />
             </VerticalStackLayout>
             <BoxView Grid.Row="1"
                      HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,12,0,0" />
         </Grid>
 
@@ -40,13 +40,15 @@
 
                 <!-- Period selector -->
                 <Grid Padding="14,10,14,0"
-                      ColumnDefinitions="*,*,*"
-                      ColumnSpacing="6">
-                    <Border Grid.Column="0"
+                      ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto"
+                      ColumnSpacing="6"
+                      RowSpacing="6">
+                    <Border Grid.Row="0" Grid.Column="0"
                             StrokeShape="RoundRectangle 10"
                             Padding="0,7"
                             BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=This month}"
-                            Stroke="{StaticResource Border}"
+                            Stroke="{DynamicResource Border}"
                             StrokeThickness="0.5">
                         <Border.Triggers>
                             <DataTrigger TargetType="Border"
@@ -67,11 +69,11 @@
                                HorizontalOptions="Center"
                                TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=This month}" />
                     </Border>
-                    <Border Grid.Column="1"
+                    <Border Grid.Row="0" Grid.Column="1"
                             StrokeShape="RoundRectangle 10"
                             Padding="0,7"
                             BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=Last month}"
-                            Stroke="{StaticResource Border}"
+                            Stroke="{DynamicResource Border}"
                             StrokeThickness="0.5">
                         <Border.Triggers>
                             <DataTrigger TargetType="Border"
@@ -92,11 +94,36 @@
                                HorizontalOptions="Center"
                                TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=Last month}" />
                     </Border>
-                    <Border Grid.Column="2"
+                    <Border Grid.Row="1" Grid.Column="0"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="0,7"
+                            BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=This year}"
+                            Stroke="{DynamicResource Border}"
+                            StrokeThickness="0.5">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border"
+                                         Binding="{Binding SelectedPeriod, Converter={StaticResource StringEqualsConverter}, ConverterParameter=This year}"
+                                         Value="True">
+                                <Setter Property="Stroke" Value="Transparent" />
+                                <Setter Property="StrokeThickness" Value="0" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectPeriodCommand}"
+                                                  CommandParameter="This year" />
+                        </Border.GestureRecognizers>
+                        <Label Text="This year"
+                               FontFamily="OpenSansBold"
+                               FontSize="10"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=This year}" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1"
                             StrokeShape="RoundRectangle 10"
                             Padding="0,7"
                             BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToColorConverter}, ConverterParameter=Custom}"
-                            Stroke="{StaticResource Border}"
+                            Stroke="{DynamicResource Border}"
                             StrokeThickness="0.5">
                         <Border.Triggers>
                             <DataTrigger TargetType="Border"
@@ -118,6 +145,60 @@
                                TextColor="{Binding SelectedPeriod, Converter={StaticResource StringEqualsToTextColorConverter}, ConverterParameter=Custom}" />
                     </Border>
                 </Grid>
+
+                <!-- Custom date range -->
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Margin="14,8,14,0"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="14"
+                        IsVisible="{Binding IsCustomPeriod}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Custom date range"
+                               FontFamily="OpenSansBold"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource T1}" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Label Text="From"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <DatePicker Grid.Column="1"
+                                        Date="{Binding CustomStartDate}"
+                                        FontFamily="OpenSansRegular"
+                                        TextColor="{DynamicResource T1}" />
+                        </Grid>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Label Text="To"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="12"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <DatePicker Grid.Column="1"
+                                        Date="{Binding CustomEndDate}"
+                                        FontFamily="OpenSansRegular"
+                                        TextColor="{DynamicResource T1}" />
+                        </Grid>
+                        <Border BackgroundColor="{StaticResource Violet}"
+                                StrokeShape="RoundRectangle 10"
+                                Stroke="Transparent"
+                                HeightRequest="40">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ApplyCustomRangeCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Apply range"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource White}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
 
                 <!-- Summary hero card -->
                 <Border BackgroundColor="{StaticResource Ink2}"
@@ -212,7 +293,7 @@
                             <Label Text="No spending data for this period."
                                    FontFamily="OpenSansRegular"
                                    FontSize="12"
-                                   TextColor="{StaticResource T2}" />
+                                   TextColor="{DynamicResource T2}" />
                         </BindableLayout.EmptyView>
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="models:CategoryBreakdownItem">
@@ -228,19 +309,19 @@
                                                    FontFamily="OpenSansBold"
                                                    FontSize="12"
                                                    FontAttributes="Bold"
-                                                   TextColor="{StaticResource T1}"
+                                                   TextColor="{DynamicResource T1}"
                                                    VerticalOptions="Center" />
                                         </HorizontalStackLayout>
                                         <Label Grid.Column="1"
                                                Text="{Binding AmountLabel}"
                                                FontFamily="OpenSansRegular"
                                                FontSize="10"
-                                               TextColor="{StaticResource T2}"
+                                               TextColor="{DynamicResource T2}"
                                                VerticalOptions="Center"
                                                HorizontalTextAlignment="End" />
                                     </Grid>
                                     <Border HeightRequest="6"
-                                            BackgroundColor="{StaticResource Border2}"
+                                            BackgroundColor="{DynamicResource Border2}"
                                             StrokeShape="RoundRectangle 3"
                                             Stroke="Transparent"
                                             Padding="0">
@@ -255,6 +336,55 @@
                                                      FlexLayout.Grow="{Binding RemainingShare}" />
                                         </FlexLayout>
                                     </Border>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Budget progress -->
+                <Label Text="Budget progress"
+                       Style="{StaticResource SectionLabel}"
+                       IsVisible="{Binding HasBudgets}" />
+
+                <Border Style="{StaticResource CardBorder}"
+                        Margin="14,0,14,0"
+                        Padding="14,12"
+                        IsVisible="{Binding HasBudgets}">
+                    <VerticalStackLayout Spacing="12"
+                                         BindableLayout.ItemsSource="{Binding BudgetStatuses}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:CategoryBudgetStatus">
+                                <VerticalStackLayout Spacing="4">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding Category}"
+                                               FontFamily="OpenSansBold"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{DynamicResource T1}"
+                                               VerticalOptions="Center" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding StatusLabel}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="10"
+                                               TextColor="{DynamicResource T2}"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                    <Border HeightRequest="6"
+                                            BackgroundColor="{DynamicResource Border2}"
+                                            StrokeShape="RoundRectangle 3"
+                                            Stroke="Transparent">
+                                        <BoxView Color="{Binding BarColor}"
+                                                 WidthRequest="{Binding BarFillWidth}"
+                                                 HeightRequest="6"
+                                                 HorizontalOptions="Start" />
+                                    </Border>
+                                    <Label Text="{Binding OverBudgetLabel}"
+                                           FontFamily="OpenSansBold"
+                                           FontSize="9"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Red}"
+                                           IsVisible="{Binding IsOverBudget}" />
                                 </VerticalStackLayout>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
@@ -297,11 +427,11 @@
                                        FontFamily="OpenSansBold"
                                        FontSize="13"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T1}" />
+                                       TextColor="{DynamicResource T1}" />
                                 <Label Text="Preview in app, then share to Sheets"
                                        FontFamily="OpenSansRegular"
                                        FontSize="11"
-                                       TextColor="{StaticResource T2}" />
+                                       TextColor="{DynamicResource T2}" />
                             </VerticalStackLayout>
                             <ActivityIndicator Grid.Column="2"
                                                Color="{StaticResource Violet}"
@@ -329,8 +459,8 @@
                             </Grid.GestureRecognizers>
                             <Border WidthRequest="40"
                                     HeightRequest="40"
-                                    BackgroundColor="{StaticResource VioletTint}"
-                                    Stroke="{StaticResource VioletMid}"
+                                    BackgroundColor="{DynamicResource VioletTint}"
+                                    Stroke="{DynamicResource VioletMid}"
                                     StrokeThickness="0.5"
                                     StrokeShape="RoundRectangle 11"
                                     VerticalOptions="Center">
@@ -348,17 +478,25 @@
                                        FontFamily="OpenSansBold"
                                        FontSize="13"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T1}" />
+                                       TextColor="{DynamicResource T1}" />
                                 <Label Text="Tax &amp; reimbursement"
                                        FontFamily="OpenSansRegular"
                                        FontSize="11"
-                                       TextColor="{StaticResource T2}" />
+                                       TextColor="{DynamicResource T2}" />
                             </VerticalStackLayout>
+                            <ActivityIndicator Grid.Column="2"
+                                               Color="{StaticResource Violet}"
+                                               WidthRequest="18"
+                                               HeightRequest="18"
+                                               IsRunning="{Binding IsExporting}"
+                                               IsVisible="{Binding IsExporting}"
+                                               VerticalOptions="Center" />
                             <Image Grid.Column="2"
                                    Source="icon_ui_chevron.svg"
                                    WidthRequest="16"
                                    HeightRequest="16"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding IsExporting, Converter={StaticResource InvertedBoolConverter}}" />
                         </Grid>
                     </Border>
 
@@ -387,15 +525,15 @@
                                                  Margin="12,0,8,0"
                                                  Spacing="2"
                                                  VerticalOptions="Center">
-                                <Label Text="Email to myself"
+                                <Label Text="Email report"
                                        FontFamily="OpenSansBold"
                                        FontSize="13"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T1}" />
-                                <Label Text="{Binding UserEmail}"
+                                       TextColor="{DynamicResource T1}" />
+                                <Label Text="Preview message with PDF attachment"
                                        FontFamily="OpenSansRegular"
                                        FontSize="11"
-                                       TextColor="{StaticResource T2}"
+                                       TextColor="{DynamicResource T2}"
                                        LineBreakMode="TailTruncation" />
                             </VerticalStackLayout>
                             <Image Grid.Column="2"
