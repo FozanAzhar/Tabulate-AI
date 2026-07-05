@@ -20,10 +20,12 @@ public static class MauiProgram
 			});
 
 		builder.Services.AddSingleton(AiExtractionOptions.Load());
+		builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
 		builder.Services.AddSingleton<PendingReceiptContext>();
 		builder.Services.AddSingleton<IReceiptRepository, ReceiptRepository>();
 		builder.Services.AddSingleton<IExpenseExportService, ExpenseExportService>();
 		builder.Services.AddSingleton<IImageStorageService, ImageStorageService>();
+		builder.Services.AddSingleton<IBackupService, BackupService>();
 		builder.Services.AddSingleton<ILocationCaptureService, LocationCaptureService>();
 		builder.Services.AddHttpClient<IMerchantLogoService, MerchantLogoService>();
 		builder.Services.AddHttpClient<CloudOcrService>();
@@ -49,6 +51,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<DashboardViewModel>();
 		builder.Services.AddTransient<ReportsViewModel>();
 		builder.Services.AddTransient<ExportPreviewViewModel>();
+		builder.Services.AddTransient<EmailReportPreviewViewModel>();
 		builder.Services.AddTransient<SettingsViewModel>();
 
 		builder.Services.AddTransient<SplashPage>();
@@ -61,6 +64,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<DashboardPage>();
 		builder.Services.AddTransient<ReportsPage>();
 		builder.Services.AddTransient<ExportPreviewPage>();
+		builder.Services.AddTransient<EmailReportPreviewPage>();
 		builder.Services.AddTransient<SettingsPage>();
 
 #if DEBUG

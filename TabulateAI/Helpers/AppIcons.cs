@@ -23,4 +23,6 @@ public static class AppIcons
     public const string Check = "icon_ui_check.svg";
     public const string Trash = "icon_ui_trash.svg";
     public const string Scan = "icon_feature_scan.svg";
+    public const string Sun = "icon_ui_sun.svg";
+    public const string Moon = "icon_ui_moon.svg";
 }

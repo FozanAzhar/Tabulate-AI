@@ -95,34 +95,42 @@
               ColumnDefinitions="*,Auto,*">
 
             <!-- Gallery -->
-            <VerticalStackLayout Grid.Column="0"
-                                 HorizontalOptions="Center"
-                                 Spacing="4">
-                <VerticalStackLayout.GestureRecognizers>
+            <Border x:Name="GalleryButton"
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    Stroke="Transparent"
+                    Padding="10,4"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding PickGalleryCommand}" />
-                </VerticalStackLayout.GestureRecognizers>
-                <Border WidthRequest="40"
-                        HeightRequest="40"
-                        BackgroundColor="#1A1A24"
-                        Stroke="#2A2A35"
-                        StrokeThickness="0.5"
-                        StrokeShape="RoundRectangle 12"
-                        HorizontalOptions="Center">
-                    <Image Source="icon_ui_gallery_light.svg"
-                           WidthRequest="20"
-                           HeightRequest="20"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
-                </Border>
-                <Label Text="Gallery"
-                       FontFamily="OpenSansRegular"
-                       FontSize="9"
-                       TextColor="{StaticResource Ink4}"
-                       HorizontalOptions="Center" />
-            </VerticalStackLayout>
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Border WidthRequest="44"
+                            HeightRequest="44"
+                            BackgroundColor="#1A1A24"
+                            Stroke="#2A2A35"
+                            StrokeThickness="0.5"
+                            StrokeShape="RoundRectangle 14"
+                            HorizontalOptions="Center">
+                        <Image Source="icon_ui_gallery_light.svg"
+                               WidthRequest="20"
+                               HeightRequest="20"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="Gallery"
+                           FontFamily="OpenSansRegular"
+                           FontSize="9"
+                           TextColor="{StaticResource Ink4}"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
 
             <!-- Shutter -->
-            <Border Grid.Column="1"
+            <Border x:Name="ShutterButton"
+                    Grid.Column="1"
                     WidthRequest="62"
                     HeightRequest="62"
                     BackgroundColor="Transparent"
@@ -144,31 +152,38 @@
             </Border>
 
             <!-- Manual entry -->
-            <VerticalStackLayout Grid.Column="2"
-                                 HorizontalOptions="Center"
-                                 Spacing="4">
-                <VerticalStackLayout.GestureRecognizers>
+            <Border x:Name="ManualButton"
+                    Grid.Column="2"
+                    BackgroundColor="Transparent"
+                    Stroke="Transparent"
+                    Padding="10,4"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ManualEntryCommand}" />
-                </VerticalStackLayout.GestureRecognizers>
-                <Border WidthRequest="40"
-                        HeightRequest="40"
-                        BackgroundColor="#1A1A24"
-                        Stroke="#2A2A35"
-                        StrokeThickness="0.5"
-                        StrokeShape="RoundRectangle 12"
-                        HorizontalOptions="Center">
-                    <Image Source="icon_ui_edit_light.svg"
-                           WidthRequest="20"
-                           HeightRequest="20"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
-                </Border>
-                <Label Text="Manual"
-                       FontFamily="OpenSansRegular"
-                       FontSize="9"
-                       TextColor="{StaticResource Ink4}"
-                       HorizontalOptions="Center" />
-            </VerticalStackLayout>
+                </Border.GestureRecognizers>
+                <VerticalStackLayout Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Border WidthRequest="44"
+                            HeightRequest="44"
+                            BackgroundColor="#1A1A24"
+                            Stroke="#2A2A35"
+                            StrokeThickness="0.5"
+                            StrokeShape="RoundRectangle 14"
+                            HorizontalOptions="Center">
+                        <Image Source="icon_ui_edit_light.svg"
+                               WidthRequest="20"
+                               HeightRequest="20"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="Manual"
+                           FontFamily="OpenSansRegular"
+                           FontSize="9"
+                           TextColor="{StaticResource Ink4}"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
         </Grid>
     </Grid>
 </ContentPage>

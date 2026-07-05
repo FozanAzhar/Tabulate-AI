@@ -6,13 +6,13 @@
              x:DataType="vm:ProcessingViewModel"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
     <Grid RowDefinitions="Auto,*">
 
         <!-- Row 0: Header -->
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
               Padding="16,14,16,12"
               RowDefinitions="Auto,Auto">
             <VerticalStackLayout Grid.Row="0"
@@ -22,18 +22,18 @@
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}"
+                       TextColor="{DynamicResource T1}"
                        HorizontalTextAlignment="Center" />
-                <Label Text="Extracting your receipt data"
+                <Label Text="AI is analysing your receipt"
                        FontFamily="OpenSansRegular"
                        FontSize="11"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        Margin="0,2,0,0"
                        HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
             <BoxView Grid.Row="1"
                      HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,12,0,0" />
         </Grid>
 
@@ -61,9 +61,9 @@
                         WidthRequest="128"
                         HeightRequest="162"
                         HorizontalOptions="Center"
-                        BackgroundColor="{StaticResource CardWhite}"
+                        BackgroundColor="{DynamicResource CardWhite}"
                         StrokeShape="RoundRectangle 12"
-                        Stroke="{StaticResource Border}"
+                        Stroke="{DynamicResource Border}"
                         StrokeThickness="0.5"
                         Padding="10">
                     <Grid RowDefinitions="Auto,*,Auto">
@@ -76,7 +76,7 @@
                                          CornerRadius="7"
                                          Color="{StaticResource Violet}"
                                          VerticalOptions="Center" />
-                                <Label Text="READING"
+                                <Label Text="AI ANALYSIS"
                                        FontFamily="OpenSansBold"
                                        FontSize="8"
                                        FontAttributes="Bold"
@@ -86,36 +86,36 @@
                             <BoxView HeightRequest="6"
                                      WidthRequest="102"
                                      CornerRadius="3"
-                                     Color="{StaticResource VioletMid}"
+                                     Color="{DynamicResource VioletMid}"
                                      HorizontalOptions="Start" />
                             <BoxView HeightRequest="6"
                                      WidthRequest="77"
                                      CornerRadius="3"
-                                     Color="{StaticResource Border2}"
+                                     Color="{DynamicResource Border2}"
                                      Margin="0,2,0,0"
                                      HorizontalOptions="Start" />
                             <BoxView HeightRequest="6"
                                      WidthRequest="115"
                                      CornerRadius="3"
-                                     Color="{StaticResource VioletMid}"
+                                     Color="{DynamicResource VioletMid}"
                                      Margin="0,2,0,0"
                                      HorizontalOptions="Start" />
                             <BoxView HeightRequest="6"
                                      WidthRequest="64"
                                      CornerRadius="3"
-                                     Color="{StaticResource Border2}"
+                                     Color="{DynamicResource Border2}"
                                      Margin="0,6,0,0"
                                      HorizontalOptions="Start" />
                             <BoxView HeightRequest="6"
                                      WidthRequest="96"
                                      CornerRadius="3"
-                                     Color="{StaticResource Border2}"
+                                     Color="{DynamicResource Border2}"
                                      Margin="0,2,0,0"
                                      HorizontalOptions="Start" />
                             <BoxView HeightRequest="6"
                                      WidthRequest="83"
                                      CornerRadius="3"
-                                     Color="{StaticResource Border2}"
+                                     Color="{DynamicResource Border2}"
                                      Margin="0,2,0,0"
                                      HorizontalOptions="Start" />
                         </VerticalStackLayout>
@@ -125,14 +125,14 @@
                               Margin="0,6,0,0">
                             <BoxView Grid.Row="0"
                                      HeightRequest="0.5"
-                                     Color="{StaticResource Border}" />
+                                     Color="{DynamicResource Border}" />
                             <Grid Grid.Row="1"
                                   ColumnDefinitions="*,Auto"
                                   Padding="0,6,0,0">
                                 <Label Text="TOTAL"
                                        FontFamily="OpenSansRegular"
                                        FontSize="7"
-                                       TextColor="{StaticResource T3}"
+                                       TextColor="{DynamicResource T3}"
                                        VerticalOptions="Center" />
                                 <Label Grid.Column="1"
                                        Text="{Binding PreviewTotalFormatted}"
@@ -152,7 +152,7 @@
                              HeightRequest="4"
                              Progress="0"
                              ProgressColor="{StaticResource Violet}"
-                             BackgroundColor="{StaticResource Border}"
+                             BackgroundColor="{DynamicResource Border}"
                              HorizontalOptions="Center" />
 
                 <!-- Status -->
@@ -160,14 +160,14 @@
                        FontFamily="OpenSansBold"
                        FontSize="13"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}"
+                       TextColor="{DynamicResource T1}"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center" />
 
-                <Label Text="Reading store name, items, totals, date &amp; payment method"
+                <Label Text="AI reads store name, items, totals, date &amp; payment method"
                        FontFamily="OpenSansRegular"
                        FontSize="10"
-                       TextColor="{StaticResource T2}"
+                       TextColor="{DynamicResource T2}"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
                        LineHeight="1.5"
@@ -180,9 +180,9 @@
                                      HorizontalOptions="Center"
                                      Margin="0,4,0,0">
 
-                    <Border BackgroundColor="{StaticResource CardWhite}"
+                    <Border BackgroundColor="{DynamicResource CardWhite}"
                             StrokeShape="RoundRectangle 10"
-                            Stroke="{StaticResource Border}"
+                            Stroke="{DynamicResource Border}"
                             StrokeThickness="0.5"
                             Padding="12,9"
                             IsVisible="{Binding Step1Done}">
@@ -195,14 +195,14 @@
                             <Label Text="Store name extracted"
                                    FontFamily="OpenSansRegular"
                                    FontSize="12"
-                                   TextColor="{StaticResource T1}"
+                                   TextColor="{DynamicResource T1}"
                                    VerticalOptions="Center" />
                         </HorizontalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="{StaticResource CardWhite}"
+                    <Border BackgroundColor="{DynamicResource CardWhite}"
                             StrokeShape="RoundRectangle 10"
-                            Stroke="{StaticResource Border}"
+                            Stroke="{DynamicResource Border}"
                             StrokeThickness="0.5"
                             Padding="12,9"
                             IsVisible="{Binding Step2Done}">
@@ -215,14 +215,14 @@
                             <Label Text="Date &amp; time found"
                                    FontFamily="OpenSansRegular"
                                    FontSize="12"
-                                   TextColor="{StaticResource T1}"
+                                   TextColor="{DynamicResource T1}"
                                    VerticalOptions="Center" />
                         </HorizontalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="{StaticResource CardWhite}"
+                    <Border BackgroundColor="{DynamicResource CardWhite}"
                             StrokeShape="RoundRectangle 10"
-                            Stroke="{StaticResource Border}"
+                            Stroke="{DynamicResource Border}"
                             StrokeThickness="0.5"
                             Padding="12,9"
                             Opacity="{Binding Step3Opacity}">
@@ -246,14 +246,14 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Step3InProgress}"
                                                  Value="True">
-                                        <Setter Property="Text" Value="Reading line items..." />
-                                        <Setter Property="TextColor" Value="{StaticResource T2}" />
+                                        <Setter Property="Text" Value="Analysing line items..." />
+                                        <Setter Property="TextColor" Value="{DynamicResource T2}" />
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Step3InProgress}"
                                                  Value="False">
                                         <Setter Property="Text" Value="Line items extracted" />
-                                        <Setter Property="TextColor" Value="{StaticResource T1}" />
+                                        <Setter Property="TextColor" Value="{DynamicResource T1}" />
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>

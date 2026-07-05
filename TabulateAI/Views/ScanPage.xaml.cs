@@ -1,4 +1,5 @@
 using TabulateAI.Drawables;
+using TabulateAI.Helpers;
 using TabulateAI.ViewModels;
 
 namespace TabulateAI.Views;
@@ -19,6 +20,10 @@ public partial class ScanPage : ContentPage
         BindingContext = viewModel;
         ViewfinderGraphics.Drawable = _drawable;
         ViewfinderGraphics.SizeChanged += OnViewfinderSizeChanged;
+
+        PressFeedbackHelper.Attach(GalleryButton);
+        PressFeedbackHelper.Attach(ManualButton);
+        PressFeedbackHelper.Attach(ShutterButton, 0.94);
     }
 
     protected override void OnAppearing()

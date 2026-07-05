@@ -13,7 +13,7 @@ public partial class ScanViewModel : ObservableObject
     private bool _isBusy;
 
     [ObservableProperty]
-    private string _infoStripText = "Smart extract on";
+    private string _infoStripText = "AI analysis ready";
 
     public ScanViewModel(IImageStorageService imageStorageService)
     {

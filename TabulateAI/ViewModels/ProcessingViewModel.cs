@@ -99,13 +99,13 @@ public partial class ProcessingViewModel : ObservableObject
 
         try
         {
-            StatusText = "Uploading to AI server...";
+            StatusText = "Running AI analysis...";
             var extraction = await _ocrService.ExtractReceiptDataAsync(sourcePath);
 
             await TryApplyLocationAsync(locationTask);
 
             Step1Done = !string.IsNullOrWhiteSpace(extraction.Merchant);
-            StatusText = Step1Done ? "Date & time found" : "Extracting details...";
+            StatusText = Step1Done ? "Store name found" : "Analysing receipt details...";
             Step2Done = extraction.Date.HasValue;
 
             if (extraction.Amount.HasValue)
@@ -171,7 +171,7 @@ public partial class ProcessingViewModel : ObservableObject
 
         Step3InProgress = false;
         Step3Opacity = 1.0;
-        StatusText = "Extraction complete";
+        StatusText = "AI analysis complete";
         IsComplete = true;
 
         if (string.IsNullOrWhiteSpace(_reviewQuery) && !string.IsNullOrWhiteSpace(sourcePath))
