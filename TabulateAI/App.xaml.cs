@@ -1,12 +1,14 @@
+using TabulateAI.Services;
 using TabulateAI.Views;
 
 namespace TabulateAI;
 
 public partial class App : Application
 {
-	public App()
+	public App(IAppSettingsService appSettings)
 	{
 		InitializeComponent();
+		appSettings.Load();
 
 		AppDomain.CurrentDomain.UnhandledException += (_, args) =>
 		{

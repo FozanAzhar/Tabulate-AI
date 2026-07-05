@@ -45,4 +45,17 @@ public class ImageStorageService : IImageStorageService
 
         return Task.CompletedTask;
     }
+
+    public Task ClearAllReceiptImagesAsync()
+    {
+        if (Directory.Exists(_receiptsDirectory))
+        {
+            foreach (var file in Directory.EnumerateFiles(_receiptsDirectory))
+            {
+                File.Delete(file);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
 }

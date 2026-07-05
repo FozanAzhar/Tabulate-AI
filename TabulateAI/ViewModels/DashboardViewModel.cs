@@ -10,6 +10,7 @@ public partial class DashboardViewModel : ObservableObject
 {
     private readonly IReceiptRepository _receiptRepository;
     private readonly IMerchantLogoService _merchantLogoService;
+    private readonly IAppSettingsService _appSettings;
 
     [ObservableProperty]
     private decimal _totalSpent;
@@ -21,7 +22,10 @@ public partial class DashboardViewModel : ObservableObject
     private string _greeting = "Good morning";
 
     [ObservableProperty]
-    private string _userInitials = "FA";
+    private string _userInitials = "U";
+
+    [ObservableProperty]
+    private string _themeIcon = AppIcons.Moon;
 
     [ObservableProperty]
     private int _receiptCount;
@@ -60,6 +64,12 @@ public partial class DashboardViewModel : ObservableObject
     private List<ReportLegendItem> _legendItems = [];
 
     [ObservableProperty]
+    private List<CategoryBudgetStatus> _budgetStatuses = [];
+
+    [ObservableProperty]
+    private bool _hasBudgets;
+
+    [ObservableProperty]
     private bool _hasData;
 
     [ObservableProperty]
@@ -71,16 +81,27 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
-    public DashboardViewModel(IReceiptRepository receiptRepository, IMerchantLogoService merchantLogoService)
+    public DashboardViewModel(
+        IReceiptRepository receiptRepository,
+        IMerchantLogoService merchantLogoService,
+        IAppSettingsService appSettings)
     {
         _receiptRepository = receiptRepository;
         _merchantLogoService = merchantLogoService;
-        Greeting = BuildGreeting();
+        _appSettings = appSettings;
+        _appSettings.SettingsChanged += (_, _) => SyncProfileAndTheme();
+        SyncProfileAndTheme();
     }
 
     public async Task InitializeAsync()
     {
         await LoadDashboardAsync();
+    }
+
+    [RelayCommand]
+    private void ToggleTheme()
+    {
+        _appSettings.ToggleTheme();
     }
 
     [RelayCommand]
@@ -115,7 +136,7 @@ public partial class DashboardViewModel : ObservableObject
         try
         {
             ErrorMessage = string.Empty;
-            Greeting = BuildGreeting();
+            SyncProfileAndTheme();
 
             var now = DateTime.Now;
             HeroPeriodLabel = $"{now:MMMM yyyy}".ToUpperInvariant() + " · TOTAL SPENT";
@@ -138,6 +159,8 @@ public partial class DashboardViewModel : ObservableObject
                 StackedBarSegments = [];
                 LegendItems = [];
                 HasCategoryBreakdown = false;
+                BudgetStatuses = [];
+                HasBudgets = false;
                 WeeklyTotalFormatted = "$0";
                 WeeklyReceiptCount = 0;
                 TopCategory = "—";
@@ -189,6 +212,8 @@ public partial class DashboardViewModel : ObservableObject
             StackedBarSegments = CategoryChartHelper.BuildStackedBar(summaries, monthlyTotal);
             LegendItems = CategoryChartHelper.BuildLegend(summaries);
             HasCategoryBreakdown = CategoryBreakdown.Count > 0;
+            BudgetStatuses = BudgetHelper.BuildStatus(summaries);
+            HasBudgets = BudgetStatuses.Count > 0;
 
             var previousMonth = now.AddMonths(-1);
             var previousTotal = await _receiptRepository.GetMonthlyTotalAsync(previousMonth.Year, previousMonth.Month);
@@ -216,7 +241,14 @@ public partial class DashboardViewModel : ObservableObject
         }
     }
 
-    private static string BuildGreeting()
+    private void SyncProfileAndTheme()
+    {
+        UserInitials = _appSettings.UserInitials;
+        ThemeIcon = _appSettings.ThemeIcon;
+        Greeting = BuildGreeting(_appSettings.DisplayName);
+    }
+
+    private static string BuildGreeting(string displayName)
     {
         var hour = DateTime.Now.Hour;
         var timeGreeting = hour switch
@@ -225,6 +257,14 @@ public partial class DashboardViewModel : ObservableObject
             < 17 => "Good afternoon",
             _ => "Good evening"
         };
-        return timeGreeting;
+
+        if (string.IsNullOrWhiteSpace(displayName) ||
+            displayName.Equals("User", StringComparison.OrdinalIgnoreCase))
+        {
+            return timeGreeting;
+        }
+
+        var firstName = displayName.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[0];
+        return $"{timeGreeting}, {firstName}";
     }
 }

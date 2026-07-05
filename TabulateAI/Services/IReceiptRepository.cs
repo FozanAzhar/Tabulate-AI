@@ -16,6 +16,10 @@ public interface IReceiptRepository
 
     Task DeleteAsync(int id);
 
+    Task DeleteAllAsync();
+
+    Task ResetConnectionAsync();
+
     Task<List<Receipt>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
 
     Task<decimal> GetMonthlyTotalAsync(int year, int month);

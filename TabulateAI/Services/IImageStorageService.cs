@@ -9,4 +9,6 @@ public interface IImageStorageService
     bool ImageExists(string imagePath);
 
     Task DeleteImageAsync(string imagePath);
+
+    Task ClearAllReceiptImagesAsync();
 }

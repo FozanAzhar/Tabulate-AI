@@ -79,6 +79,21 @@ public class ReceiptRepository : IReceiptRepository
         await db.DeleteAsync<Receipt>(id);
     }
 
+    public async Task DeleteAllAsync()
+    {
+        var db = await GetConnectionAsync();
+        await db.DeleteAllAsync<Receipt>();
+    }
+
+    public async Task ResetConnectionAsync()
+    {
+        if (_database is not null)
+        {
+            await _database.CloseAsync();
+            _database = null;
+        }
+    }
+
     public async Task<List<Receipt>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         var db = await GetConnectionAsync();

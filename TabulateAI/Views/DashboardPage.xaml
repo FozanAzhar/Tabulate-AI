@@ -7,15 +7,15 @@
              x:Class="TabulateAI.Views.DashboardPage"
              x:DataType="vm:DashboardViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource Surface}">
+             BackgroundColor="{DynamicResource Surface}">
 
     <Grid RowDefinitions="Auto,*">
 
         <!-- Row 0: Page header -->
         <Grid Grid.Row="0"
-              BackgroundColor="{StaticResource CardWhite}"
+              BackgroundColor="{DynamicResource CardWhite}"
               Padding="16,14,16,12"
-              ColumnDefinitions="*,Auto"
+              ColumnDefinitions="*,Auto,Auto"
               RowDefinitions="Auto,Auto">
             <VerticalStackLayout Grid.Column="0"
                                  Grid.Row="0"
@@ -24,20 +24,39 @@
                 <Label Text="{Binding Greeting}"
                        FontFamily="OpenSansRegular"
                        FontSize="12"
-                       TextColor="{StaticResource T2}" />
+                       TextColor="{DynamicResource T2}" />
                 <Label Text="Overview"
                        FontFamily="OpenSansBold"
                        FontSize="17"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource T1}"
+                       TextColor="{DynamicResource T1}"
                        Margin="0,2,0,0" />
             </VerticalStackLayout>
             <Border Grid.Column="1"
                     Grid.Row="0"
                     WidthRequest="34"
                     HeightRequest="34"
-                    BackgroundColor="{StaticResource VioletTint}"
-                    Stroke="{StaticResource VioletMid}"
+                    BackgroundColor="{DynamicResource VioletTint}"
+                    Stroke="{DynamicResource VioletMid}"
+                    StrokeThickness="0.5"
+                    StrokeShape="RoundRectangle 17"
+                    VerticalOptions="Center"
+                    Margin="0,0,8,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleThemeCommand}" />
+                </Border.GestureRecognizers>
+                <Image Source="{Binding ThemeIcon}"
+                       WidthRequest="18"
+                       HeightRequest="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+            <Border Grid.Column="2"
+                    Grid.Row="0"
+                    WidthRequest="34"
+                    HeightRequest="34"
+                    BackgroundColor="{DynamicResource VioletTint}"
+                    Stroke="{DynamicResource VioletMid}"
                     StrokeThickness="0.5"
                     StrokeShape="RoundRectangle 17"
                     VerticalOptions="Center">
@@ -52,7 +71,7 @@
             <BoxView Grid.Row="1"
                      Grid.ColumnSpan="2"
                      HeightRequest="0.5"
-                     Color="{StaticResource Border}"
+                     Color="{DynamicResource Border}"
                      Margin="0,12,0,0"
                      VerticalOptions="End" />
         </Grid>
@@ -69,8 +88,8 @@
                                      Margin="0,80,0,0">
                     <Border WidthRequest="56"
                             HeightRequest="56"
-                            BackgroundColor="{StaticResource VioletTint}"
-                            Stroke="{StaticResource VioletMid}"
+                            BackgroundColor="{DynamicResource VioletTint}"
+                            Stroke="{DynamicResource VioletMid}"
                             StrokeThickness="0.5"
                             StrokeShape="RoundRectangle 16"
                             HorizontalOptions="Center">
@@ -84,13 +103,13 @@
                            FontFamily="OpenSansBold"
                            FontSize="17"
                            FontAttributes="Bold"
-                           TextColor="{StaticResource T1}"
+                           TextColor="{DynamicResource T1}"
                            HorizontalOptions="Center"
                            Margin="0,16,0,0" />
                     <Label Text="Scan a receipt or add an expense manually."
                            FontFamily="OpenSansRegular"
                            FontSize="13"
-                           TextColor="{StaticResource T2}"
+                           TextColor="{DynamicResource T2}"
                            HorizontalTextAlignment="Center"
                            Margin="0,8,0,0" />
                     <Border BackgroundColor="{StaticResource Violet}"
@@ -119,9 +138,9 @@
                     </Border>
                     <Button Text="Add manually"
                             Command="{Binding AddManualCommand}"
-                            BackgroundColor="{StaticResource VioletTint}"
+                            BackgroundColor="{DynamicResource VioletTint}"
                             TextColor="{StaticResource Violet}"
-                            BorderColor="{StaticResource VioletMid}"
+                            BorderColor="{DynamicResource VioletMid}"
                             BorderWidth="0.5"
                             FontFamily="OpenSansBold"
                             FontAttributes="Bold"
@@ -200,8 +219,8 @@
                           ColumnDefinitions="*,*"
                           ColumnSpacing="8">
                         <Border Grid.Column="0"
-                                BackgroundColor="{StaticResource CardWhite}"
-                                Stroke="{StaticResource VioletMid}"
+                                BackgroundColor="{DynamicResource CardWhite}"
+                                Stroke="{DynamicResource VioletMid}"
                                 StrokeThickness="0.5"
                                 StrokeShape="RoundRectangle 12"
                                 HeightRequest="42">
@@ -224,8 +243,8 @@
                             </HorizontalStackLayout>
                         </Border>
                         <Border Grid.Column="1"
-                                BackgroundColor="{StaticResource VioletTint}"
-                                Stroke="{StaticResource VioletMid}"
+                                BackgroundColor="{DynamicResource VioletTint}"
+                                Stroke="{DynamicResource VioletMid}"
                                 StrokeThickness="0.5"
                                 StrokeShape="RoundRectangle 12"
                                 HeightRequest="42">
@@ -254,9 +273,9 @@
                           ColumnDefinitions="*,*,*"
                           ColumnSpacing="8">
                         <Border Grid.Column="0"
-                                BackgroundColor="{StaticResource CardWhite}"
+                                BackgroundColor="{DynamicResource CardWhite}"
                                 StrokeShape="RoundRectangle 14"
-                                Stroke="{StaticResource Border}"
+                                Stroke="{DynamicResource Border}"
                                 StrokeThickness="0.5"
                                 Padding="12">
                             <VerticalStackLayout Spacing="0">
@@ -264,14 +283,14 @@
                                        FontFamily="OpenSansBold"
                                        FontSize="9"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T3}"
+                                       TextColor="{DynamicResource T3}"
                                        CharacterSpacing="0.5"
                                        TextTransform="Uppercase" />
                                 <Label Text="{Binding WeeklyTotalFormatted}"
                                        FontFamily="OpenSansBold"
                                        FontSize="20"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T1}"
+                                       TextColor="{DynamicResource T1}"
                                        Margin="0,4,0,0" />
                                 <Label Text="{Binding WeeklyReceiptCount, StringFormat='{0} receipts'}"
                                        FontFamily="OpenSansBold"
@@ -282,9 +301,9 @@
                             </VerticalStackLayout>
                         </Border>
                         <Border Grid.Column="1"
-                                BackgroundColor="{StaticResource CardWhite}"
+                                BackgroundColor="{DynamicResource CardWhite}"
                                 StrokeShape="RoundRectangle 14"
-                                Stroke="{StaticResource Border}"
+                                Stroke="{DynamicResource Border}"
                                 StrokeThickness="0.5"
                                 Padding="12">
                             <VerticalStackLayout Spacing="0">
@@ -292,14 +311,14 @@
                                        FontFamily="OpenSansBold"
                                        FontSize="9"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T3}"
+                                       TextColor="{DynamicResource T3}"
                                        CharacterSpacing="0.5"
                                        TextTransform="Uppercase" />
                                 <Label Text="{Binding TopCategory}"
                                        FontFamily="OpenSansBold"
                                        FontSize="14"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T1}"
+                                       TextColor="{DynamicResource T1}"
                                        Margin="0,4,0,0"
                                        LineBreakMode="TailTruncation"
                                        MaxLines="1" />
@@ -312,9 +331,9 @@
                             </VerticalStackLayout>
                         </Border>
                         <Border Grid.Column="2"
-                                BackgroundColor="{StaticResource CardWhite}"
+                                BackgroundColor="{DynamicResource CardWhite}"
                                 StrokeShape="RoundRectangle 14"
-                                Stroke="{StaticResource Border}"
+                                Stroke="{DynamicResource Border}"
                                 StrokeThickness="0.5"
                                 Padding="12">
                             <VerticalStackLayout Spacing="0">
@@ -322,14 +341,14 @@
                                        FontFamily="OpenSansBold"
                                        FontSize="9"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T3}"
+                                       TextColor="{DynamicResource T3}"
                                        CharacterSpacing="0.5"
                                        TextTransform="Uppercase" />
                                 <Label Text="{Binding PendingCount}"
                                        FontFamily="OpenSansBold"
                                        FontSize="20"
                                        FontAttributes="Bold"
-                                       TextColor="{StaticResource T1}"
+                                       TextColor="{DynamicResource T1}"
                                        Margin="0,4,0,0" />
                                 <Label Text="need review"
                                        FontFamily="OpenSansBold"
@@ -341,6 +360,58 @@
                         </Border>
                     </Grid>
 
+                    <!-- Budget progress -->
+                    <Border Style="{StaticResource CardBorder}"
+                            Margin="14,10,14,0"
+                            Padding="14,12"
+                            IsVisible="{Binding HasBudgets}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Budget progress"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{DynamicResource T1}" />
+                            <VerticalStackLayout Spacing="12"
+                                                 BindableLayout.ItemsSource="{Binding BudgetStatuses}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:CategoryBudgetStatus">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <Label Text="{Binding Category}"
+                                                       FontFamily="OpenSansBold"
+                                                       FontSize="12"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{DynamicResource T1}"
+                                                       VerticalOptions="Center" />
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding StatusLabel}"
+                                                       FontFamily="OpenSansRegular"
+                                                       FontSize="10"
+                                                       TextColor="{DynamicResource T2}"
+                                                       VerticalOptions="Center" />
+                                            </Grid>
+                                            <Border HeightRequest="6"
+                                                    BackgroundColor="{DynamicResource Border2}"
+                                                    StrokeShape="RoundRectangle 3"
+                                                    Stroke="Transparent">
+                                                <BoxView Color="{Binding BarColor}"
+                                                         WidthRequest="{Binding BarFillWidth}"
+                                                         HeightRequest="6"
+                                                         HorizontalOptions="Start" />
+                                            </Border>
+                                            <Label Text="{Binding OverBudgetLabel}"
+                                                   FontFamily="OpenSansBold"
+                                                   FontSize="9"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource Red}"
+                                                   IsVisible="{Binding IsOverBudget}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
                     <!-- Spending breakdown -->
                     <Border Style="{StaticResource CardBorder}"
                             Margin="14,10,14,0"
@@ -350,14 +421,14 @@
                                    FontFamily="OpenSansBold"
                                    FontSize="10"
                                    FontAttributes="Bold"
-                                   TextColor="{StaticResource T3}"
+                                   TextColor="{DynamicResource T3}"
                                    CharacterSpacing="0.7"
                                    TextTransform="Uppercase" />
 
                             <Border HeightRequest="10"
                                     StrokeShape="RoundRectangle 5"
                                     Stroke="Transparent"
-                                    BackgroundColor="{StaticResource Border2}"
+                                    BackgroundColor="{DynamicResource Border2}"
                                     HorizontalOptions="Fill"
                                     IsVisible="{Binding HasCategoryBreakdown}">
                                 <FlexLayout Direction="Row"
@@ -391,7 +462,7 @@
                                             <Label Text="{Binding Label}"
                                                    FontFamily="OpenSansRegular"
                                                    FontSize="10"
-                                                   TextColor="{StaticResource T2}"
+                                                   TextColor="{DynamicResource T2}"
                                                    VerticalOptions="Center" />
                                         </HorizontalStackLayout>
                                     </DataTemplate>
@@ -409,18 +480,18 @@
                                                        FontFamily="OpenSansBold"
                                                        FontSize="12"
                                                        FontAttributes="Bold"
-                                                       TextColor="{StaticResource T1}"
+                                                       TextColor="{DynamicResource T1}"
                                                        VerticalOptions="Center" />
                                                 <Label Grid.Column="1"
                                                        Text="{Binding AmountLabel}"
                                                        FontFamily="OpenSansRegular"
                                                        FontSize="11"
-                                                       TextColor="{StaticResource T2}"
+                                                       TextColor="{DynamicResource T2}"
                                                        VerticalOptions="Center"
                                                        HorizontalTextAlignment="End" />
                                             </Grid>
                                             <Grid HeightRequest="6"
-                                                  BackgroundColor="{StaticResource Border}">
+                                                  BackgroundColor="{DynamicResource Border}">
                                                 <Border HeightRequest="6"
                                                         HorizontalOptions="Start"
                                                         WidthRequest="{Binding BarFillWidth}"
@@ -436,7 +507,7 @@
                             <Label Text="Add expenses to see how your spending splits by category."
                                    FontFamily="OpenSansRegular"
                                    FontSize="12"
-                                   TextColor="{StaticResource T2}"
+                                   TextColor="{DynamicResource T2}"
                                    IsVisible="{Binding HasCategoryBreakdown, Converter={StaticResource InvertedBoolConverter}}" />
                         </VerticalStackLayout>
                     </Border>
@@ -468,7 +539,7 @@
                                                     <DataTrigger TargetType="Border"
                                                                  Binding="{Binding HasMerchantLogo}"
                                                                  Value="True">
-                                                        <Setter Property="Stroke" Value="{StaticResource Border}" />
+                                                        <Setter Property="Stroke" Value="{DynamicResource Border}" />
                                                         <Setter Property="StrokeThickness" Value="0.5" />
                                                     </DataTrigger>
                                                 </Border.Triggers>
@@ -496,22 +567,22 @@
                                                        FontFamily="OpenSansBold"
                                                        FontSize="13"
                                                        FontAttributes="Bold"
-                                                       TextColor="{StaticResource T1}" />
+                                                       TextColor="{DynamicResource T1}" />
                                                 <Label Text="{Binding Meta}"
                                                        FontFamily="OpenSansRegular"
                                                        FontSize="10"
-                                                       TextColor="{StaticResource T2}" />
+                                                       TextColor="{DynamicResource T2}" />
                                             </VerticalStackLayout>
                                             <Label Grid.Column="2"
                                                    Text="{Binding AmountFormatted}"
                                                    FontFamily="OpenSansBold"
                                                    FontSize="14"
                                                    FontAttributes="Bold"
-                                                   TextColor="{StaticResource T1}"
+                                                   TextColor="{DynamicResource T1}"
                                                    VerticalOptions="Center" />
                                         </Grid>
                                         <BoxView HeightRequest="0.5"
-                                                 Color="{StaticResource Border2}"
+                                                 Color="{DynamicResource Border2}"
                                                  IsVisible="{Binding ShowDivider}" />
                                     </VerticalStackLayout>
                                 </DataTemplate>

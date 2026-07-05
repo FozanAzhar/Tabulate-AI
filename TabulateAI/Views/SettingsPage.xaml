@@ -2,74 +2,537 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TabulateAI.ViewModels"
+             xmlns:models="clr-namespace:TabulateAI.Models"
              x:Class="TabulateAI.Views.SettingsPage"
+             x:Name="SettingsRoot"
              x:DataType="vm:SettingsViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{StaticResource AppBackground}">
+             BackgroundColor="{DynamicResource Surface}">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="0">
+    <Grid RowDefinitions="Auto,*">
 
-            <Grid BackgroundColor="{StaticResource UoNNavy}" Padding="16,14,16,12">
-                <VerticalStackLayout Spacing="2">
-                    <Label Text="Settings" Style="{StaticResource PageTitleStyle}" />
-                    <Label Text="Account &amp; preferences" Style="{StaticResource PageSubtitleStyle}" />
-                </VerticalStackLayout>
-            </Grid>
+        <Grid Grid.Row="0"
+              BackgroundColor="{DynamicResource CardWhite}"
+              Padding="16,14,16,12"
+              RowDefinitions="Auto,Auto">
+            <VerticalStackLayout Grid.Row="0" Spacing="0">
+                <Label Text="Settings"
+                       FontFamily="OpenSansBold"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T1}" />
+                <Label Text="Profile, appearance, and data"
+                       FontFamily="OpenSansRegular"
+                       FontSize="11"
+                       TextColor="{DynamicResource T2}"
+                       Margin="0,2,0,0" />
+            </VerticalStackLayout>
+            <BoxView Grid.Row="1"
+                     HeightRequest="0.5"
+                     Color="{DynamicResource Border}"
+                     Margin="0,12,0,0" />
+        </Grid>
 
-            <Border BackgroundColor="{StaticResource CardWhite}"
-                    Margin="14,14,14,0"
-                    StrokeShape="RoundRectangle 14"
-                    Stroke="{StaticResource BorderFaint}"
-                    StrokeThickness="0.5"
-                    Padding="14">
-                <HorizontalStackLayout Spacing="12">
-                    <Border WidthRequest="36"
-                            HeightRequest="36"
-                            BackgroundColor="{StaticResource UoNGold}"
-                            StrokeShape="RoundRectangle 18"
-                            Stroke="Transparent">
-                        <Label Text="{Binding UserName}"
-                               FontSize="13"
-                               FontAttributes="Bold"
-                               TextColor="{StaticResource UoNNavyDark}"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center" />
-                    </Border>
-                    <VerticalStackLayout VerticalOptions="Center" Spacing="2">
-                        <Label Text="University of Newcastle" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
-                        <Label Text="{Binding UserEmail}" FontSize="10" TextColor="{StaticResource TextMuted}" />
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,16,16,28" Spacing="0">
+
+                <!-- Profile -->
+                <Label Text="PROFILE"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,0,0,8" />
+
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14">
+                    <VerticalStackLayout Spacing="14">
+                        <HorizontalStackLayout Spacing="12">
+                            <Border WidthRequest="44"
+                                    HeightRequest="44"
+                                    BackgroundColor="{DynamicResource VioletTint}"
+                                    Stroke="{DynamicResource VioletMid}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 22">
+                                <Label Text="{Binding UserInitials}"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                                <Label Text="Your profile"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{DynamicResource T1}" />
+                                <Label Text="Used on your dashboard greeting"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="11"
+                                       TextColor="{DynamicResource T2}" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Display name"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="11"
+                                   TextColor="{DynamicResource T2}" />
+                            <Border Stroke="{DynamicResource Border}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{DynamicResource Surface}"
+                                    Padding="12,4">
+                                <Entry Text="{Binding DisplayName}"
+                                       Placeholder="Your name"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource T1}"
+                                       PlaceholderColor="{DynamicResource T3}"
+                                       BackgroundColor="Transparent"
+                                       ReturnCommand="{Binding SaveProfileCommand}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Email"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="11"
+                                   TextColor="{DynamicResource T2}" />
+                            <Border Stroke="{DynamicResource Border}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{DynamicResource Surface}"
+                                    Padding="12,4">
+                                <Entry Text="{Binding Email}"
+                                       Placeholder="you@example.com"
+                                       Keyboard="Email"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource T1}"
+                                       PlaceholderColor="{DynamicResource T3}"
+                                       BackgroundColor="Transparent"
+                                       ReturnCommand="{Binding SaveProfileCommand}" />
+                            </Border>
+                            <Label Text="Used when sharing expense reports"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="10"
+                                   TextColor="{DynamicResource T3}" />
+                        </VerticalStackLayout>
+
+                        <Border BackgroundColor="{StaticResource Violet}"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="Transparent"
+                                HeightRequest="44">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SaveProfileCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Save profile"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource White}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
                     </VerticalStackLayout>
-                </HorizontalStackLayout>
-            </Border>
+                </Border>
 
-            <Label Text="APP INFO"
-                   Style="{StaticResource SectionLabelStyle}"
-                   Margin="14,16,14,6" />
+                <!-- Appearance -->
+                <Label Text="APPEARANCE"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,20,0,8" />
 
-            <Border BackgroundColor="{StaticResource CardWhite}"
-                    Margin="14,0,14,20"
-                    StrokeShape="RoundRectangle 14"
-                    Stroke="{StaticResource BorderFaint}"
-                    StrokeThickness="0.5"
-                    Padding="0">
-                <VerticalStackLayout>
-                    <Grid Padding="14,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                        <Label Text="Version" FontSize="12" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
-                        <Label Grid.Column="1" Text="1.0.0" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14,12">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Border Grid.Column="0"
+                                WidthRequest="36"
+                                HeightRequest="36"
+                                BackgroundColor="{DynamicResource VioletTint}"
+                                Stroke="{DynamicResource VioletMid}"
+                                StrokeThickness="0.5"
+                                StrokeShape="RoundRectangle 10"
+                                VerticalOptions="Center">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleThemeCommand}" />
+                            </Border.GestureRecognizers>
+                            <Image Source="{Binding ThemeIcon}"
+                                   WidthRequest="18"
+                                   HeightRequest="18"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1"
+                                             VerticalOptions="Center"
+                                             Spacing="2">
+                            <Label Text="Dark mode"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{DynamicResource T1}" />
+                            <Label Text="{Binding ThemeDescription}"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="10"
+                                   TextColor="{DynamicResource T2}" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="2"
+                                x:Name="DarkModeSwitch"
+                                IsToggled="{Binding IsDarkMode, Mode=OneWay}"
+                                OnColor="{StaticResource Violet}"
+                                VerticalOptions="Center"
+                                Toggled="OnDarkModeToggled" />
                     </Grid>
-                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
-                    <Grid Padding="14,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                        <Label Text="OCR Engine" FontSize="12" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
-                        <Label Grid.Column="1" Text="Gemini AI" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource UoNNavyLight}" VerticalOptions="Center" HorizontalTextAlignment="End" />
-                    </Grid>
-                    <BoxView HeightRequest="0.5" Color="{StaticResource BorderFaint}" />
-                    <Grid Padding="14,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                        <Label Text="Cloud Storage" FontSize="12" TextColor="{StaticResource TextMuted}" VerticalOptions="Center" />
-                        <Label Grid.Column="1" Text="Supabase" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource UoNNavyLight}" VerticalOptions="Center" HorizontalTextAlignment="End" />
-                    </Grid>
-                </VerticalStackLayout>
-            </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+                </Border>
+
+                <!-- Categories -->
+                <Label Text="CATEGORIES"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,20,0,8" />
+
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Add custom categories for expenses that don't fit the presets."
+                               FontFamily="OpenSansRegular"
+                               FontSize="11"
+                               TextColor="{DynamicResource T2}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Border Stroke="{DynamicResource Border}"
+                                    StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{DynamicResource Surface}"
+                                    Padding="12,4">
+                                <Entry Text="{Binding NewCategoryName}"
+                                       Placeholder="New category name"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource T1}"
+                                       PlaceholderColor="{DynamicResource T3}"
+                                       BackgroundColor="Transparent"
+                                       ReturnCommand="{Binding AddCategoryCommand}" />
+                            </Border>
+                            <Border Grid.Column="1"
+                                    BackgroundColor="{StaticResource Violet}"
+                                    StrokeShape="RoundRectangle 10"
+                                    Stroke="Transparent"
+                                    Padding="14,0"
+                                    HeightRequest="40">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding AddCategoryCommand}" />
+                                </Border.GestureRecognizers>
+                                <Label Text="Add"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource White}"
+                                       VerticalOptions="Center" />
+                            </Border>
+                        </Grid>
+                        <VerticalStackLayout Spacing="0"
+                                             BindableLayout.ItemsSource="{Binding CustomCategories}">
+                            <BindableLayout.EmptyView>
+                                <Label Text="No custom categories yet."
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="11"
+                                       TextColor="{DynamicResource T3}" />
+                            </BindableLayout.EmptyView>
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:CategoryManageItem">
+                                    <Grid Padding="0,8" ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}"
+                                                   FontFamily="OpenSansBold"
+                                                   FontSize="13"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{DynamicResource T1}" />
+                                            <Label Text="{Binding Subtitle}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="10"
+                                                   TextColor="{DynamicResource T2}" />
+                                        </VerticalStackLayout>
+                                        <Border Grid.Column="1"
+                                                Padding="10,6"
+                                                Stroke="{DynamicResource Border}"
+                                                StrokeThickness="0.5"
+                                                StrokeShape="RoundRectangle 8"
+                                                BackgroundColor="{DynamicResource Surface}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding DeleteCategoryCommand, Source={x:Reference SettingsRoot}, Path=BindingContext}"
+                                                                      CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <Label Text="Remove"
+                                                   FontFamily="OpenSansBold"
+                                                   FontSize="10"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource Red}" />
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Budgets -->
+                <Label Text="MONTHLY BUDGETS"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,20,0,8" />
+
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Set a monthly spending limit per category. Leave blank to remove a budget."
+                               FontFamily="OpenSansRegular"
+                               FontSize="11"
+                               TextColor="{DynamicResource T2}" />
+                        <VerticalStackLayout Spacing="8"
+                                             BindableLayout.ItemsSource="{Binding BudgetEditors}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:BudgetEditorItem">
+                                    <Grid ColumnDefinitions="*,100" ColumnSpacing="10">
+                                        <Label Text="{Binding Category}"
+                                               FontFamily="OpenSansRegular"
+                                               FontSize="13"
+                                               TextColor="{DynamicResource T1}"
+                                               VerticalOptions="Center" />
+                                        <Border Grid.Column="1"
+                                                Stroke="{DynamicResource Border}"
+                                                StrokeThickness="0.5"
+                                                StrokeShape="RoundRectangle 8"
+                                                BackgroundColor="{DynamicResource Surface}"
+                                                Padding="10,4">
+                                            <Entry Text="{Binding BudgetText}"
+                                                   Placeholder="$0"
+                                                   Keyboard="Numeric"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="13"
+                                                   TextColor="{DynamicResource T1}"
+                                                   PlaceholderColor="{DynamicResource T3}"
+                                                   BackgroundColor="Transparent"
+                                                   HorizontalTextAlignment="End" />
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                        <Border BackgroundColor="{StaticResource Violet}"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="Transparent"
+                                HeightRequest="44">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SaveBudgetsCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Save budgets"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource White}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Data -->
+                <Label Text="DATA"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,20,0,8" />
+
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="0">
+                    <VerticalStackLayout>
+                        <Grid Padding="14,12" ColumnDefinitions="*,Auto">
+                            <Label Text="Stored receipts"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding ReceiptCount}"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{DynamicResource T1}"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Grid Padding="14,12" ColumnDefinitions="*,Auto">
+                            <Label Text="Storage"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding StorageLabel}"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Violet}"
+                                   VerticalOptions="Center"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Border Padding="14,12"
+                                BackgroundColor="Transparent"
+                                Stroke="Transparent">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CreateBackupCommand}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="8">
+                                <Image Source="icon_ui_share.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       VerticalOptions="Center" />
+                                <Label Text="Back up data"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Violet}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Border Padding="14,12"
+                                BackgroundColor="Transparent"
+                                Stroke="Transparent">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RestoreBackupCommand}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="8">
+                                <Image Source="icon_ui_gallery.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       VerticalOptions="Center" />
+                                <Label Text="Restore from backup"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="{DynamicResource T1}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Border Padding="14,12"
+                                BackgroundColor="Transparent"
+                                Stroke="Transparent">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ClearAllDataCommand}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="8">
+                                <Image Source="icon_ui_trash.svg"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       VerticalOptions="Center" />
+                                <Label Text="Delete all local data"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Red}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- About -->
+                <Label Text="ABOUT"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,20,0,8" />
+
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="0">
+                    <VerticalStackLayout>
+                        <Grid Padding="14,12" ColumnDefinitions="*,Auto">
+                            <Label Text="App"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="Expensely"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{DynamicResource T1}"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Grid Padding="14,12" ColumnDefinitions="*,Auto">
+                            <Label Text="Version"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding AppVersion}"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{DynamicResource T1}"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
+                        <Grid Padding="14,12" ColumnDefinitions="*,Auto">
+                            <Label Text="Receipt scanning"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{DynamicResource T2}"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding OcrEngineLabel}"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Violet}"
+                                   VerticalOptions="Center"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

@@ -1,3 +1,4 @@
+using TabulateAI.Helpers;
 using TabulateAI.Views;
 
 
@@ -34,6 +35,7 @@ public partial class AppShell : Shell
 
 		Routing.RegisterRoute("manualexpense", typeof(ManualExpensePage));
 		Routing.RegisterRoute("exportpreview", typeof(ExportPreviewPage));
+		Routing.RegisterRoute("emailreportpreview", typeof(EmailReportPreviewPage));
 
 		Routing.RegisterRoute("Processing", typeof(ProcessingPage));
 
@@ -48,17 +50,14 @@ public partial class AppShell : Shell
 
 
 	private async void OnShellLoaded(object? sender, EventArgs e)
-
 	{
+		ThemeResourceHelper.ApplyShellColors();
 
 #if ANDROID
-
 		await Task.Delay(150);
-
 		FixAndroidTabBar();
-
+		ThemeResourceHelper.ApplyShellColors();
 #endif
-
 	}
 
 

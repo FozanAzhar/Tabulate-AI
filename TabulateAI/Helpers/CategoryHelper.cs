@@ -52,6 +52,36 @@ public static class CategoryHelper
         Preferences.Default.Set(PreferencesKey, string.Join('|', custom));
     }
 
+    public static void RemoveCustomCategory(string category)
+    {
+        var trimmed = category.Trim();
+        if (string.IsNullOrWhiteSpace(trimmed))
+        {
+            return;
+        }
+
+        var custom = GetCustomCategories()
+            .Where(c => !c.Equals(trimmed, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        Preferences.Default.Set(PreferencesKey, string.Join('|', custom));
+        BudgetHelper.RemoveBudget(trimmed);
+    }
+
+    public static IReadOnlyList<CategoryManageItem> GetManageItems()
+    {
+        var items = ExpenseCategories.All
+            .Select(c => new CategoryManageItem { Name = c, IsCustom = false })
+            .ToList();
+
+        foreach (var custom in GetCustomCategories())
+        {
+            items.Add(new CategoryManageItem { Name = custom, IsCustom = true });
+        }
+
+        return items;
+    }
+
     public static bool IsPresetCategory(string category) =>
         ExpenseCategories.All.Contains(category, StringComparer.OrdinalIgnoreCase);
 }
