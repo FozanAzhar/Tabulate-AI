@@ -3,7 +3,8 @@
     "Android Emulator": {
       "commandName": "Project",
       "environmentVariables": {
-        "TABULATE_AI_API_URL": "http://10.0.2.2:5299"
+        "TABULATE_AI_API_URL": "http://10.0.2.2:5299",
+        "TABULATE_AI_API_KEY": "dev-local-change-me-use-a-long-random-string"
       }
     }
   }

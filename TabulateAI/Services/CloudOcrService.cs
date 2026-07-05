@@ -23,6 +23,12 @@ public sealed class CloudOcrService : IOcrService
         {
             _httpClient.BaseAddress = new Uri(_options.ApiBaseUrl);
             _httpClient.Timeout = TimeSpan.FromSeconds(180);
+
+            if (_options.HasApiKey)
+            {
+                _httpClient.DefaultRequestHeaders.Remove(AiExtractionOptions.ApiKeyHeaderName);
+                _httpClient.DefaultRequestHeaders.Add(AiExtractionOptions.ApiKeyHeaderName, _options.ApiKey);
+            }
         }
     }
 
@@ -31,6 +37,12 @@ public sealed class CloudOcrService : IOcrService
         if (!_options.IsCloudEnabled || _options.ApiBaseUrl is null)
         {
             throw new InvalidOperationException("Cloud extraction is not configured.");
+        }
+
+        if (!_options.HasApiKey)
+        {
+            throw new InvalidOperationException(
+                "Cloud extraction requires TABULATE_AI_API_KEY. Set the same value as Security:ClientApiKey on the API.");
         }
 
         if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))

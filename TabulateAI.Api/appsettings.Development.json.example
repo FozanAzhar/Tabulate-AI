@@ -1,4 +1,9 @@
 {
+  "Security": {
+    "ClientApiKey": "dev-local-change-me-use-a-long-random-string",
+    "MaxUploadBytes": 10485760,
+    "RateLimitPerMinute": 30
+  },
   "Ai": {
     "GeminiApiKey": "YOUR_GEMINI_KEY_FROM_aistudio.google.com",
     "MistralApiKey": "YOUR_MISTRAL_KEY_FROM_console.mistral.ai"
