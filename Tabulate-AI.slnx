@@ -1,4 +1,6 @@
 <Solution>
-  <Project Path="TabulateAI/TabulateAI.csproj" />
+  <Project Path="TabulateAI/TabulateAI.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="TabulateAI.Api/TabulateAI.Api.csproj" />
 </Solution>

@@ -19,6 +19,7 @@ public sealed class AiExtractionOptions
 
 #if DEBUG && ANDROID
         apiBaseUrl ??= "http://10.0.2.2:5299";
+        apiKey ??= "dev-local-change-me-use-a-long-random-string";
 #endif
 
         return new AiExtractionOptions

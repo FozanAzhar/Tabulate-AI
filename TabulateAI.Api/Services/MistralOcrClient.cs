@@ -23,7 +23,7 @@ public sealed class MistralOcrClient
 
     public async Task<string> ExtractTextAsync(byte[] imageBytes, string contentType, CancellationToken cancellationToken = default)
     {
-        if (!_options.IsConfigured)
+        if (!_options.HasMistral)
         {
             throw new InvalidOperationException("Mistral API key is not configured.");
         }

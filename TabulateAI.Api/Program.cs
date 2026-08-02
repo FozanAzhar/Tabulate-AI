@@ -98,7 +98,7 @@ app.MapPost("/api/receipts/extract", async (HttpRequest request, ReceiptAiPipeli
     {
         return Results.Problem(
             title: "AI keys not configured",
-            detail: "Set Ai:GeminiApiKey and Ai:MistralApiKey in user secrets or appsettings.Development.json.",
+            detail: "Set Ai:GeminiApiKey in user secrets or appsettings.Development.json. Ai:MistralApiKey is optional fallback.",
             statusCode: StatusCodes.Status503ServiceUnavailable);
     }
 

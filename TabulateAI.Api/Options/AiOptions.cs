@@ -12,7 +12,12 @@ public sealed class AiOptions
 
     public string MistralOcrModel { get; set; } = "mistral-ocr-latest";
 
-    public bool IsConfigured =>
-        !string.IsNullOrWhiteSpace(GeminiApiKey) &&
-        !string.IsNullOrWhiteSpace(MistralApiKey);
+    public bool HasGemini => !string.IsNullOrWhiteSpace(GeminiApiKey);
+
+    public bool HasMistral => !string.IsNullOrWhiteSpace(MistralApiKey);
+
+    /// <summary>
+    /// Gemini is required. Mistral is optional and used only as an OCR fallback.
+    /// </summary>
+    public bool IsConfigured => HasGemini;
 }

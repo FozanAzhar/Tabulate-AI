@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
@@ -23,16 +22,119 @@ public sealed class GeminiReceiptParser
         _logger = logger;
     }
 
-    public async Task<ReceiptExtractionResponse> ParseAsync(string ocrText, CancellationToken cancellationToken = default)
+    public Task<ReceiptExtractionResponse> ParseAsync(string ocrText, CancellationToken cancellationToken = default) =>
+        ParseAsync(ocrText, source: "MistralOcr+Gemini", cancellationToken);
+
+    public async Task<ReceiptExtractionResponse> ParseImageAsync(
+        byte[] imageBytes,
+        string contentType,
+        CancellationToken cancellationToken = default)
     {
-        if (!_options.IsConfigured)
+        if (!_options.HasGemini)
         {
             throw new InvalidOperationException("Gemini API key is not configured.");
         }
 
-        var prompt = $"""
+        var mime = string.IsNullOrWhiteSpace(contentType) ? "image/jpeg" : contentType.Split(';', 2)[0].Trim();
+        var base64 = Convert.ToBase64String(imageBytes);
+        var prompt = BuildPrompt(
+            "Read the receipt image directly and extract structured fields.",
+            imageContext: true);
+
+        var payload = new
+        {
+            contents = new[]
+            {
+                new
+                {
+                    parts = new object[]
+                    {
+                        new { text = prompt },
+                        new
+                        {
+                            inline_data = new
+                            {
+                                mime_type = mime,
+                                data = base64
+                            }
+                        }
+                    }
+                }
+            },
+            generationConfig = BuildGenerationConfig()
+        };
+
+        var body = await SendGeminiAsync(payload, cancellationToken);
+        return MapGeminiResponse(body, ocrText: string.Empty, source: "Gemini");
+    }
+
+    public async Task<ReceiptExtractionResponse> ParseAsync(
+        string ocrText,
+        string source,
+        CancellationToken cancellationToken = default)
+    {
+        if (!_options.HasGemini)
+        {
+            throw new InvalidOperationException("Gemini API key is not configured.");
+        }
+
+        var prompt = BuildPrompt(
+            $"""
             You are validating and parsing receipt OCR text for an expense tracker app.
             Extract structured fields and validate the content.
+
+            OCR text:
+            {ocrText}
+            """,
+            imageContext: false);
+
+        var payload = new
+        {
+            contents = new[]
+            {
+                new
+                {
+                    parts = new[]
+                    {
+                        new { text = prompt }
+                    }
+                }
+            },
+            generationConfig = BuildGenerationConfig()
+        };
+
+        var body = await SendGeminiAsync(payload, cancellationToken);
+        return MapGeminiResponse(body, ocrText, source);
+    }
+
+    private async Task<string> SendGeminiAsync(object payload, CancellationToken cancellationToken)
+    {
+        var url =
+            $"https://generativelanguage.googleapis.com/v1beta/models/{_options.GeminiModel}:generateContent?key={Uri.EscapeDataString(_options.GeminiApiKey)}";
+        using var request = new HttpRequestMessage(HttpMethod.Post, url);
+        request.Content = new StringContent(JsonSerializer.Serialize(payload, JsonOptions), Encoding.UTF8, "application/json");
+
+        using var response = await _httpClient.SendAsync(request, cancellationToken);
+        var body = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            _logger.LogWarning("Gemini request failed: {Status} {Body}", response.StatusCode, body);
+            throw new InvalidOperationException($"Gemini request failed ({(int)response.StatusCode}).");
+        }
+
+        return body;
+    }
+
+    private static string BuildPrompt(string intro, bool imageContext)
+    {
+        var sourceLine = imageContext
+            ? "Read the attached receipt image carefully."
+            : "Use the OCR text provided below.";
+
+        return $"""
+            {intro}
+            {sourceLine}
 
             Rules:
             - merchant: store or business name (not the street address)
@@ -58,89 +160,67 @@ public sealed class GeminiReceiptParser
             - isReceipt: false if the text does not look like a purchase receipt
             - confidence: 0.0 to 1.0 for overall extraction quality
             - issues: short validation warnings (empty array if none)
-
-            OCR text:
-            {ocrText}
+            - rawText: best-effort plain text transcription of the receipt (can be empty)
             """;
-
-        var payload = new
-        {
-            contents = new[]
-            {
-                new
-                {
-                    parts = new[]
-                    {
-                        new { text = prompt }
-                    }
-                }
-            },
-            generationConfig = new
-            {
-                responseMimeType = "application/json",
-                temperature = 0.1,
-                responseSchema = new
-                {
-                    type = "OBJECT",
-                    properties = new
-                    {
-                        merchant = new { type = "STRING" },
-                        amount = new { type = "NUMBER" },
-                        date = new { type = "STRING" },
-                        category = new
-                        {
-                            type = "STRING",
-                            @enum = new[] { "Food", "Groceries", "Transport", "Shopping", "Home", "Bills", "Health", "Entertainment", "Travel", "Other" }
-                        },
-                        customCategory = new { type = "STRING" },
-                        location = new { type = "STRING" },
-                        paymentMethod = new { type = "STRING" },
-                        lineItems = new
-                        {
-                            type = "ARRAY",
-                            items = new
-                            {
-                                type = "OBJECT",
-                                properties = new
-                                {
-                                    name = new { type = "STRING" },
-                                    quantity = new { type = "STRING" },
-                                    price = new { type = "NUMBER" },
-                                    isDiscount = new { type = "BOOLEAN" }
-                                },
-                                required = new[] { "name", "price" }
-                            }
-                        },
-                        isReceipt = new { type = "BOOLEAN" },
-                        confidence = new { type = "NUMBER" },
-                        issues = new
-                        {
-                            type = "ARRAY",
-                            items = new { type = "STRING" }
-                        }
-                    },
-                    required = new[] { "merchant", "amount", "date", "category", "isReceipt", "confidence", "issues", "lineItems" }
-                }
-            }
-        };
-
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{_options.GeminiModel}:generateContent?key={Uri.EscapeDataString(_options.GeminiApiKey)}";
-        using var request = new HttpRequestMessage(HttpMethod.Post, url);
-        request.Content = new StringContent(JsonSerializer.Serialize(payload, JsonOptions), Encoding.UTF8, "application/json");
-
-        using var response = await _httpClient.SendAsync(request, cancellationToken);
-        var body = await response.Content.ReadAsStringAsync(cancellationToken);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            _logger.LogWarning("Gemini parsing failed: {Status} {Body}", response.StatusCode, body);
-            throw new InvalidOperationException($"Gemini request failed ({(int)response.StatusCode}).");
-        }
-
-        return MapGeminiResponse(body, ocrText);
     }
 
-    private static ReceiptExtractionResponse MapGeminiResponse(string geminiJson, string ocrText)
+    private static object BuildGenerationConfig() => new
+    {
+        responseMimeType = "application/json",
+        temperature = 0.1,
+        responseSchema = new
+        {
+            type = "OBJECT",
+            properties = new
+            {
+                merchant = new { type = "STRING" },
+                amount = new { type = "NUMBER" },
+                date = new { type = "STRING" },
+                category = new
+                {
+                    type = "STRING",
+                    @enum = new[]
+                    {
+                        "Food", "Groceries", "Transport", "Shopping", "Home", "Bills", "Health",
+                        "Entertainment", "Travel", "Other"
+                    }
+                },
+                customCategory = new { type = "STRING" },
+                location = new { type = "STRING" },
+                paymentMethod = new { type = "STRING" },
+                rawText = new { type = "STRING" },
+                lineItems = new
+                {
+                    type = "ARRAY",
+                    items = new
+                    {
+                        type = "OBJECT",
+                        properties = new
+                        {
+                            name = new { type = "STRING" },
+                            quantity = new { type = "STRING" },
+                            price = new { type = "NUMBER" },
+                            isDiscount = new { type = "BOOLEAN" }
+                        },
+                        required = new[] { "name", "price" }
+                    }
+                },
+                isReceipt = new { type = "BOOLEAN" },
+                confidence = new { type = "NUMBER" },
+                issues = new
+                {
+                    type = "ARRAY",
+                    items = new { type = "STRING" }
+                }
+            },
+            required = new[]
+            {
+                "merchant", "amount", "date", "category", "isReceipt", "confidence", "issues", "lineItems"
+            }
+        }
+    };
+
+    private static ReceiptExtractionResponse MapGeminiResponse(string geminiJson, string ocrText, string source)
     {
         using var document = JsonDocument.Parse(geminiJson);
         var text = document.RootElement
@@ -153,15 +233,23 @@ public sealed class GeminiReceiptParser
         using var parsed = JsonDocument.Parse(text);
         var root = parsed.RootElement;
 
+        var rawText = ocrText;
+        if (root.TryGetProperty("rawText", out var rawTextElement) &&
+            rawTextElement.ValueKind == JsonValueKind.String &&
+            !string.IsNullOrWhiteSpace(rawTextElement.GetString()))
+        {
+            rawText = rawTextElement.GetString() ?? ocrText;
+        }
+
         DateTime? date = null;
         if (root.TryGetProperty("date", out var dateElement))
         {
             date = ReceiptDateHelper.Parse(dateElement.GetString())
-                ?? ReceiptDateHelper.ParseFromOcrText(ocrText);
+                ?? ReceiptDateHelper.ParseFromOcrText(rawText);
         }
         else
         {
-            date = ReceiptDateHelper.ParseFromOcrText(ocrText);
+            date = ReceiptDateHelper.ParseFromOcrText(rawText);
         }
 
         decimal? amount = null;
@@ -234,7 +322,7 @@ public sealed class GeminiReceiptParser
 
         return new ReceiptExtractionResponse
         {
-            RawText = ocrText,
+            RawText = rawText,
             Merchant = root.TryGetProperty("merchant", out var merchant) ? merchant.GetString() ?? string.Empty : string.Empty,
             Amount = amount,
             Date = date,
@@ -254,7 +342,7 @@ public sealed class GeminiReceiptParser
                 ? confidence.GetDouble()
                 : 0.5,
             ValidationIssues = issues,
-            Source = "MistralOcr+Gemini"
+            Source = source
         };
     }
 }
