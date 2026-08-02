@@ -22,6 +22,7 @@ public partial class ManualExpenseViewModel : ObservableObject
 
     private readonly IReceiptRepository _receiptRepository;
     private readonly IMerchantLogoService _merchantLogoService;
+    private readonly IBudgetAlertService _budgetAlertService;
 
 
 
@@ -71,12 +72,16 @@ public partial class ManualExpenseViewModel : ObservableObject
 
 
 
-    public ManualExpenseViewModel(IReceiptRepository receiptRepository, IMerchantLogoService merchantLogoService)
+    public ManualExpenseViewModel(
+        IReceiptRepository receiptRepository,
+        IMerchantLogoService merchantLogoService,
+        IBudgetAlertService budgetAlertService)
 
     {
 
         _receiptRepository = receiptRepository;
         _merchantLogoService = merchantLogoService;
+        _budgetAlertService = budgetAlertService;
 
         RefreshCategoryOptions();
 
@@ -240,7 +245,7 @@ public partial class ManualExpenseViewModel : ObservableObject
 
             });
 
-
+            await _budgetAlertService.CheckAndNotifyAsync(showInAppAlert: true);
 
             await AppNavigation.GoDashboardAsync();
 

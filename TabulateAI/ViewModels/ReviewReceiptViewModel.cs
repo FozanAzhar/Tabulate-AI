@@ -30,6 +30,7 @@ public partial class ReviewReceiptViewModel : ObservableObject
     private readonly IReceiptRepository _receiptRepository;
     private readonly IImageStorageService _imageStorageService;
     private readonly IMerchantLogoService _merchantLogoService;
+    private readonly IBudgetAlertService _budgetAlertService;
     private readonly PendingReceiptContext _pendingReceipt;
 
     private string _merchantSnapshot = string.Empty;
@@ -236,11 +237,13 @@ public partial class ReviewReceiptViewModel : ObservableObject
         IReceiptRepository receiptRepository,
         IImageStorageService imageStorageService,
         IMerchantLogoService merchantLogoService,
+        IBudgetAlertService budgetAlertService,
         PendingReceiptContext pendingReceipt)
     {
         _receiptRepository = receiptRepository;
         _imageStorageService = imageStorageService;
         _merchantLogoService = merchantLogoService;
+        _budgetAlertService = budgetAlertService;
         _pendingReceipt = pendingReceipt;
     }
 
@@ -728,6 +731,7 @@ public partial class ReviewReceiptViewModel : ObservableObject
             UpdateHeroLogoDisplay();
 
             await _receiptRepository.SaveAsync(receipt);
+            await _budgetAlertService.CheckAndNotifyAsync(showInAppAlert: true);
 
             if (ReceiptId > 0)
             {

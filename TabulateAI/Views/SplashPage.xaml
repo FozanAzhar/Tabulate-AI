@@ -42,7 +42,7 @@
                    HorizontalOptions="Center" />
 
             <!-- Tagline -->
-            <Label Text="Your pocket scanner with brains.&#10;Powered by Gemini AI."
+            <Label Text="Snap a receipt. Track your spending.&#10;All on your phone."
                    FontSize="13"
                    TextColor="{StaticResource UoNBlueMid}"
                    HorizontalOptions="Center"
@@ -69,28 +69,28 @@
                 </Label>
             </Border>
 
-            <!-- Tech pillars -->
+            <!-- Product pillars -->
             <HorizontalStackLayout Spacing="16"
                                    HorizontalOptions="Center"
                                    Margin="0,28,0,0">
 
                 <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
-                    <Label Text="OCR" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
-                    <Label Text="Gemini AI" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
+                    <Label Text="Scan" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
+                    <Label Text="Receipts" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
                 </VerticalStackLayout>
 
                 <BoxView WidthRequest="0.5" HeightRequest="24" Color="{StaticResource White20}" VerticalOptions="Center" />
 
                 <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
-                    <Label Text="Cloud" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
-                    <Label Text="Supabase" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
+                    <Label Text="Track" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
+                    <Label Text="Budgets" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
                 </VerticalStackLayout>
 
                 <BoxView WidthRequest="0.5" HeightRequest="24" Color="{StaticResource White20}" VerticalOptions="Center" />
 
                 <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
-                    <Label Text=".NET" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
-                    <Label Text="MAUI" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
+                    <Label Text="Export" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource UoNGold}" HorizontalOptions="Center" />
+                    <Label Text="Reports" FontSize="9" TextColor="{StaticResource UoNBlueMid}" HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </HorizontalStackLayout>
         </VerticalStackLayout>

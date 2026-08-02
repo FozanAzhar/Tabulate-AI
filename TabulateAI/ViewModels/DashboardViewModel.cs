@@ -11,6 +11,7 @@ public partial class DashboardViewModel : ObservableObject
     private readonly IReceiptRepository _receiptRepository;
     private readonly IMerchantLogoService _merchantLogoService;
     private readonly IAppSettingsService _appSettings;
+    private readonly IBudgetAlertService _budgetAlertService;
 
     [ObservableProperty]
     private decimal _totalSpent;
@@ -84,11 +85,13 @@ public partial class DashboardViewModel : ObservableObject
     public DashboardViewModel(
         IReceiptRepository receiptRepository,
         IMerchantLogoService merchantLogoService,
-        IAppSettingsService appSettings)
+        IAppSettingsService appSettings,
+        IBudgetAlertService budgetAlertService)
     {
         _receiptRepository = receiptRepository;
         _merchantLogoService = merchantLogoService;
         _appSettings = appSettings;
+        _budgetAlertService = budgetAlertService;
         _appSettings.SettingsChanged += (_, _) => SyncProfileAndTheme();
         SyncProfileAndTheme();
     }
@@ -96,6 +99,8 @@ public partial class DashboardViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         await LoadDashboardAsync();
+        // Store over-budget alerts without showing a banner (banner can break tab switches).
+        await _budgetAlertService.CheckAndNotifyAsync(showInAppAlert: false);
     }
 
     [RelayCommand]

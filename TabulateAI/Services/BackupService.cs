@@ -13,7 +13,9 @@ public sealed class BackupService : IBackupService
         "custom_report_start",
         "custom_report_end",
         "custom_expense_categories",
-        "category_budgets"
+        "category_budgets",
+        "settings_budget_alerts",
+        "in_app_notifications"
     ];
 
     private readonly IReceiptRepository _receiptRepository;

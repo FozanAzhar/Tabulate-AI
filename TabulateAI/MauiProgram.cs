@@ -27,6 +27,13 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IImageStorageService, ImageStorageService>();
 		builder.Services.AddSingleton<IBackupService, BackupService>();
 		builder.Services.AddSingleton<ILocationCaptureService, LocationCaptureService>();
+#if ANDROID
+		builder.Services.AddSingleton<ILocalNotificationService, TabulateAI.LocalNotificationService>();
+#else
+		builder.Services.AddSingleton<ILocalNotificationService, NullLocalNotificationService>();
+#endif
+		builder.Services.AddSingleton<IInAppNotificationService, InAppNotificationService>();
+		builder.Services.AddSingleton<IBudgetAlertService, BudgetAlertService>();
 		builder.Services.AddHttpClient<IMerchantLogoService, MerchantLogoService>();
 		builder.Services.AddHttpClient<CloudOcrService>();
 

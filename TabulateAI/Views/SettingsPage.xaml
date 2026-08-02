@@ -21,7 +21,7 @@
                        FontSize="17"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource T1}" />
-                <Label Text="Profile, appearance, and data"
+                <Label Text="Profile, budgets, and notifications"
                        FontFamily="OpenSansRegular"
                        FontSize="11"
                        TextColor="{DynamicResource T2}"
@@ -294,6 +294,106 @@
                     </VerticalStackLayout>
                 </Border>
 
+                <!-- Notifications -->
+                <Label Text="NOTIFICATIONS"
+                       FontFamily="OpenSansBold"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource T3}"
+                       CharacterSpacing="0.8"
+                       Margin="2,20,0,8" />
+
+                <Border BackgroundColor="{DynamicResource CardWhite}"
+                        Stroke="{DynamicResource Border}"
+                        StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14,12">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Get a system notification when spending goes over a monthly budget — even if you leave the app."
+                               FontFamily="OpenSansRegular"
+                               FontSize="11"
+                               TextColor="{DynamicResource T2}" />
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                            <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                                <Label Text="Budget alerts"
+                                       FontFamily="OpenSansBold"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="{DynamicResource T1}" />
+                                <Label Text="Notify me when a category goes over budget"
+                                       FontFamily="OpenSansRegular"
+                                       FontSize="10"
+                                       TextColor="{DynamicResource T2}" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1"
+                                    x:Name="BudgetAlertsSwitch"
+                                    IsToggled="{Binding BudgetAlertsEnabled, Mode=OneWay}"
+                                    OnColor="{StaticResource Violet}"
+                                    VerticalOptions="Center"
+                                    Toggled="OnBudgetAlertsToggled" />
+                        </Grid>
+
+                        <Border BackgroundColor="{DynamicResource Surface}"
+                                Stroke="{DynamicResource Border}"
+                                StrokeThickness="0.5"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12,10"
+                                IsVisible="{Binding HasRecentAlerts}"
+                                IsEnabled="{Binding HasRecentAlerts}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ClearAlertsCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Clear alerts"
+                                   FontFamily="OpenSansBold"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="{DynamicResource T1}"
+                                   HorizontalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Spacing="8"
+                                             IsVisible="{Binding HasRecentAlerts}"
+                                             BindableLayout.ItemsSource="{Binding RecentAlerts}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:AppNotificationItem">
+                                    <Border Stroke="{DynamicResource Border}"
+                                            StrokeThickness="0.5"
+                                            StrokeShape="RoundRectangle 10"
+                                            BackgroundColor="{DynamicResource Surface}"
+                                            Padding="12,10">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <Label Text="{Binding Title}"
+                                                       FontFamily="OpenSansBold"
+                                                       FontSize="12"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{DynamicResource T1}" />
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding TimeLabel}"
+                                                       FontFamily="OpenSansRegular"
+                                                       FontSize="10"
+                                                       TextColor="{DynamicResource T3}" />
+                                            </Grid>
+                                            <Label Text="{Binding Message}"
+                                                   FontFamily="OpenSansRegular"
+                                                   FontSize="11"
+                                                   TextColor="{DynamicResource T2}"
+                                                   LineBreakMode="WordWrap" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <Label Text="No alerts yet. You'll be notified here when a category goes over budget."
+                               FontFamily="OpenSansRegular"
+                               FontSize="11"
+                               TextColor="{DynamicResource T3}"
+                               IsVisible="{Binding HasRecentAlerts, Converter={StaticResource InvertedBoolConverter}}" />
+                    </VerticalStackLayout>
+                </Border>
+
                 <!-- Budgets -->
                 <Label Text="MONTHLY BUDGETS"
                        FontFamily="OpenSansBold"
@@ -512,22 +612,6 @@
                                    FontAttributes="Bold"
                                    TextColor="{DynamicResource T1}"
                                    VerticalOptions="Center" />
-                        </Grid>
-                        <BoxView HeightRequest="0.5" Color="{DynamicResource Border}" />
-                        <Grid Padding="14,12" ColumnDefinitions="*,Auto">
-                            <Label Text="Receipt scanning"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{DynamicResource T2}"
-                                   VerticalOptions="Center" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding OcrEngineLabel}"
-                                   FontFamily="OpenSansBold"
-                                   FontSize="12"
-                                   FontAttributes="Bold"
-                                   TextColor="{StaticResource Violet}"
-                                   VerticalOptions="Center"
-                                   HorizontalTextAlignment="End" />
                         </Grid>
                     </VerticalStackLayout>
                 </Border>

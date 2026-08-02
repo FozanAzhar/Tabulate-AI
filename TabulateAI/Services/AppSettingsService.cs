@@ -9,10 +9,12 @@ public sealed class AppSettingsService : IAppSettingsService
     private const string ThemeKey = "settings_theme";
     private const string CustomReportStartKey = "custom_report_start";
     private const string CustomReportEndKey = "custom_report_end";
+    private const string BudgetAlertsKey = "settings_budget_alerts";
 
     private string _displayName = "User";
     private string _email = string.Empty;
     private bool _isDarkMode;
+    private bool _budgetAlertsEnabled = true;
     private DateTime _customReportStart;
     private DateTime _customReportEnd;
 
@@ -92,6 +94,22 @@ public sealed class AppSettingsService : IAppSettingsService
         }
     }
 
+    public bool BudgetAlertsEnabled
+    {
+        get => _budgetAlertsEnabled;
+        set
+        {
+            if (_budgetAlertsEnabled == value)
+            {
+                return;
+            }
+
+            _budgetAlertsEnabled = value;
+            Preferences.Default.Set(BudgetAlertsKey, value ? bool.TrueString : bool.FalseString);
+            NotifyChanged();
+        }
+    }
+
     public void Load()
     {
         _displayName = Preferences.Default.Get(DisplayNameKey, "User");
@@ -101,6 +119,10 @@ public sealed class AppSettingsService : IAppSettingsService
         }
 
         _email = Preferences.Default.Get(EmailKey, string.Empty);
+        _budgetAlertsEnabled = !string.Equals(
+            Preferences.Default.Get(BudgetAlertsKey, bool.TrueString),
+            bool.FalseString,
+            StringComparison.OrdinalIgnoreCase);
         _customReportStart = ReadDatePreference(CustomReportStartKey, DateTime.Today.AddDays(-30));
         _customReportEnd = ReadDatePreference(CustomReportEndKey, DateTime.Today);
         ApplySavedTheme();

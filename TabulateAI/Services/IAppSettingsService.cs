@@ -16,6 +16,8 @@ public interface IAppSettingsService
 
     DateTime CustomReportEnd { get; set; }
 
+    bool BudgetAlertsEnabled { get; set; }
+
     event EventHandler? SettingsChanged;
 
     void Load();

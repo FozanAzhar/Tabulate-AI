@@ -44,7 +44,7 @@ public partial class AppShell : Shell
 
 
 		Loaded += OnShellLoaded;
-
+		Navigating += (_, _) => Helpers.InAppBannerHelper.Cancel();
 	}
 
 
